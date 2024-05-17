@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'login_page.dart'; // Importa la página de inicio de sesión
+import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
   @override
