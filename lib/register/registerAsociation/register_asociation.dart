@@ -15,7 +15,7 @@ class RegisterAsociationPage extends StatelessWidget {
       String foundationDate = _foundationDateController.text;
       String representative = _representativeController.text;
 
-      // Lógica de procesamiento o envío de datos
+      // lógica de procesamiento o envío de datos
 
       Navigator.push(
         context,

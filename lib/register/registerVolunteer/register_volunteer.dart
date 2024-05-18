@@ -15,7 +15,7 @@ class RegisterVolunteerPage extends StatelessWidget {
       String curp = _curpController.text;
       String phone = _phoneController.text;
 
-      // Lógica de procesamiento o envío de datos
+      // lógica de procesamiento o envío de datos
 
       Navigator.push(
         context,

@@ -15,7 +15,7 @@ class RegisterVolunteerPage2 extends StatelessWidget {
       String postalCode = _postalCodeController.text;
       String address = _addressController.text;
 
-      // Lógica de procesamiento o envío de datos
+      // lógica de procesamiento o envío de datos
 
       Navigator.push(
         context,

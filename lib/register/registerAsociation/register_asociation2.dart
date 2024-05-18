@@ -16,7 +16,7 @@ class RegisterAsociationPage2 extends StatelessWidget {
       String phone = _phoneController.text;
       String rfc = _rfcController.text;
 
-      // Lógica de procesamiento o envío de datos
+      // lógica de procesamiento o envío de datos
 
       Navigator.push(
         context,

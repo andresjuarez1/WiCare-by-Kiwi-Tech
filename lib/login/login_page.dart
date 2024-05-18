@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../register/register_page.dart';
+import '../landing/volunteer/main_volunteer.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
@@ -11,12 +12,10 @@ class LoginPage extends StatelessWidget {
       String username = _usernameController.text;
       String password = _passwordController.text;
 
-      // Add your authentication logic here
-
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => HomePage()),
-      // );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => VolunteerPage()),
+      );
     }
   }
 
