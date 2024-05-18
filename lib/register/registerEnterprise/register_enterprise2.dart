@@ -10,7 +10,6 @@ class RegisterEnterprisePage2 extends StatelessWidget {
 
   void _submitForm(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
-      // Obtener los valores de los campos
       String socialReason = _socialReasonController.text;
       String description = _descriptionController.text;
       String phone = _phoneController.text;

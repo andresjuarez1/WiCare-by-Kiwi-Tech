@@ -51,7 +51,6 @@ class RegisterEnterprisePage4 extends StatelessWidget {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu correo electrónico';
                           }
-                          // Puedes agregar validaciones adicionales para el formato del correo electrónico si lo deseas
                           return null;
                         },
                       ),
@@ -66,7 +65,6 @@ class RegisterEnterprisePage4 extends StatelessWidget {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu contraseña';
                           }
-                          // Puedes agregar validaciones adicionales para la fortaleza de la contraseña si lo deseas
                           return null;
                         },
                       ),

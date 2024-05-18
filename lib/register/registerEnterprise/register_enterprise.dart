@@ -15,15 +15,11 @@ class _RegisterEnterprisePageState extends State<RegisterEnterprisePage> {
 
 void _submitForm(BuildContext context) {
   if (_formKey.currentState?.validate() ?? false) {
-    // Envío de los datos del formulario
     String name = _nameController.text;
     String address = _addressController.text;
     String creationDate = _creationDateController.text;
     String representative = _representativeController.text;
 
-    // Lógica de procesamiento o envío de datos
-
-    // Navegar a la siguiente página
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => RegisterEnterprisePage2()),
@@ -95,7 +91,6 @@ void _submitForm(BuildContext context) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa la fecha de creación de la empresa';
                           }
-                          // Aquí puedes agregar una validación más específica para el formato de la fecha
                           return null;
                         },
                       ),

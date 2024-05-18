@@ -17,7 +17,6 @@ class RegisterVolunteerPage2 extends StatelessWidget {
 
       // Lógica de procesamiento o envío de datos
 
-      // Navegar a la siguiente página
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => RegisterVolunteerPage3()),

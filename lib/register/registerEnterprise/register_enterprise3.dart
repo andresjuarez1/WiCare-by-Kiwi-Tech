@@ -10,13 +10,11 @@ class RegisterEnterprisePage3 extends StatelessWidget {
 
   void _submitForm(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
-      // Obtener los valores de los campos
       String name = _nameController.text;
       String position = _positionController.text;
       String phone = _phoneController.text;
       String address = _addressController.text;
 
-      // Procesar o enviar los datos
 
     Navigator.push(
       context,

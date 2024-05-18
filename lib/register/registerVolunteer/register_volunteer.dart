@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'register_volunteer2.dart'; // Asegúrate de importar la nueva página
+import 'register_volunteer2.dart';
 
 class RegisterVolunteerPage extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
@@ -17,7 +17,6 @@ class RegisterVolunteerPage extends StatelessWidget {
 
       // Lógica de procesamiento o envío de datos
 
-      // Navegar a la siguiente página
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => RegisterVolunteerPage2()),
