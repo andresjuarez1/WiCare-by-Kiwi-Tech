@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'register_asociation2.dart';
+import 'register_asociation4.dart';
 
-class RegisterAsociationPage extends StatelessWidget {
+class RegisterAsociationPage3 extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _positionController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _foundationDateController = TextEditingController();
-  final TextEditingController _representativeController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _submitForm(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
       String name = _nameController.text;
+      String position = _positionController.text;
+      String phone = _phoneController.text;
       String address = _addressController.text;
-      String foundationDate = _foundationDateController.text;
-      String representative = _representativeController.text;
 
-      // Lógica de procesamiento o envío de datos
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => RegisterAsociationPage2()),
-      );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RegisterAsociationPage4()),
+    );
     }
   }
 
@@ -51,15 +50,51 @@ class RegisterAsociationPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      SizedBox(height: 10.0),
+                      Text(
+                        'Datos del Encargado',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Color(0xFF2E8139),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       SizedBox(height: 30.0),
-                      _buildLabel('Nombre de la Asociación'),
+                      _buildLabel('Nombre'),
                       SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _nameController,
-                        label: 'Ingresa el nombre de la asociación',
+                        label: 'Ingresa el nombre del encargado',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre de la asociación';
+                            return 'Por favor, ingresa el nombre';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.0),
+                      _buildLabel('Puesto'),
+                      SizedBox(height: 5.0),
+                      _buildTextField(
+                        controller: _positionController,
+                        label: 'Ingresa el puesto del encargado',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, ingresa el puesto';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.0),
+                      _buildLabel('Teléfono'),
+                      SizedBox(height: 5.0),
+                      _buildTextField(
+                        controller: _phoneController,
+                        label: 'Ingresa el teléfono del encargado',
+                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, ingresa el teléfono';
                           }
                           return null;
                         },
@@ -69,36 +104,10 @@ class RegisterAsociationPage extends StatelessWidget {
                       SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _addressController,
-                        label: 'Ingresa el domicilio de la asociación',
+                        label: 'Ingresa el domicilio del encargado',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el domicilio de la asociación';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10.0),
-                      _buildLabel('Fecha de Fundación'),
-                      SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _foundationDateController,
-                        label: 'Ingresa la fecha de fundación (DD/MM/AAAA)',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa la fecha de fundación de la asociación';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10.0),
-                      _buildLabel('Representante Legal o Gerente'),
-                      SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _representativeController,
-                        label: 'Ingresa el nombre del representante legal o gerente',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre del representante legal o gerente';
+                            return 'Por favor, ingresa el domicilio';
                           }
                           return null;
                         },
@@ -120,7 +129,7 @@ class RegisterAsociationPage extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'Siguiente',
+                            'Finalizar Registro',
                             style: TextStyle(
                               fontSize: 15.0,
                               color: Colors.white,
@@ -142,7 +151,7 @@ class RegisterAsociationPage extends StatelessWidget {
             child: Container(
               width: double.infinity,
               child: Image.asset(
-                'assets/progress-bar-asociation.png',
+                'assets/progress-bar-asociation3.png',
                 fit: BoxFit.cover,
               ),
             ),
@@ -164,13 +173,7 @@ class RegisterAsociationPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    bool obscureText = false,
-    TextInputType keyboardType = TextInputType.text,
-    String? Function(String?)? validator,
-  }) {
+  Widget _buildTextField({required TextEditingController controller, required String label, bool obscureText = false, TextInputType keyboardType = TextInputType.text, String? Function(String?)? validator}) {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,

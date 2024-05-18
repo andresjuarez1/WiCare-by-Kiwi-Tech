@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
-import 'register_asociation2.dart';
+import 'register_asociation3.dart';
 
-class RegisterAsociationPage extends StatelessWidget {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _foundationDateController = TextEditingController();
-  final TextEditingController _representativeController = TextEditingController();
+class RegisterAsociationPage2 extends StatelessWidget {
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _rfcController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final List<String> _socialReasons = ['Opción 1', 'Opción 2', 'Opción 3'];
+  String _selectedSocialReason = 'Opción 1';
 
   void _submitForm(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
-      String name = _nameController.text;
-      String address = _addressController.text;
-      String foundationDate = _foundationDateController.text;
-      String representative = _representativeController.text;
+      String description = _descriptionController.text;
+      String phone = _phoneController.text;
+      String rfc = _rfcController.text;
 
       // Lógica de procesamiento o envío de datos
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RegisterAsociationPage2()),
+        MaterialPageRoute(builder: (context) => RegisterAsociationPage3()),
       );
     }
   }
@@ -52,53 +53,62 @@ class RegisterAsociationPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 30.0),
-                      _buildLabel('Nombre de la Asociación'),
+                      _buildLabel('Razón Social'),
+                      SizedBox(height: 5.0),
+                      DropdownButtonFormField<String>(
+                        value: _selectedSocialReason,
+                        items: _socialReasons.map((String reason) {
+                          return DropdownMenuItem<String>(
+                            value: reason,
+                            child: Text(reason),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          _selectedSocialReason = newValue!;
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                        ),
+                      ),
+                      SizedBox(height: 10.0),
+                      _buildLabel('Descripción General'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _nameController,
-                        label: 'Ingresa el nombre de la asociación',
+                        controller: _descriptionController,
+                        label: 'Ingresa una descripción general',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre de la asociación';
+                            return 'Por favor, ingresa una descripción general';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('Domicilio'),
+                      _buildLabel('Teléfono'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _addressController,
-                        label: 'Ingresa el domicilio de la asociación',
+                        controller: _phoneController,
+                        label: 'Ingresa el teléfono de la asociación',
+                        keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el domicilio de la asociación';
+                            return 'Por favor, ingresa el teléfono de la asociación';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('Fecha de Fundación'),
+                      _buildLabel('RFC'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _foundationDateController,
-                        label: 'Ingresa la fecha de fundación (DD/MM/AAAA)',
+                        controller: _rfcController,
+                        label: 'Ingresa el RFC de la asociación',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa la fecha de fundación de la asociación';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10.0),
-                      _buildLabel('Representante Legal o Gerente'),
-                      SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _representativeController,
-                        label: 'Ingresa el nombre del representante legal o gerente',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre del representante legal o gerente';
+                            return 'Por favor, ingresa el RFC de la asociación';
                           }
                           return null;
                         },
@@ -142,7 +152,7 @@ class RegisterAsociationPage extends StatelessWidget {
             child: Container(
               width: double.infinity,
               child: Image.asset(
-                'assets/progress-bar-asociation.png',
+                'assets/progress-bar-asociation2.png',
                 fit: BoxFit.cover,
               ),
             ),

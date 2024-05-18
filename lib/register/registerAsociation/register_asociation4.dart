@@ -1,26 +1,15 @@
 import 'package:flutter/material.dart';
-import 'register_asociation2.dart';
 
-class RegisterAsociationPage extends StatelessWidget {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _foundationDateController = TextEditingController();
-  final TextEditingController _representativeController = TextEditingController();
+class RegisterAsociationPage4 extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _submitForm(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
-      String name = _nameController.text;
-      String address = _addressController.text;
-      String foundationDate = _foundationDateController.text;
-      String representative = _representativeController.text;
-
-      // Lógica de procesamiento o envío de datos
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => RegisterAsociationPage2()),
-      );
+      String email = _emailController.text;
+      String password = _passwordController.text;
     }
   }
 
@@ -44,7 +33,7 @@ class RegisterAsociationPage extends StatelessWidget {
                       ),
                       SizedBox(height: 25.0),
                       Text(
-                        '¡Bienvenida, Asociación!',
+                        'Crea tu cuenta',
                         style: TextStyle(
                           fontSize: 18.0,
                           color: Color(0xFF2E8139),
@@ -52,56 +41,62 @@ class RegisterAsociationPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 30.0),
-                      _buildLabel('Nombre de la Asociación'),
+                      _buildLabel('Correo Electrónico'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _nameController,
-                        label: 'Ingresa el nombre de la asociación',
+                        controller: _emailController,
+                        label: 'Ingresa tu correo electrónico',
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre de la asociación';
+                            return 'Por favor, ingresa tu correo electrónico';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('Domicilio'),
+                      _buildLabel('Contraseña'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _addressController,
-                        label: 'Ingresa el domicilio de la asociación',
+                        controller: _passwordController,
+                        label: 'Ingresa tu contraseña',
+                        obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el domicilio de la asociación';
+                            return 'Por favor, ingresa tu contraseña';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('Fecha de Fundación'),
+                      _buildLabel('Confirmar Contraseña'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _foundationDateController,
-                        label: 'Ingresa la fecha de fundación (DD/MM/AAAA)',
+                        controller: _confirmPasswordController,
+                        label: 'Confirma tu contraseña',
+                        obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa la fecha de fundación de la asociación';
+                            return 'Por favor, confirma tu contraseña';
+                          }
+                          if (value != _passwordController.text) {
+                            return 'Las contraseñas no coinciden';
                           }
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.0),
-                      _buildLabel('Representante Legal o Gerente'),
-                      SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _representativeController,
-                        label: 'Ingresa el nombre del representante legal o gerente',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre del representante legal o gerente';
-                          }
-                          return null;
-                        },
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: false, 
+                            onChanged: (value) {
+                            },
+                          ),
+                          Text(
+                            'Acepto los términos y condiciones',
+                            style: TextStyle(fontSize: 14.0),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 40.0),
                       SizedBox(
@@ -120,7 +115,7 @@ class RegisterAsociationPage extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'Siguiente',
+                            'Crear Cuenta',
                             style: TextStyle(
                               fontSize: 15.0,
                               color: Colors.white,
@@ -142,7 +137,7 @@ class RegisterAsociationPage extends StatelessWidget {
             child: Container(
               width: double.infinity,
               child: Image.asset(
-                'assets/progress-bar-asociation.png',
+                'assets/progress-bar-empresa4.png',
                 fit: BoxFit.cover,
               ),
             ),
@@ -164,13 +159,7 @@ class RegisterAsociationPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    bool obscureText = false,
-    TextInputType keyboardType = TextInputType.text,
-    String? Function(String?)? validator,
-  }) {
+  Widget _buildTextField({required TextEditingController controller, required String label, bool obscureText = false, TextInputType keyboardType = TextInputType.text, String? Function(String?)? validator}) {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
