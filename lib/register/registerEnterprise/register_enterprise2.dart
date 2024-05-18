@@ -1,36 +1,27 @@
 import 'package:flutter/material.dart';
-import 'register_enterprise2.dart';
+import 'register_enterprise3.dart';
 
-class RegisterEnterprisePage extends StatefulWidget {
-  @override
-  _RegisterEnterprisePageState createState() => _RegisterEnterprisePageState();
-}
-
-class _RegisterEnterprisePageState extends State<RegisterEnterprisePage> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _creationDateController = TextEditingController();
-  final TextEditingController _representativeController = TextEditingController();
+class RegisterEnterprisePage2 extends StatelessWidget {
+  final TextEditingController _socialReasonController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _rfcController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-void _submitForm(BuildContext context) {
-  if (_formKey.currentState?.validate() ?? false) {
-    // Envío de los datos del formulario
-    String name = _nameController.text;
-    String address = _addressController.text;
-    String creationDate = _creationDateController.text;
-    String representative = _representativeController.text;
+  void _submitForm(BuildContext context) {
+    if (_formKey.currentState?.validate() ?? false) {
+      // Obtener los valores de los campos
+      String socialReason = _socialReasonController.text;
+      String description = _descriptionController.text;
+      String phone = _phoneController.text;
+      String rfc = _rfcController.text;
 
-    // Lógica de procesamiento o envío de datos
-
-    // Navegar a la siguiente página
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => RegisterEnterprisePage2()),
+      MaterialPageRoute(builder: (context) => RegisterEnterprisePage3()),
     );
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +43,7 @@ void _submitForm(BuildContext context) {
                       ),
                       SizedBox(height: 25.0),
                       Text(
-                        '¡Registro de Empresa!',
+                        'Registro de Empresa',
                         style: TextStyle(
                           fontSize: 18.0,
                           color: Color(0xFF2E8139),
@@ -60,54 +51,54 @@ void _submitForm(BuildContext context) {
                         ),
                       ),
                       SizedBox(height: 30.0),
-                      _buildLabel('Nombre de la Empresa'),
+                      _buildLabel('Razón Social'),
                       SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _nameController,
-                        label: 'Ingresa el nombre de la empresa',
+                      _buildDropdownField(
+                        controller: _socialReasonController,
+                        items: ['Opción 1', 'Opción 2', 'Opción 3'],
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre de la empresa';
+                            return 'Por favor, selecciona una opción';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('Domicilio'),
+                      _buildLabel('Descripción General'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _addressController,
-                        label: 'Ingresa el domicilio de la empresa',
+                        controller: _descriptionController,
+                        label: 'Ingresa la descripción general',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el domicilio de la empresa';
+                            return 'Por favor, ingresa la descripción general';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('Fecha de Creación'),
+                      _buildLabel('Teléfono'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _creationDateController,
-                        label: 'Ingresa la fecha de creación (DD/MM/AAAA)',
+                        controller: _phoneController,
+                        label: 'Ingresa el teléfono',
+                        keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa la fecha de creación de la empresa';
+                            return 'Por favor, ingresa el teléfono';
                           }
-                          // Aquí puedes agregar una validación más específica para el formato de la fecha
                           return null;
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('Representante Legal o Gerente'),
+                      _buildLabel('RFC'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _representativeController,
-                        label: 'Ingresa el nombre del representante legal o gerente',
+                        controller: _rfcController,
+                        label: 'Ingresa el RFC',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre del representante legal o gerente';
+                            return 'Por favor, ingresa el RFC';
                           }
                           return null;
                         },
@@ -151,7 +142,7 @@ void _submitForm(BuildContext context) {
             child: Container(
               width: double.infinity,
               child: Image.asset(
-                'assets/progress-bar-empresa.png',
+                'assets/progress-bar-empresa2.png',
                 fit: BoxFit.cover,
               ),
             ),
@@ -183,6 +174,29 @@ void _submitForm(BuildContext context) {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
+        labelStyle: TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
+        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+      ),
+      validator: validator,
+    );
+  }
+
+  Widget _buildDropdownField({required TextEditingController controller, required List<String> items, String? Function(String?)? validator}) {
+    return DropdownButtonFormField(
+      items: items.map((String value) {
+        return DropdownMenuItem(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: (String? value) {
+        controller.text = value ?? '';
+      },
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        labelText: 'Selecciona una opción',
         labelStyle: TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
         contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
       ),

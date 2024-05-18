@@ -1,36 +1,17 @@
 import 'package:flutter/material.dart';
-import 'register_enterprise2.dart';
 
-class RegisterEnterprisePage extends StatefulWidget {
-  @override
-  _RegisterEnterprisePageState createState() => _RegisterEnterprisePageState();
-}
-
-class _RegisterEnterprisePageState extends State<RegisterEnterprisePage> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _creationDateController = TextEditingController();
-  final TextEditingController _representativeController = TextEditingController();
+class RegisterEnterprisePage4 extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-void _submitForm(BuildContext context) {
-  if (_formKey.currentState?.validate() ?? false) {
-    // Envío de los datos del formulario
-    String name = _nameController.text;
-    String address = _addressController.text;
-    String creationDate = _creationDateController.text;
-    String representative = _representativeController.text;
-
-    // Lógica de procesamiento o envío de datos
-
-    // Navegar a la siguiente página
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => RegisterEnterprisePage2()),
-    );
+  void _submitForm(BuildContext context) {
+    if (_formKey.currentState?.validate() ?? false) {
+      String email = _emailController.text;
+      String password = _passwordController.text;
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +33,7 @@ void _submitForm(BuildContext context) {
                       ),
                       SizedBox(height: 25.0),
                       Text(
-                        '¡Registro de Empresa!',
+                        'Crea tu cuenta',
                         style: TextStyle(
                           fontSize: 18.0,
                           color: Color(0xFF2E8139),
@@ -60,57 +41,64 @@ void _submitForm(BuildContext context) {
                         ),
                       ),
                       SizedBox(height: 30.0),
-                      _buildLabel('Nombre de la Empresa'),
+                      _buildLabel('Correo Electrónico'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _nameController,
-                        label: 'Ingresa el nombre de la empresa',
+                        controller: _emailController,
+                        label: 'Ingresa tu correo electrónico',
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre de la empresa';
+                            return 'Por favor, ingresa tu correo electrónico';
                           }
+                          // Puedes agregar validaciones adicionales para el formato del correo electrónico si lo deseas
                           return null;
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('Domicilio'),
+                      _buildLabel('Contraseña'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _addressController,
-                        label: 'Ingresa el domicilio de la empresa',
+                        controller: _passwordController,
+                        label: 'Ingresa tu contraseña',
+                        obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el domicilio de la empresa';
+                            return 'Por favor, ingresa tu contraseña';
                           }
+                          // Puedes agregar validaciones adicionales para la fortaleza de la contraseña si lo deseas
                           return null;
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('Fecha de Creación'),
+                      _buildLabel('Confirmar Contraseña'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _creationDateController,
-                        label: 'Ingresa la fecha de creación (DD/MM/AAAA)',
+                        controller: _confirmPasswordController,
+                        label: 'Confirma tu contraseña',
+                        obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa la fecha de creación de la empresa';
+                            return 'Por favor, confirma tu contraseña';
                           }
-                          // Aquí puedes agregar una validación más específica para el formato de la fecha
+                          if (value != _passwordController.text) {
+                            return 'Las contraseñas no coinciden';
+                          }
                           return null;
                         },
                       ),
-                      SizedBox(height: 10.0),
-                      _buildLabel('Representante Legal o Gerente'),
-                      SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _representativeController,
-                        label: 'Ingresa el nombre del representante legal o gerente',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre del representante legal o gerente';
-                          }
-                          return null;
-                        },
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: false, 
+                            onChanged: (value) {
+                            },
+                          ),
+                          Text(
+                            'Acepto los términos y condiciones',
+                            style: TextStyle(fontSize: 14.0),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 40.0),
                       SizedBox(
@@ -129,7 +117,7 @@ void _submitForm(BuildContext context) {
                             ),
                           ),
                           child: Text(
-                            'Siguiente',
+                            'Crear Cuenta',
                             style: TextStyle(
                               fontSize: 15.0,
                               color: Colors.white,
@@ -151,7 +139,7 @@ void _submitForm(BuildContext context) {
             child: Container(
               width: double.infinity,
               child: Image.asset(
-                'assets/progress-bar-empresa.png',
+                'assets/progress-bar-empresa4.png',
                 fit: BoxFit.cover,
               ),
             ),

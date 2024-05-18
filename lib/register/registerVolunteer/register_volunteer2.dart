@@ -1,36 +1,29 @@
 import 'package:flutter/material.dart';
-import 'register_enterprise2.dart';
+import 'register_volunteer3.dart';
 
-class RegisterEnterprisePage extends StatefulWidget {
-  @override
-  _RegisterEnterprisePageState createState() => _RegisterEnterprisePageState();
-}
-
-class _RegisterEnterprisePageState extends State<RegisterEnterprisePage> {
-  final TextEditingController _nameController = TextEditingController();
+class RegisterVolunteerPage2 extends StatelessWidget {
+  final TextEditingController _postalCodeController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _creationDateController = TextEditingController();
-  final TextEditingController _representativeController = TextEditingController();
+  final List<String> _occupations = ['Estudiante', 'Trabajador', 'Desempleado', 'Jubilado', 'Otro'];
+  String? _selectedOccupation;
+  final List<String> _genders = ['Masculino', 'Femenino', 'No binario', 'Prefiero no decir'];
+  String? _selectedGender;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-void _submitForm(BuildContext context) {
-  if (_formKey.currentState?.validate() ?? false) {
-    // Envío de los datos del formulario
-    String name = _nameController.text;
-    String address = _addressController.text;
-    String creationDate = _creationDateController.text;
-    String representative = _representativeController.text;
+  void _submitForm(BuildContext context) {
+    if (_formKey.currentState?.validate() ?? false) {
+      String postalCode = _postalCodeController.text;
+      String address = _addressController.text;
 
-    // Lógica de procesamiento o envío de datos
+      // Lógica de procesamiento o envío de datos
 
-    // Navegar a la siguiente página
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => RegisterEnterprisePage2()),
-    );
+      // Navegar a la siguiente página
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => RegisterVolunteerPage3()),
+      );
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +45,7 @@ void _submitForm(BuildContext context) {
                       ),
                       SizedBox(height: 25.0),
                       Text(
-                        '¡Registro de Empresa!',
+                        '¡Bienvenido, voluntario!',
                         style: TextStyle(
                           fontSize: 18.0,
                           color: Color(0xFF2E8139),
@@ -60,14 +53,15 @@ void _submitForm(BuildContext context) {
                         ),
                       ),
                       SizedBox(height: 30.0),
-                      _buildLabel('Nombre de la Empresa'),
+                      _buildLabel('Código Postal'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _nameController,
-                        label: 'Ingresa el nombre de la empresa',
+                        controller: _postalCodeController,
+                        label: 'Ingresa tu código postal',
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre de la empresa';
+                            return 'Por favor, ingresa tu código postal';
                           }
                           return null;
                         },
@@ -77,41 +71,22 @@ void _submitForm(BuildContext context) {
                       SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _addressController,
-                        label: 'Ingresa el domicilio de la empresa',
+                        label: 'Ingresa tu domicilio',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el domicilio de la empresa';
+                            return 'Por favor, ingresa tu domicilio';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('Fecha de Creación'),
+                      _buildLabel('Ocupación'),
                       SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _creationDateController,
-                        label: 'Ingresa la fecha de creación (DD/MM/AAAA)',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa la fecha de creación de la empresa';
-                          }
-                          // Aquí puedes agregar una validación más específica para el formato de la fecha
-                          return null;
-                        },
-                      ),
+                      _buildOccupationDropdown(),
                       SizedBox(height: 10.0),
-                      _buildLabel('Representante Legal o Gerente'),
+                      _buildLabel('Género'),
                       SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _representativeController,
-                        label: 'Ingresa el nombre del representante legal o gerente',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre del representante legal o gerente';
-                          }
-                          return null;
-                        },
-                      ),
+                      _buildGenderDropdown(),
                       SizedBox(height: 40.0),
                       SizedBox(
                         width: double.infinity,
@@ -151,7 +126,7 @@ void _submitForm(BuildContext context) {
             child: Container(
               width: double.infinity,
               child: Image.asset(
-                'assets/progress-bar-empresa.png',
+                'assets/progress-bar-volunteer2.png',
                 fit: BoxFit.cover,
               ),
             ),
@@ -187,6 +162,48 @@ void _submitForm(BuildContext context) {
         contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
       ),
       validator: validator,
+    );
+  }
+
+  Widget _buildOccupationDropdown() {
+    return DropdownButtonFormField<String>(
+      value: _selectedOccupation,
+      onChanged: (value) {
+        _selectedOccupation = value;
+      },
+      items: _occupations.map((occupation) {
+        return DropdownMenuItem<String>(
+          value: occupation,
+          child: Text(occupation),
+        );
+      }).toList(),
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+      ),
+    );
+  }
+
+  Widget _buildGenderDropdown() {
+    return DropdownButtonFormField<String>(
+      value: _selectedGender,
+      onChanged: (value) {
+        _selectedGender = value;
+      },
+      items: _genders.map((gender) {
+        return DropdownMenuItem<String>(
+          value: gender,
+          child: Text(gender),
+        );
+      }).toList(),
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+      ),
     );
   }
 }

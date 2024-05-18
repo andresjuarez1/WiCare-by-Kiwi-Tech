@@ -1,36 +1,29 @@
 import 'package:flutter/material.dart';
-import 'register_enterprise2.dart';
+import 'register_enterprise4.dart';
 
-class RegisterEnterprisePage extends StatefulWidget {
-  @override
-  _RegisterEnterprisePageState createState() => _RegisterEnterprisePageState();
-}
-
-class _RegisterEnterprisePageState extends State<RegisterEnterprisePage> {
+class RegisterEnterprisePage3 extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _positionController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _creationDateController = TextEditingController();
-  final TextEditingController _representativeController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-void _submitForm(BuildContext context) {
-  if (_formKey.currentState?.validate() ?? false) {
-    // Envío de los datos del formulario
-    String name = _nameController.text;
-    String address = _addressController.text;
-    String creationDate = _creationDateController.text;
-    String representative = _representativeController.text;
+  void _submitForm(BuildContext context) {
+    if (_formKey.currentState?.validate() ?? false) {
+      // Obtener los valores de los campos
+      String name = _nameController.text;
+      String position = _positionController.text;
+      String phone = _phoneController.text;
+      String address = _addressController.text;
 
-    // Lógica de procesamiento o envío de datos
+      // Procesar o enviar los datos
 
-    // Navegar a la siguiente página
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => RegisterEnterprisePage2()),
+      MaterialPageRoute(builder: (context) => RegisterEnterprisePage4()),
     );
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,22 +45,58 @@ void _submitForm(BuildContext context) {
                       ),
                       SizedBox(height: 25.0),
                       Text(
-                        '¡Registro de Empresa!',
+                        '¡Bienvenido, Empresa!',
                         style: TextStyle(
                           fontSize: 18.0,
                           color: Color(0xFF2E8139),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      SizedBox(height: 10.0),
+                      Text(
+                        'Datos del Encargado',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Color(0xFF2E8139),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       SizedBox(height: 30.0),
-                      _buildLabel('Nombre de la Empresa'),
+                      _buildLabel('Nombre'),
                       SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _nameController,
-                        label: 'Ingresa el nombre de la empresa',
+                        label: 'Ingresa el nombre del encargado',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre de la empresa';
+                            return 'Por favor, ingresa el nombre';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.0),
+                      _buildLabel('Puesto'),
+                      SizedBox(height: 5.0),
+                      _buildTextField(
+                        controller: _positionController,
+                        label: 'Ingresa el puesto del encargado',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, ingresa el puesto';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.0),
+                      _buildLabel('Teléfono'),
+                      SizedBox(height: 5.0),
+                      _buildTextField(
+                        controller: _phoneController,
+                        label: 'Ingresa el teléfono del encargado',
+                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, ingresa el teléfono';
                           }
                           return null;
                         },
@@ -77,37 +106,10 @@ void _submitForm(BuildContext context) {
                       SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _addressController,
-                        label: 'Ingresa el domicilio de la empresa',
+                        label: 'Ingresa el domicilio del encargado',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el domicilio de la empresa';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10.0),
-                      _buildLabel('Fecha de Creación'),
-                      SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _creationDateController,
-                        label: 'Ingresa la fecha de creación (DD/MM/AAAA)',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa la fecha de creación de la empresa';
-                          }
-                          // Aquí puedes agregar una validación más específica para el formato de la fecha
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10.0),
-                      _buildLabel('Representante Legal o Gerente'),
-                      SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _representativeController,
-                        label: 'Ingresa el nombre del representante legal o gerente',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre del representante legal o gerente';
+                            return 'Por favor, ingresa el domicilio';
                           }
                           return null;
                         },
@@ -129,7 +131,7 @@ void _submitForm(BuildContext context) {
                             ),
                           ),
                           child: Text(
-                            'Siguiente',
+                            'Finalizar Registro',
                             style: TextStyle(
                               fontSize: 15.0,
                               color: Colors.white,
@@ -151,7 +153,7 @@ void _submitForm(BuildContext context) {
             child: Container(
               width: double.infinity,
               child: Image.asset(
-                'assets/progress-bar-empresa.png',
+                'assets/progress-bar-empresa3.png',
                 fit: BoxFit.cover,
               ),
             ),
