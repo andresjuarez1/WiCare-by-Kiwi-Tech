@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   bloc: ^8.0.0
+  carousel_slider: ^4.0.0
   flutter_bloc: ^8.0.0
   equatable: ^2.0.3
 
