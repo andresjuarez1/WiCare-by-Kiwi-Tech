@@ -6,13 +6,13 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Color(0xFFD3FFD4),
+        color: Color(0xFFFFFFFF),
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            SizedBox(height: 60.0),
+            SizedBox(height: 70.0),
             Container(
-              color: Color(0xFFD3FFD4),
+              color: Color(0xFFFFFFFF),
               padding: EdgeInsets.all(16.0),
               child: Align(
                 alignment: Alignment.center,
@@ -22,20 +22,43 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 20.0),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Inicio'),
+              leading: Icon(Icons.menu_book),
+              title: Text('Educación'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Configuración'),
+              leading: Icon(Icons.medical_services_outlined),
+              title: Text('Salud'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
+            ListTile(
+              leading: Icon(Icons.people),
+              title: Text('Ámbito social'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.nature_people),
+              title: Text('Ámbito natural'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.pets),
+              title: Text('Animales'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            SizedBox(height: 230.0),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text('Cerrar sesión'),

@@ -35,7 +35,7 @@ class AttendedEventsList extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 15.0),
+        SizedBox(height: 10.0),
         ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,

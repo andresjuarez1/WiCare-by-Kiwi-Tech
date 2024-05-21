@@ -6,7 +6,8 @@ class UpcomingEventsCarousel extends StatelessWidget {
   final List<Map<String, String>> imgList;
   final Function(BuildContext, String) navigateToEvent;
 
-  UpcomingEventsCarousel({required this.imgList, required this.navigateToEvent});
+  UpcomingEventsCarousel(
+      {required this.imgList, required this.navigateToEvent});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,6 @@ class UpcomingEventsCarousel extends StatelessWidget {
                             color: Colors.white,
                             fontSize: 24.0,
                             fontWeight: FontWeight.bold,
-                            backgroundColor: Colors.black54,
                           ),
                         ),
                       ),
@@ -81,7 +81,6 @@ class UpcomingEventsCarousel extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16.0,
-                            backgroundColor: Colors.black54,
                           ),
                         ),
                       ),

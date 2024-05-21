@@ -27,7 +27,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: Text(
         'Bienvenido, usuario',
-        style: TextStyle(color: Colors.black, fontSize: 18),
+        style: TextStyle(color: Color(0xFF5CA666), fontSize: 20, fontWeight: FontWeight.w600),
       ),
       centerTitle: true,
       actions: [
