@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
-import 'components/navbar.dart';
-import './components/custom_drawer.dart';
-import './components/search_events.dart';
-import './components/upcoming_events_carousel.dart';
-import './components/attended_events_list.dart';
-import 'noticia.dart';
+import 'components/landing/navbar.dart';
+import 'components/landing/custom_drawer.dart';
+import 'components/landing/search_events.dart';
+import 'components/landing/upcoming_events_carousel.dart';
+import 'components/landing/attended_events_list.dart';
+import 'components/landing/donation_part.dart';
+import 'event.dart';
 
 class VolunteerPage extends StatelessWidget {
   final List<Map<String, String>> imgList = [
     {
       'image': 'assets/carrusel-image1.png',
-      'title': 'Evento 1',
-      'subtitle': 'Descripción del evento 1'
+      'title': 'Extinguir el fuego en el mactumatza 1',
+      'subtitle': 'Organización 1'
     },
     {
       'image': 'assets/carrusel-image1.png',
-      'title': 'Evento 2',
-      'subtitle': 'Descripción del evento 2'
+      'title': 'Extinguir el fuego en el mactumatza 2',
+      'subtitle': 'Organización 2'
     },
     {
       'image': 'assets/carrusel-image1.png',
-      'title': 'Evento 3',
-      'subtitle': 'Descripción del evento 3'
+      'title': 'Extinguir el fuego en el mactumatza 3',
+      'subtitle': 'Organización 3'
     },
   ];
 
@@ -78,8 +79,10 @@ class VolunteerPage extends StatelessWidget {
               attendedEvents: attendedEvents,
             ),
             SizedBox(height: 20),
-            Center(
-              child: Text('Aquí se mostrarán los eventos'),
+            FooterComponent(
+              onPressed: () {
+                // acción al presionar el botón de donar
+              },
             ),
           ],
         ),

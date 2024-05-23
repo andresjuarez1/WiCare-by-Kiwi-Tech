@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-// import 'noticia.dart';
 
 class UpcomingEventsCarousel extends StatelessWidget {
   final List<Map<String, String>> imgList;
   final Function(BuildContext, String) navigateToEvent;
 
-  UpcomingEventsCarousel(
-      {required this.imgList, required this.navigateToEvent});
+  UpcomingEventsCarousel({required this.imgList, required this.navigateToEvent});
 
   @override
   Widget build(BuildContext context) {
@@ -64,23 +62,35 @@ class UpcomingEventsCarousel extends StatelessWidget {
                       Positioned(
                         bottom: 30.0,
                         left: 20.0,
-                        child: Text(
-                          item['title']!,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width - 40,
+                          child: Text(
+                            item['title']!,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.fade,
+                            maxLines: 2,
+                            softWrap: true,
                           ),
                         ),
                       ),
                       Positioned(
                         bottom: 10.0,
                         left: 20.0,
-                        child: Text(
-                          item['subtitle']!,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width - 40,
+                          child: Text(
+                            item['subtitle']!,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                            ),
+                            overflow: TextOverflow.fade,
+                            maxLines: 2,
+                            softWrap: true,
                           ),
                         ),
                       ),
