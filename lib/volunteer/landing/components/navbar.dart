@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../userProfile/user_profile.dart';
 
 class Navbar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -38,7 +39,11 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  // botón a la página de perfil
+                  // Navegar a la página de perfil
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
                 },
                 child: Image.asset(
                   'assets/perfil_volunteer.jpg',

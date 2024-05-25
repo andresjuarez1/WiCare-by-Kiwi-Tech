@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'components/landing/navbar.dart';
-import 'components/landing/custom_drawer.dart';
-import 'components/landing/search_events.dart';
-import 'components/landing/upcoming_events_carousel.dart';
-import 'components/landing/attended_events_list.dart';
-import 'components/landing/donation_part.dart';
-import '../../events/volunteer/event.dart';
+import 'components/navbar.dart';
+import 'components/custom_drawer.dart';
+import 'components/search_events.dart';
+import 'components/upcoming_events_carousel.dart';
+import 'components/attended_events_list.dart';
+import 'components/donation_part.dart';
+import '../events/event.dart';
 
 class VolunteerPage extends StatelessWidget {
   final List<Map<String, String>> imgList = [
