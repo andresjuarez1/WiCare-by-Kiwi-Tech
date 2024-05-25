@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import '../../moreEvents/more_events.dart';
 
 class UpcomingEventsCarousel extends StatelessWidget {
   final List<Map<String, String>> imgList;
   final Function(BuildContext, String) navigateToEvent;
 
-  UpcomingEventsCarousel({required this.imgList, required this.navigateToEvent});
+  UpcomingEventsCarousel(
+      {required this.imgList, required this.navigateToEvent});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,12 @@ class UpcomingEventsCarousel extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  // acción del botón ver más
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MoreEventsPage(),
+                    ),
+                  );
                 },
                 child: Text(
                   'Ver más',
