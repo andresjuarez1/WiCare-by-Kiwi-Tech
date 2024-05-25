@@ -5,7 +5,7 @@ import 'components/landing/search_events.dart';
 import 'components/landing/upcoming_events_carousel.dart';
 import 'components/landing/attended_events_list.dart';
 import 'components/landing/donation_part.dart';
-import 'event.dart';
+import '../../events/event.dart';
 
 class VolunteerPage extends StatelessWidget {
   final List<Map<String, String>> imgList = [
