@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../dialogs/donative_button_dialog.dart';
 
 class ActionButtons extends StatelessWidget {
   @override
@@ -8,7 +9,17 @@ class ActionButtons extends StatelessWidget {
       children: [
         ElevatedButton(
           onPressed: () {
-            // acción cuando se presiona el botón "Me Apunto"
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return ConfirmationDialog(
+                  onConfirm: () {
+                    print("Ayuda enviada");
+                    //TODO: hacer la lógica del envío de ayuda
+                  },
+                );
+              },
+            );
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
@@ -22,7 +33,6 @@ class ActionButtons extends StatelessWidget {
         SizedBox(height: 15),
         ElevatedButton(
           onPressed: () {
-            // acción cuando se presiona el botón "Donar"
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
@@ -33,6 +43,7 @@ class ActionButtons extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           ),
         ),
+        SizedBox(height: 15),
       ],
     );
   }

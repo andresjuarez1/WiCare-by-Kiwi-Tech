@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import './components/action_buttons.dart';
-import './components/event_details.dart';
-import './components/organizer_info.dart';
-import './components/event_header.dart';
+import 'components/action_buttons.dart';
+import 'components/event_details.dart';
+import 'components/organizer_info.dart';
+import 'components/event_header.dart';
 
 class EventPage extends StatelessWidget {
   final String eventTitle;
@@ -15,7 +15,7 @@ class EventPage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: MediaQuery.of(context).size.height * 0.3,
+            expandedHeight: MediaQuery.of(context).size.height * 1,
             flexibleSpace: FlexibleSpaceBar(
               background: EventHeader(eventTitle: eventTitle),
             ),

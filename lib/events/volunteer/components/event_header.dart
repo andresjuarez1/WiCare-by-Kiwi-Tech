@@ -17,13 +17,10 @@ class EventHeader extends StatelessWidget {
           'assets/carrusel-image1.png',
           fit: BoxFit.cover,
         ),
-        Container(
-          color: Colors.black.withOpacity(0.5),
-        ),
         Positioned(
           left: screenWidth * 0.05,
           right: screenWidth * 0.05,
-          bottom: screenHeight * 0.06,
+          bottom: screenHeight * 0.35,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +39,7 @@ class EventHeader extends StatelessWidget {
               Text(
                 eventTitle,
                 style: TextStyle(
-                  fontSize: screenHeight * 0.045,
+                  fontSize: screenHeight * 0.065,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -59,24 +56,6 @@ class EventHeader extends StatelessWidget {
                 textAlign: TextAlign.left,
               ),
             ],
-          ),
-        ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            height: screenHeight * 0.06, 
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color.fromARGB(0, 0, 0, 0),
-                  Colors.white,
-                ],
-              ),
-            ),
           ),
         ),
       ],
