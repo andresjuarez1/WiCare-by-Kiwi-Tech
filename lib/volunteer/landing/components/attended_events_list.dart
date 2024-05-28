@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import '../../assistedEvents/attended_events_page.dart'; 
 
 class AttendedEventsList extends StatelessWidget {
   final List<Map<String, String>> attendedEvents;
 
   AttendedEventsList({required this.attendedEvents});
+
+  void _navigateToAttendedEvents(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            AttendedEventsPage(attendedEvents: attendedEvents),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +35,9 @@ class AttendedEventsList extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {
-                  // acción del botón ver más
-                },
+              onPressed: () {
+                _navigateToAttendedEvents(context);
+              },
                 child: Text(
                   'Ver más',
                   style: TextStyle(fontSize: 14, color: Color(0xFF717171)),

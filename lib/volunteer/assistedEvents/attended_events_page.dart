@@ -1,44 +1,9 @@
 import 'package:flutter/material.dart';
 
-class MoreEventsPage extends StatelessWidget {
-  final List<Map<String, String>> events = [
-    {
-      'title': 'Evento 1',
-      'location': 'Lugar 1',
-      'description': 'Descripción del evento 1',
-      'image': 'assets/carrusel-image1.png'
-    },
-    {
-      'title': 'Evento 2',
-      'location': 'Lugar 2',
-      'description': 'Descripción del evento 2',
-      'image': 'assets/carrusel-image1.png'
-    },
-    {
-      'title': 'Evento 3',
-      'location': 'Lugar 3',
-      'description': 'Descripción del evento 3',
-      'image': 'assets/carrusel-image1.png'
-    },
-    {
-      'title': 'Evento 4',
-      'location': 'Lugar 4',
-      'description': 'Descripción del evento 4',
-      'image': 'assets/carrusel-image1.png'
-    },
-    {
-      'title': 'Evento 5',
-      'location': 'Lugar 5',
-      'description': 'Descripción del evento 5',
-      'image': 'assets/carrusel-image1.png'
-    },
-    {
-      'title': 'Evento 6',
-      'location': 'Lugar 6',
-      'description': 'Descripción del evento 6',
-      'image': 'assets/carrusel-image1.png'
-    },
-  ];
+class AttendedEventsPage extends StatelessWidget {
+  final List<Map<String, String>> attendedEvents;
+
+  AttendedEventsPage({required this.attendedEvents});
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +15,12 @@ class MoreEventsPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: Padding(
-          padding: const EdgeInsets.only(left: 70.0),
-          child: Text(
-            'Eventos',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF5CA666),
-            ),
+        title: Text(
+          'Eventos Asistidos',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF5CA666),
           ),
         ),
       ),
@@ -76,7 +38,7 @@ class MoreEventsPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: Text(
-                'Próximos eventos',
+                'Eventos Asistidos',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
@@ -96,18 +58,18 @@ class MoreEventsPage extends StatelessWidget {
                   crossAxisSpacing: 8.0,
                   childAspectRatio: 2 / 2,
                 ),
-                itemCount: 6,
+                itemCount: attendedEvents.length,
                 itemBuilder: (context, index) {
                   return EventItem(
-                    title: events[index]['title']!,
-                    location: events[index]['location']!,
-                    description: events[index]['description']!,
-                    image: events[index]['image']!,
+                    title: attendedEvents[index]['title']!,
+                    location: attendedEvents[index]['location']!,
+                    description: attendedEvents[index]['description']!,
+                    image: attendedEvents[index]['image']!,
                   );
                 },
               ),
             ),
-            SizedBox(height: 20)
+            SizedBox(height: 20),
           ],
         ),
       ),
