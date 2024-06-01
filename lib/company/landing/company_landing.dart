@@ -23,30 +23,6 @@ class CompanyLandingPage extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 20),
-              Text(
-                'Aquí puedes gestionar tus eventos, ver estadísticas y más.',
-                style: TextStyle(fontSize: 16),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 40),
-              ElevatedButton(
-                onPressed: () {
-                  // Acción al presionar el botón
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                ),
-                child: Text(
-                  'Gestionar Eventos',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ),
             ],
           ),
         ),
