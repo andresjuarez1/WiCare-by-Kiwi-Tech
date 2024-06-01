@@ -1,49 +1,46 @@
+// lib/volunteer/landing/association_landing.dart
 import 'package:flutter/material.dart';
 import 'components/navbar_asociation.dart';
+import 'components/active_events.dart';
+import 'components/volunteers_carousel.dart';
 
 class AssociationLandingPage extends StatelessWidget {
+  final List<Map<String, String>> imgList = [
+    {
+      'image': 'assets/messi.jpg',
+      'title': 'Voluntario 1',
+      'subtitle': 'Detalles del voluntario 1'
+    },
+    {
+      'image': 'assets/messi.jpg',
+      'title': 'Voluntario 2',
+      'subtitle': 'Detalles del voluntario 2'
+    },
+    {
+      'image': 'assets/messi.jpg',
+      'title': 'Voluntario 3',
+      'subtitle': 'Detalles del voluntario 3'
+    },
+  ];
+
+  void _navigateToEvent(BuildContext context, String title) {
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Navbar(), 
-      body: Center(
+      appBar: Navbar(),
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                'Bienvenido a la página de la asociación',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF2E8139),
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Aquí puedes gestionar tus miembros, eventos y más.',
-                style: TextStyle(fontSize: 16),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 40),
-              ElevatedButton(
-                onPressed: () {
-                  // Acción al presionar el botón
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                ),
-                child: Text(
-                  'Gestionar Miembros',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
+              ActiveEvents(),
+              SizedBox(height: 20), 
+              VolunteersCarousel(
+                imgList: imgList,
+                navigateToEvent: _navigateToEvent,
               ),
             ],
           ),
