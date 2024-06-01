@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class FooterComponent extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback onDonateConfirmed;
 
-  const FooterComponent({Key? key, required this.onPressed}) : super(key: key);
+  const FooterComponent({Key? key, required this.onDonateConfirmed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class FooterComponent extends StatelessWidget {
               SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  'WiCare es una app hecho por “KiwiTech” para la comunidad. Ayúdanos a seguir innovando y uniendo a las personas a través de la tecnología',
+                  'WiCare es una app hecha por “KiwiTech” para la comunidad. Ayúdanos a seguir innovando y uniendo a las personas a través de la tecnología',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 15,
@@ -39,7 +39,41 @@ class FooterComponent extends StatelessWidget {
           ),
           SizedBox(height: 20),
           ElevatedButton(
-            onPressed: onPressed,
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Donatiwi'),
+                    content: Text('Kiwitech es una empresa orgullosamente chiapaneca que trabaja para innovar día con día'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFBB3737)),
+                          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                        ),
+                        child: Text('Cancelar'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(); 
+                          onDonateConfirmed();
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
+                          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+
+                        ),
+                        child: Text('Donar'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
             ),

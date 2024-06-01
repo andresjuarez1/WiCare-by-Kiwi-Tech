@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../register/register_page.dart';
 import '../volunteer/landing/landingVolunteer.dart';
+import '../company/landing/company_landing.dart';
+import '../asociation/landing/asociation_landing.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
@@ -12,10 +14,26 @@ class LoginPage extends StatelessWidget {
       String username = _usernameController.text;
       String password = _passwordController.text;
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => VolunteerPage()),
-      );
+      if (username.contains("asociacion")) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => AssociationLandingPage()),
+        );
+      } else if (username.contains("voluntario")) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => VolunteerPage()),
+        );
+      } else if (username.contains("empresa")) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => CompanyLandingPage()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Usuario no reconocido')),
+        );
+      }
     }
   }
 

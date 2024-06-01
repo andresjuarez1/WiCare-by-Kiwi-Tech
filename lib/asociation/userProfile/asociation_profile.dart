@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
         ),
         title: Center(
           child: Text(
-            'Perfil',
+            'Mi asociación', 
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w600,
@@ -130,50 +130,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                     SizedBox(height: 15),
                     Divider(color: Color.fromARGB(255, 228, 228, 228)),
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Text(
-                        'Género',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF5CA666),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'Masculino',
-                        style: TextStyle(fontSize: 16),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    Divider(color: Color.fromARGB(255, 228, 228, 228)),
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Text(
-                        'Ocupación',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF5CA666),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'Estudiante',
-                        style: TextStyle(fontSize: 16),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ),
+
                     SizedBox(height: 15),
                   ],
                 ),

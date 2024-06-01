@@ -56,7 +56,9 @@ class VolunteerPage extends StatelessWidget {
     );
   }
 
-
+  void _onDonateConfirmed() {
+    print('Donación confirmada');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +84,7 @@ class VolunteerPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             FooterComponent(
-              onPressed: () {
-                // acción al presionar el botón de donar
-              },
+              onDonateConfirmed: _onDonateConfirmed,
             ),
           ],
         ),
