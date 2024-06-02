@@ -4,10 +4,9 @@ import 'package:locura1/asociation/landing/asociation_landing.dart';
 
 class VolunteersCarousel extends StatelessWidget {
   final List<Map<String, String>> imgList;
-  final Function(BuildContext, String) navigateToEvent;
+  final Function(BuildContext, String) navigateToVolunteers;
 
-  VolunteersCarousel(
-      {required this.imgList, required this.navigateToEvent});
+  VolunteersCarousel({required this.imgList, required this.navigateToVolunteers});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +53,7 @@ class VolunteersCarousel extends StatelessWidget {
               builder: (BuildContext context) {
                 return InkWell(
                   onTap: () {
-                    navigateToEvent(context, item['title']!);
+                    navigateToVolunteers(context, item['title']!);
                   },
                   child: Stack(
                     children: [
@@ -66,34 +65,24 @@ class VolunteersCarousel extends StatelessWidget {
                           width: 1000,
                         ),
                       ),
+                      Container(
+                        width: 1000,
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                      ),
                       Positioned(
-                        bottom: 30.0,
+                        bottom: 20.0,
                         left: 20.0,
                         child: Container(
-                          width: MediaQuery.of(context).size.width - 40,
+                          width: MediaQuery.of(context).size.width,
                           child: Text(
                             item['title']!,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
-                            ),
-                            overflow: TextOverflow.fade,
-                            maxLines: 2,
-                            softWrap: true,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 10.0,
-                        left: 20.0,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width - 40,
-                          child: Text(
-                            item['subtitle']!,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.0,
                             ),
                             overflow: TextOverflow.fade,
                             maxLines: 2,

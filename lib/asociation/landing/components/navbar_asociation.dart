@@ -8,8 +8,8 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color(0xFFFFFFFF),
-      automaticallyImplyLeading: false, 
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.white, 
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

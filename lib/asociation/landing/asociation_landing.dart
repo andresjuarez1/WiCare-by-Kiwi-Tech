@@ -1,29 +1,69 @@
-// lib/volunteer/landing/association_landing.dart
 import 'package:flutter/material.dart';
 import 'components/navbar_asociation.dart';
 import 'components/active_events.dart';
 import 'components/volunteers_carousel.dart';
+import 'components/past_events.dart';
+import 'components/donation_part.dart';
+import '../events/event_active.dart';
 
 class AssociationLandingPage extends StatelessWidget {
   final List<Map<String, String>> imgList = [
     {
       'image': 'assets/messi.jpg',
       'title': 'Voluntario 1',
-      'subtitle': 'Detalles del voluntario 1'
     },
     {
       'image': 'assets/messi.jpg',
       'title': 'Voluntario 2',
-      'subtitle': 'Detalles del voluntario 2'
     },
     {
       'image': 'assets/messi.jpg',
       'title': 'Voluntario 3',
-      'subtitle': 'Detalles del voluntario 3'
     },
   ];
 
+  final List<Map<String, String>> pastEvents = [
+    {
+      'image': 'assets/carrusel-image1.png',
+      'title': 'Evento Pasado 1',
+      'location': 'Lugar 1',
+      'description': 'Descripción del evento pasado 1'
+    },
+    {
+      'image': 'assets/carrusel-image1.png',
+      'title': 'Evento Pasado 2',
+      'location': 'Lugar 2',
+      'description': 'Descripción del evento pasado 2'
+    },
+    {
+      'image': 'assets/carrusel-image1.png',
+      'title': 'Evento Pasado 3',
+      'location': 'Lugar 3',
+      'description': 'Descripción del evento pasado 3'
+    },
+  ];
+
+  final List<Map<String, String>> eventActiveImg = [
+    {
+      'image': 'assets/carrusel-image1.png',
+      'title': 'Extinguir el fuego del mactumactza',
+      'description': 'Descripción del evento activo'
+    }
+  ];
+
   void _navigateToEvent(BuildContext context, String title) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventPageActive(eventTitle: title),
+      ),
+    );
+  }
+
+  void _navigateToVolunteers(BuildContext context, String title) {}
+
+  void _onDonateConfirmed() {
+    print('Donación confirmada');
   }
 
   @override
@@ -32,15 +72,26 @@ class AssociationLandingPage extends StatelessWidget {
       appBar: Navbar(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ActiveEvents(),
-              SizedBox(height: 20), 
+              ActiveEvents(
+                activeEvents: eventActiveImg,
+                navigateToEvent: _navigateToEvent,
+              ),
+              SizedBox(height: 20),
               VolunteersCarousel(
                 imgList: imgList,
-                navigateToEvent: _navigateToEvent,
+                navigateToVolunteers: _navigateToVolunteers,
+              ),
+              SizedBox(height: 20),
+              PastEventsList(
+                pastEvents: pastEvents,
+              ),
+              SizedBox(height: 20),
+              FooterComponent(
+                onDonateConfirmed: _onDonateConfirmed,
               ),
             ],
           ),

@@ -8,7 +8,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color(0xFFFFFFFF),
+      backgroundColor: Colors.white, 
       leading: Builder(
         builder: (context) {
           return IconButton(

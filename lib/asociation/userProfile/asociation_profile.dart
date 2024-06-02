@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/login/login_page.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -6,14 +7,14 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: Color(0xFF5CA666)),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         title: Center(
           child: Text(
-            'Mi asociación', 
+            'Mi asociación',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w600,
@@ -23,12 +24,14 @@ class ProfilePage extends StatelessWidget {
         ),
         automaticallyImplyLeading: false,
         actions: [
-          Opacity(
-            opacity: 0.0,
-            child: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {},
-            ),
+          IconButton(
+            icon: Icon(Icons.logout, color: Color(0xFF5CA666)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
+            },
           ),
         ],
       ),
@@ -83,7 +86,10 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 15),
-                    Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                    ),
                     SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0),
@@ -106,7 +112,10 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 15),
-                    Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                    ),
                     SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0),
@@ -129,8 +138,10 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 15),
-                    Divider(color: Color.fromARGB(255, 228, 228, 228)),
-
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                    ),
                     SizedBox(height: 15),
                   ],
                 ),
@@ -139,7 +150,8 @@ class ProfilePage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {},
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.green),
                 ),
                 child: Text(
                   'Editar info',
