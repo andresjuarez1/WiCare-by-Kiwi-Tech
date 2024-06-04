@@ -5,6 +5,7 @@ import 'components/volunteers_carousel.dart';
 import 'components/past_events.dart';
 import 'components/donation_part.dart';
 import '../events/event_active.dart';
+import '../volunteers/volunteers_details.dart';
 
 class AssociationLandingPage extends StatelessWidget {
   final List<Map<String, String>> imgList = [
@@ -60,7 +61,18 @@ class AssociationLandingPage extends StatelessWidget {
     );
   }
 
-  void _navigateToVolunteers(BuildContext context, String title) {}
+  void _navigateToVolunteers(BuildContext context, String title) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VolunteerDetailsPage(
+          volunteerName: title,
+          imageUrl: imgList
+              .firstWhere((element) => element['title'] == title)['image']!,
+        ),
+      ),
+    );
+  }
 
   void _onDonateConfirmed() {
     print('Donación confirmada');

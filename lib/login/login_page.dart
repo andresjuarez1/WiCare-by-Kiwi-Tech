@@ -144,16 +144,16 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20.0),
-                  GestureDetector(
-                    onTap: () => _navigateToRegistrationPage(context),
-                    child: Container(
-                      margin: EdgeInsets.only(left: 20.0),
-                      child: Text(
-                        '¿No estás registrado? Regístrate',
-                        style: TextStyle(fontSize: 14.0, color: Colors.blue),
+                    GestureDetector(
+                      onTap: () => _navigateToRegistrationPage(context),
+                      child: Container(
+                        margin: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          '¿No estás registrado? Regístrate',
+                          style: TextStyle(fontSize: 14.0, color: Colors.blue),
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
