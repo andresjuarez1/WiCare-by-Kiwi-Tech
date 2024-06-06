@@ -6,6 +6,8 @@ import 'components/past_events.dart';
 import 'components/donation_part.dart';
 import '../events/event_active.dart';
 import '../volunteers/volunteers_details.dart';
+import '../pastEvents/past_event.dart'; 
+import '../pastEvents/past_events_page.dart';
 
 class AssociationLandingPage extends StatelessWidget {
   final List<Map<String, String>> imgList = [
@@ -74,6 +76,32 @@ class AssociationLandingPage extends StatelessWidget {
     );
   }
 
+  void _navigateToPastEvent(BuildContext context, Map<String, String> event) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventDetailsPage(
+          eventTitle: event['title']!,
+          eventImage: event['image']!,
+          eventLocation: event['location']!,
+          eventDescription: event['description']!,
+        ),
+      ),
+    );
+  }
+
+  void _navigateToAllPastEvents(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AllPastEventsPage(
+          pastEvents: pastEvents,
+          navigateToPastEvent: _navigateToPastEvent,
+        ),
+      ),
+    );
+  }
+
   void _onDonateConfirmed() {
     print('Donación confirmada');
   }
@@ -100,6 +128,8 @@ class AssociationLandingPage extends StatelessWidget {
               SizedBox(height: 20),
               PastEventsList(
                 pastEvents: pastEvents,
+                navigateToPastEvent: _navigateToPastEvent,
+                navigateToAllPastEvents: _navigateToAllPastEvents, 
               ),
               SizedBox(height: 20),
               FooterComponent(
