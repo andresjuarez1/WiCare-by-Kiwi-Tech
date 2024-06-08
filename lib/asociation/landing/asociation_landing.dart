@@ -6,8 +6,8 @@ import 'components/past_events.dart';
 import 'components/donation_part.dart';
 import '../events/event_active.dart';
 import '../volunteers/volunteers_details.dart';
-import '../pastEvents/past_event.dart'; 
-import '../pastEvents/past_events_page.dart';
+import '../pastEvent/past_event.dart';
+import '../pastEventsPage/past_events_page.dart';
 
 class AssociationLandingPage extends StatelessWidget {
   final List<Map<String, String>> imgList = [
@@ -110,6 +110,7 @@ class AssociationLandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Navbar(),
+      drawer: CustomDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(.0),
@@ -129,7 +130,7 @@ class AssociationLandingPage extends StatelessWidget {
               PastEventsList(
                 pastEvents: pastEvents,
                 navigateToPastEvent: _navigateToPastEvent,
-                navigateToAllPastEvents: _navigateToAllPastEvents, 
+                navigateToAllPastEvents: _navigateToAllPastEvents,
               ),
               SizedBox(height: 20),
               FooterComponent(

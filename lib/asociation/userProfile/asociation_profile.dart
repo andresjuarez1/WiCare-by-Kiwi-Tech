@@ -25,11 +25,13 @@ class ProfilePage extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: Icon(Icons.logout, color: Color(0xFF5CA666)),
+            icon: Icon(Icons.edit, color: Color(0xFF5CA666)),
             onPressed: () {
+              // Lógica para editar perfil
+              // Por ejemplo, puedes navegar a una página de edición de perfil
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
+                MaterialPageRoute(builder: (context) => EditProfilePage()),
               );
             },
           ),
@@ -147,24 +149,25 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.green),
-                ),
-                child: Text(
-                  'Editar info',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+              // Eliminar el botón de 'Editar info'
               SizedBox(height: 20),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class EditProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Editar Perfil'),
+      ),
+      body: Center(
+        child: Text('Página de edición de perfil'),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../userProfile/asociation_profile.dart';
+import '../../../login/login_page.dart';
 
 class Navbar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -13,26 +14,10 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: ClipOval(
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ProfilePage()),
-                    );
-                  },
-                  child: Image.asset(
-                    'assets/perfil_volunteer.jpg',
-                    width: 35.0,
-                    height: 35.0,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+          Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu, color: Color(0xFF5CA666)),
+              onPressed: () => Scaffold.of(context).openDrawer(),
             ),
           ),
           Text(
@@ -47,7 +32,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
             padding: const EdgeInsets.only(right: 8.0),
             child: GestureDetector(
               onTap: () {
-                // colocar la acción al presionar el botón
+                // Colocar la acción al presionar el botón
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -60,6 +45,56 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CustomDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Container(
+        color: Color(0xFFFFFFFF),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            SizedBox(height: 70.0),
+            Container(
+              color: Color(0xFFFFFFFF),
+              padding: EdgeInsets.all(16.0),
+              child: Align(
+                alignment: Alignment.center,
+                child: Image.asset(
+                  'assets/wicare-logo-inicio.png',
+                  width: 150,
+                ),
+              ),
+            ),
+            SizedBox(height: 20.0),
+            ListTile(
+              leading: Icon(Icons.account_circle),
+              title: Text('Perfil'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Cerrar sesión'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+            ),
+            // Aquí puedes agregar más opciones si es necesario
+          ],
+        ),
       ),
     );
   }
