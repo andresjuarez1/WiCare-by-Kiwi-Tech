@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../userProfile/asociation_profile.dart';
 import '../../../login/login_page.dart';
+import '../../postEvent/post_event.dart';
 
 class Navbar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -10,7 +11,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.white, 
+      backgroundColor: Colors.white,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -32,7 +33,10 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
             padding: const EdgeInsets.only(right: 8.0),
             child: GestureDetector(
               onTap: () {
-                // Colocar la acción al presionar el botón
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PostEvent()),
+                );
               },
               child: Container(
                 decoration: BoxDecoration(

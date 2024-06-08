@@ -125,6 +125,7 @@ class AssociationLandingPage extends StatelessWidget {
               VolunteersCarousel(
                 imgList: imgList,
                 navigateToVolunteers: _navigateToVolunteers,
+                navigateToVolunteerDetails: _navigateToVolunteers,
               ),
               SizedBox(height: 20),
               PastEventsList(

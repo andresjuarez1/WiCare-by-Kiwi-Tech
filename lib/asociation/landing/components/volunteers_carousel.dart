@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:locura1/asociation/landing/asociation_landing.dart';
+import '../../volunteersPage/volunteers_page.dart';
 
 class VolunteersCarousel extends StatelessWidget {
   final List<Map<String, String>> imgList;
   final Function(BuildContext, String) navigateToVolunteers;
+  final Function(BuildContext, String) navigateToVolunteerDetails;
 
-  VolunteersCarousel({required this.imgList, required this.navigateToVolunteers});
+  VolunteersCarousel({
+    required this.imgList,
+    required this.navigateToVolunteers,
+    required this.navigateToVolunteerDetails,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +35,10 @@ class VolunteersCarousel extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AssociationLandingPage(),
+                      builder: (context) => VolunteerListPage(
+                        volunteers: imgList,
+                        navigateToVolunteerDetails: navigateToVolunteerDetails,
+                      ),
                     ),
                   );
                 },
