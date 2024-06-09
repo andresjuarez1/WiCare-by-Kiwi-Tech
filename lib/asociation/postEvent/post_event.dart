@@ -47,9 +47,10 @@ class _PostEventState extends State<PostEvent> {
   @override
   Widget build(BuildContext context) {
     final greenColor = Color(0xFF2E8139);
-
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Padding(
           padding: const EdgeInsets.only(left: 40.0),
           child: Text(

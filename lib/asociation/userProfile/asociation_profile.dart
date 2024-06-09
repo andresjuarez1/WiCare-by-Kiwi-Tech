@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:locura1/login/login_page.dart';
+import '../editProfile/edit_profile.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Color(0xFF5CA666)),
           onPressed: () {
@@ -149,25 +151,9 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              // Eliminar el botón de 'Editar info'
-              SizedBox(height: 20),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class EditProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Editar Perfil'),
-      ),
-      body: Center(
-        child: Text('Página de edición de perfil'),
       ),
     );
   }

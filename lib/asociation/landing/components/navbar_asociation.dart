@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../userProfile/asociation_profile.dart';
-import '../../../login/login_page.dart';
 import '../../postEvent/post_event.dart';
 
 class Navbar extends StatelessWidget implements PreferredSizeWidget {
@@ -16,9 +14,16 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Builder(
-            builder: (context) => IconButton(
-              icon: Icon(Icons.menu, color: Color(0xFF5CA666)),
-              onPressed: () => Scaffold.of(context).openDrawer(),
+            builder: (context) => GestureDetector(
+              onTap: () => Scaffold.of(context).openDrawer(),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFF5CA666),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.menu, color: Colors.white),
+              ),
             ),
           ),
           Text(
@@ -49,56 +54,6 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CustomDrawer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: Container(
-        color: Color(0xFFFFFFFF),
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            SizedBox(height: 70.0),
-            Container(
-              color: Color(0xFFFFFFFF),
-              padding: EdgeInsets.all(16.0),
-              child: Align(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  'assets/wicare-logo-inicio.png',
-                  width: 150,
-                ),
-              ),
-            ),
-            SizedBox(height: 20.0),
-            ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Perfil'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Cerrar sesión'),
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              },
-            ),
-            // Aquí puedes agregar más opciones si es necesario
-          ],
-        ),
       ),
     );
   }

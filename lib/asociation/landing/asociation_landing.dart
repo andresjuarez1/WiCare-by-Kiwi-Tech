@@ -8,6 +8,7 @@ import '../events/event_active.dart';
 import '../volunteers/volunteers_details.dart';
 import '../pastEvent/past_event.dart';
 import '../pastEventsPage/past_events_page.dart';
+import 'components/custom_drawer.dart';
 
 class AssociationLandingPage extends StatelessWidget {
   final List<Map<String, String>> imgList = [
@@ -111,6 +112,7 @@ class AssociationLandingPage extends StatelessWidget {
     return Scaffold(
       appBar: Navbar(),
       drawer: CustomDrawer(),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(.0),

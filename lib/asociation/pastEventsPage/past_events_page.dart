@@ -4,12 +4,15 @@ class AllPastEventsPage extends StatelessWidget {
   final List<Map<String, String>> pastEvents;
   final Function(BuildContext, Map<String, String>) navigateToPastEvent;
 
-  AllPastEventsPage({required this.pastEvents, required this.navigateToPastEvent});
+  AllPastEventsPage(
+      {required this.pastEvents, required this.navigateToPastEvent});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {

@@ -23,12 +23,11 @@ class ProfilePage extends StatelessWidget {
         ),
         automaticallyImplyLeading: false,
         actions: [
-          Opacity(
-            opacity: 0.0,
-            child: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {},
-            ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              // Acción para editar el perfil
+            },
           ),
         ],
       ),
@@ -176,20 +175,6 @@ class ProfilePage extends StatelessWidget {
                     ),
                     SizedBox(height: 15),
                   ],
-                ),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-                ),
-                child: Text(
-                  'Editar info',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
                 ),
               ),
               SizedBox(height: 20),

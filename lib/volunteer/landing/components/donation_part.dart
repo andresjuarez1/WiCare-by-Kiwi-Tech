@@ -67,7 +67,7 @@ class FooterComponent extends StatelessWidget {
                           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
 
                         ),
-                        child: Text('Donar'),
+                        child: Text('Donatiwi'),
                       ),
                     ],
                   );
