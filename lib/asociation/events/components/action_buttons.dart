@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../dialogs/volunteers_dialog.dart';
+import '../../volunteersPage/volunteers_page.dart';
 
 class ActionButtons extends StatelessWidget {
   @override
@@ -9,15 +9,15 @@ class ActionButtons extends StatelessWidget {
       children: [
         ElevatedButton(
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return VolunteerDialog(
-                  imagePath: 'assets/messi.jpg',
-                  volunteerName: 'Nombre del Voluntario',
-                  volunteerDescription: 'Descripción del voluntario',
-                );
-              },
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => VolunteerListPage(
+                  volunteers: [], 
+                  navigateToVolunteerDetails: (context, title) {
+                  },
+                ),
+              ),
             );
           },
           style: ButtonStyle(
