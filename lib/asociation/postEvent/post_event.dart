@@ -18,7 +18,7 @@ class _PostEventState extends State<PostEvent> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
+            colorScheme: const ColorScheme.light(
               primary: Colors.green,
               onPrimary: Colors.white,
               surface: Colors.white,
@@ -46,7 +46,7 @@ class _PostEventState extends State<PostEvent> {
 
   @override
   Widget build(BuildContext context) {
-    final greenColor = Color(0xFF2E8139);
+    final greenColor = const Color(0xFF2E8139);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -67,7 +67,7 @@ class _PostEventState extends State<PostEvent> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Nombre del evento',
@@ -80,10 +80,10 @@ class _PostEventState extends State<PostEvent> {
                     color: greenColor,
                   ),
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                      const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                 ),
               ),
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Descripción',
@@ -96,11 +96,11 @@ class _PostEventState extends State<PostEvent> {
                     color: greenColor,
                   ),
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                      const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                 ),
                 maxLines: 3,
               ),
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               GestureDetector(
                 onTap: () => _selectDate(context),
                 child: AbsorbPointer(
@@ -115,7 +115,7 @@ class _PostEventState extends State<PostEvent> {
                         fontSize: 15.0,
                         color: greenColor,
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                           vertical: 12.0, horizontal: 16.0),
                     ),
                     controller: TextEditingController(
@@ -123,7 +123,7 @@ class _PostEventState extends State<PostEvent> {
                   ),
                 ),
               ),
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Categoría',
@@ -136,25 +136,25 @@ class _PostEventState extends State<PostEvent> {
                     color: greenColor,
                   ),
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                      const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                 ),
                 items: [
-                  DropdownMenuItem(
+                  const DropdownMenuItem(
                     value: 'Categoria1',
                     child: Text('Categoria 1'),
                   ),
-                  DropdownMenuItem(
+                  const DropdownMenuItem(
                     value: 'Categoria2',
                     child: Text('Categoria 2'),
                   ),
-                  DropdownMenuItem(
+                  const DropdownMenuItem(
                     value: 'Categoria3',
                     child: Text('Categoria 3'),
                   ),
                 ],
                 onChanged: (value) {},
               ),
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               Center(
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
@@ -170,7 +170,7 @@ class _PostEventState extends State<PostEvent> {
                         ),
                       ),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        EdgeInsets.symmetric(vertical: 13.0),
+                        const EdgeInsets.symmetric(vertical: 13.0),
                       ),
                     ),
                     child: Text(
@@ -183,7 +183,7 @@ class _PostEventState extends State<PostEvent> {
                   ),
                 ),
               ),
-              SizedBox(height: 45),
+              const SizedBox(height: 45),
               Center(
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
@@ -198,10 +198,10 @@ class _PostEventState extends State<PostEvent> {
                         ),
                       ),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        EdgeInsets.symmetric(vertical: 13.0),
+                        const EdgeInsets.symmetric(vertical: 13.0),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Crear evento',
                       style: TextStyle(
                         fontSize: 15.0,

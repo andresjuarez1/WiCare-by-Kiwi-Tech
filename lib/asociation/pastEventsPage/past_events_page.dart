@@ -14,12 +14,12 @@ class AllPastEventsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text(
+        title: const Text(
           'Eventos Pasados',
           style: TextStyle(
             fontSize: 22,
@@ -32,15 +32,15 @@ class AllPastEventsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Divider(
+            const Divider (
               color: Colors.grey,
               thickness: 1,
               indent: 16,
               endIndent: 16,
             ),
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
+            const SizedBox(height: 10),
+            const Padding(
+              padding: EdgeInsets.only(left: 15.0),
               child: Text(
                 'Eventos',
                 style: TextStyle(
@@ -50,13 +50,13 @@ class AllPastEventsPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: GridView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 8.0,
                   crossAxisSpacing: 8.0,
@@ -77,7 +77,7 @@ class AllPastEventsPage extends StatelessWidget {
                 },
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -130,7 +130,7 @@ class EventItem extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -138,14 +138,14 @@ class EventItem extends StatelessWidget {
                 ),
                 Text(
                   location,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 14,
                   ),
                 ),
                 Text(
                   description,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 12,
                   ),

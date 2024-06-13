@@ -21,29 +21,29 @@ class ActionButtons extends StatelessWidget {
             );
           },
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-            minimumSize: MaterialStateProperty.all<Size>(Size(80, 55)),
+            backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF2E8139)),
+            minimumSize: WidgetStateProperty.all<Size>(const Size(80, 55)),
           ),
-          child: Text(
+          child: const Text(
             'Ver voluntarios',
             style: TextStyle(color: Colors.white),
           ),
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
         ElevatedButton(
           onPressed: () {
             showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Confirmar'),
-                  content: Text('¿Estás seguro de que deseas borrar esta publicación?'),
+                  title: const Text('Confirmar'),
+                  content: const Text('¿Estás seguro de que deseas borrar esta publicación?'),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text('Cancelar'),
+                      child: const Text('Cancelar'),
                     ),
                     TextButton(
                       onPressed: () {
@@ -51,7 +51,7 @@ class ActionButtons extends StatelessWidget {
                         print("Publicación borrada");
                         Navigator.of(context).pop();
                       },
-                      child: Text('Borrar'),
+                      child: const Text('Borrar'),
                     ),
                   ],
                 );
@@ -59,15 +59,15 @@ class ActionButtons extends StatelessWidget {
             );
           },
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 153, 52, 52)),
-            minimumSize: MaterialStateProperty.all<Size>(Size(80, 55)),
+            backgroundColor: WidgetStateProperty.all<Color>(const Color.fromARGB(255, 153, 52, 52)),
+            minimumSize: WidgetStateProperty.all<Size>(const Size(80, 55)),
           ),
-          child: Text(
+          child: const Text(
             'Borrar publicación',
             style: TextStyle(color: Colors.white),
           ),
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
       ],
     );
   }

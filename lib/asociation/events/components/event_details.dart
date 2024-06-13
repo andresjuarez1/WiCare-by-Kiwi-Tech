@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class EventDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+    return const Padding(
+      padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
