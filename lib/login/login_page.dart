@@ -1,37 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../register/register_page.dart';
 import '../volunteer/landing/landingVolunteer.dart';
 import '../company/landing/company_landing.dart';
 import '../asociation/landing/asociation_landing.dart';
 
 class LoginPage extends StatelessWidget {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void _submitForm(BuildContext context) {
+  void _submitForm(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      String username = _usernameController.text;
+      String email = _emailController.text;
       String password = _passwordController.text;
 
-      if (username.contains("asociacion")) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => AssociationLandingPage()),
-        );
-      } else if (username.contains("voluntario")) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => VolunteerPage()),
-        );
-      } else if (username.contains("empresa")) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => CompanyLandingPage()),
-        );
+      final response = await http.post(
+        Uri.parse('http://146.190.64.233:3000/user'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body)['data'];
+        String role = data['role'];
+
+        if (role == 'volunteer') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => VolunteerPage()),
+          );
+        } else if (role == 'company') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => CompanyLandingPage()),
+          );
+        } else if (role == 'asociation') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AssociationLandingPage()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Tipo de usuario desconocido')),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Usuario no reconocido')),
+          SnackBar(content: Text('Error: ${response.reasonPhrase}')),
         );
       }
     }
@@ -66,21 +83,31 @@ class LoginPage extends StatelessWidget {
                     children: [
                       Text(
                         'Correo electrónico',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xFF2E8139)),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF2E8139),
+                        ),
                         textAlign: TextAlign.left,
                       ),
                     ],
                   ),
                   SizedBox(height: 10.0),
                   TextFormField(
-                    controller: _usernameController,
+                    controller: _emailController,
                     decoration: InputDecoration(
                       labelText: 'Ingresa tu correo electrónico',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      labelStyle: TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
-                      contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                      labelStyle: TextStyle(
+                        fontSize: 15.0,
+                        color: Color(0xFFBCBCBC),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 16.0,
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -94,7 +121,11 @@ class LoginPage extends StatelessWidget {
                     children: [
                       Text(
                         'Contraseña',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xFF2E8139)),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF2E8139),
+                        ),
                         textAlign: TextAlign.left,
                       ),
                     ],
@@ -108,8 +139,14 @@ class LoginPage extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      labelStyle: TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
-                      contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                      labelStyle: TextStyle(
+                        fontSize: 15.0,
+                        color: Color(0xFFBCBCBC),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 16.0,
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -124,8 +161,10 @@ class LoginPage extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () => _submitForm(context),
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -144,16 +183,16 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20.0),
-                    GestureDetector(
-                      onTap: () => _navigateToRegistrationPage(context),
-                      child: Container(
-                        margin: EdgeInsets.only(left: 20.0),
-                        child: Text(
-                          '¿No estás registrado? Regístrate',
-                          style: TextStyle(fontSize: 14.0, color: Colors.blue),
-                        ),
+                  GestureDetector(
+                    onTap: () => _navigateToRegistrationPage(context),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        '¿No estás registrado? Regístrate',
+                        style: TextStyle(fontSize: 14.0, color: Colors.blue),
                       ),
                     ),
+                  ),
                 ],
               ),
             ),

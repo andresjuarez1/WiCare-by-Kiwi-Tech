@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../landing/landingVolunteer.dart';
+import '../../volunteer/landing/landingVolunteer.dart';
 
 class RegisterVolunteerPage3 extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -12,8 +12,6 @@ class RegisterVolunteerPage3 extends StatelessWidget {
       String email = _emailController.text;
       String password = _passwordController.text;
       
-      //lógica para manejar el envío de datos
-
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => VolunteerPage()),

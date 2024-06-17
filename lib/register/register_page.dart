@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../login/login_page.dart';
 import 'registerAsociation/register_asociation.dart';
 import 'registerEnterprise/register_enterprise.dart';
-import '../volunteer/register/register_volunteer.dart';
+import 'registerVolunteer/register_volunteer.dart';
 
 class RegistrationPage extends StatelessWidget {
    void _navigateToLoginPage(BuildContext context) {

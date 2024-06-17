@@ -1,25 +1,37 @@
 import 'package:flutter/material.dart';
-import 'register_volunteer2.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'register_volunteer3.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class RegisterVolunteerPage extends StatelessWidget {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _ageController = TextEditingController();
-  final TextEditingController _curpController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+class RegisterVolunteerPage2 extends StatelessWidget {
+  final TextEditingController _postalCodeController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final List<String> _occupations = ['Estudiante', 'Trabajador', 'Desempleado', 'Jubilado', 'Otro'];
+  String? _selectedOccupation;
+  final List<String> _genders = ['Masculino', 'Femenino', 'No binario', 'Prefiero no decir'];
+  String? _selectedGender;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void _submitForm(BuildContext context) {
+  void _submitForm(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      String name = _nameController.text;
-      String age = _ageController.text;
-      String curp = _curpController.text;
-      String phone = _phoneController.text;
+      String postalCode = _postalCodeController.text;
+      String address = _addressController.text;
+      String occupation = _selectedOccupation ?? '';
+      String gender = _selectedGender ?? '';
 
-      // lógica de procesamiento o envío de datos
+      // Guardar datos en SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('postal_code', postalCode);
+      await prefs.setString('address', address);
+      await prefs.setString('occupation', occupation);
+      await prefs.setString('gender', gender);
 
+      // Navegar a la siguiente página
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RegisterVolunteerPage2()),
+        MaterialPageRoute(builder: (context) => RegisterVolunteerPage3()),
       );
     }
   }
@@ -52,59 +64,40 @@ class RegisterVolunteerPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 30.0),
-                      _buildLabel('Nombre completo'),
+                      _buildLabel('Código Postal'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _nameController,
-                        label: 'Ingresa tu nombre completo',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa tu nombre completo';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10.0),
-                      _buildLabel('Edad'),
-                      SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _ageController,
-                        label: 'Ingresa tu edad',
+                        controller: _postalCodeController,
+                        label: 'Ingresa tu código postal',
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa tu edad';
+                            return 'Por favor, ingresa tu código postal';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('CURP'),
+                      _buildLabel('Domicilio'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _curpController,
-                        label: 'Ingresa tu CURP',
+                        controller: _addressController,
+                        label: 'Ingresa tu domicilio',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa tu CURP';
+                            return 'Por favor, ingresa tu domicilio';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('Teléfono'),
+                      _buildLabel('Ocupación'),
                       SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _phoneController,
-                        label: 'Ingresa tu teléfono',
-                        keyboardType: TextInputType.phone,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa tu teléfono';
-                          }
-                          return null;
-                        },
-                      ),
+                      _buildOccupationDropdown(),
+                      SizedBox(height: 10.0),
+                      _buildLabel('Género'),
+                      SizedBox(height: 5.0),
+                      _buildGenderDropdown(),
                       SizedBox(height: 40.0),
                       SizedBox(
                         width: double.infinity,
@@ -144,7 +137,7 @@ class RegisterVolunteerPage extends StatelessWidget {
             child: Container(
               width: double.infinity,
               child: Image.asset(
-                'assets/progress-bar-volunteer.png',
+                'assets/progress-bar-volunteer2.png',
                 fit: BoxFit.cover,
               ),
             ),
@@ -180,6 +173,48 @@ class RegisterVolunteerPage extends StatelessWidget {
         contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
       ),
       validator: validator,
+    );
+  }
+
+  Widget _buildOccupationDropdown() {
+    return DropdownButtonFormField<String>(
+      value: _selectedOccupation,
+      onChanged: (value) {
+        _selectedOccupation = value;
+      },
+      items: _occupations.map((occupation) {
+        return DropdownMenuItem<String>(
+          value: occupation,
+          child: Text(occupation),
+        );
+      }).toList(),
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+      ),
+    );
+  }
+
+  Widget _buildGenderDropdown() {
+    return DropdownButtonFormField<String>(
+      value: _selectedGender,
+      onChanged: (value) {
+        _selectedGender = value;
+      },
+      items: _genders.map((gender) {
+        return DropdownMenuItem<String>(
+          value: gender,
+          child: Text(gender),
+        );
+      }).toList(),
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+      ),
     );
   }
 }
