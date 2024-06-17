@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'login/splash_page.dart';
+import 'package:locura1/presentation/login/splash_page.dart';
 
 void main() {
   

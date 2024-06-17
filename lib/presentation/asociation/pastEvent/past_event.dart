@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import './components/event_header.dart';
-import './components/event_description.dart';
-import './components/action_buttons_past.dart';
+import 'components/event_header.dart';
+import 'components/event_description.dart';
+import 'components/action_buttons_past.dart';
 
 class EventDetailsPage extends StatelessWidget {
   final String eventTitle;
