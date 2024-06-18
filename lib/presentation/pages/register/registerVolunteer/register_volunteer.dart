@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';  // Importa el paquete dotenv
 import '../../login/login_page.dart';
 
 class RegisterVolunteerPage extends StatefulWidget {
@@ -41,7 +41,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
   bool _termsAccepted = false;
 
   Future<void> _submitForm(BuildContext context) async {
-    if (_formKey.currentState?.validate() ?? false && _termsAccepted) {
+    if (_formKey.currentState?.validate() ?? false) {
       String name = _nameController.text;
       String age = _ageController.text;
       String curp = _curpController.text;
@@ -68,7 +68,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
 
       String body = json.encode(data);
 
-      Uri url = Uri.parse('http://146.190.64.233:3000/user/volunteer');
+      Uri url = Uri.parse('${dotenv.env['API_URL']}/user/volunteer');
 
       try {
         print('Sending request to $url');

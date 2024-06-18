@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';  // Importa el paquete dotenv
+import '../register/register_page.dart';
 import '../volunteer/landing/landingVolunteer.dart';
 import '../company/landing/company_landing.dart';
 import '../asociation/landing/asociation_landing.dart';
-import '../register/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -18,7 +18,7 @@ class LoginPage extends StatelessWidget {
       String password = _passwordController.text;
 
       final response = await http.post(
-        Uri.parse('http://146.190.64.233:3000/user'),
+        Uri.parse('${dotenv.env['API_URL']}/user'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
@@ -162,8 +162,10 @@ class LoginPage extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () => _submitForm(context),
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
