@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../register/register_page.dart';
+
 import '../volunteer/landing/landingVolunteer.dart';
 import '../company/landing/company_landing.dart';
 import '../asociation/landing/asociation_landing.dart';
+import '../register/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -36,7 +37,7 @@ class LoginPage extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (context) => CompanyLandingPage()),
           );
-        } else if (role == 'asociation') {
+        } else if (role == 'association') {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => AssociationLandingPage()),
@@ -161,10 +162,8 @@ class LoginPage extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () => _submitForm(context),
                       style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-                        shape:
-                        MaterialStateProperty.all<RoundedRectangleBorder>(
+                        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
