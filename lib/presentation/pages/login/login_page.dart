@@ -6,26 +6,24 @@ import '../volunteer/landing/landingVolunteer.dart';
 import '../company/landing/company_landing.dart';
 import '../asociation/landing/asociation_landing.dart';
 import '../register/register_page.dart';
+import '../../../../domain/use_cases/login_user.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final LoginUser _loginUser = LoginUser();
 
   void _submitForm(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       String email = _emailController.text;
       String password = _passwordController.text;
 
-      final response = await http.post(
-        Uri.parse('http://146.190.64.233:3000/user'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'email': email, 'password': password}),
-      );
+      final user = await _loginUser.call(email, password);
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body)['data'];
-        String role = data['role'];
+      if (user != null) {
+        final data = user.email;
+        String role = user.role;
 
         if (role == 'volunteer') {
           Navigator.pushReplacement(
@@ -49,7 +47,7 @@ class LoginPage extends StatelessWidget {
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${response.reasonPhrase}')),
+          SnackBar(content: Text('Error: Credenciales incorrectas')),
         );
       }
     }
