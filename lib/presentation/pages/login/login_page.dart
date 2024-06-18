@@ -162,9 +162,9 @@ class LoginPage extends StatelessWidget {
                       onPressed: () => _submitForm(context),
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
+                        MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),

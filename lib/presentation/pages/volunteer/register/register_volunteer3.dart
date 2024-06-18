@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../presentation/volunteer/landing/landingVolunteer.dart';
-
+import '../landing/landingVolunteer.dart';
 
 class RegisterVolunteerPage3 extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
