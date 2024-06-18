@@ -164,7 +164,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                             return 'Por favor, ingresa tu edad';
                           } else if (int.tryParse(value) == null) {
                             return 'Por favor, ingresa un número válido';
-                          } else if (value.length <= 2) {
+                          } else if (value.length > 3) {
                             return 'La edad no debe tener más de 3 dígitos';
                           }
                           return null;

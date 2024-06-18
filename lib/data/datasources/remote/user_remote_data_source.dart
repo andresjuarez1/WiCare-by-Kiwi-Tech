@@ -28,7 +28,7 @@ class UserRemoteDataSource {
 
   Future<void> registerVolunteer(VolunteerModel volunteer) async {
     final response = await client.post(
-      Uri.parse('http://146.190.64.233:3000/volunteer/register'),
+      Uri.parse('http://146.190.64.233:3000/user/volunteer'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(volunteer.toJson()),
     );
