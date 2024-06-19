@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../assistedEvents/attended_events_page.dart'; 
+import '../../assistedEvents/attended_events_page.dart';
 
 class AttendedEventsList extends StatelessWidget {
   final List<Map<String, String>> attendedEvents;
@@ -26,21 +26,27 @@ class AttendedEventsList extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 'Eventos Asistidos',
                 style: TextStyle(
+                  fontFamily: 'PoppinsRegular',
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF5CA666),
                 ),
               ),
               TextButton(
-              onPressed: () {
-                _navigateToAttendedEvents(context);
-              },
-                child: Text(
+                onPressed: () {
+                  _navigateToAttendedEvents(context);
+                },
+                child: const Text(
                   'Ver más',
-                  style: TextStyle(fontSize: 14, color: Color(0xFF717171)),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF717171),
+                    fontFamily: 'PoppinsRegular',
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ],
@@ -77,6 +83,7 @@ class AttendedEventsList extends StatelessWidget {
                           event['title']!,
                           style: TextStyle(
                             fontSize: 16.0,
+                            fontFamily: 'PoppinsRegular',
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -92,7 +99,8 @@ class AttendedEventsList extends StatelessWidget {
                         Text(
                           event['description']!,
                           style: TextStyle(
-                            fontSize: 14.0,
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 13.0,
                             color: Colors.grey[600],
                           ),
                         ),

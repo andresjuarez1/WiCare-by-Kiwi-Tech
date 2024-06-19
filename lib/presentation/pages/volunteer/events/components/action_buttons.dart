@@ -15,32 +15,30 @@ class ActionButtons extends StatelessWidget {
                 return ConfirmationDialog(
                   onConfirm: () {
                     print("Ayuda enviada");
-                    //TODO: hacer la lógica del envío de ayuda
                   },
                 );
               },
             );
           },
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-            minimumSize: MaterialStateProperty.all<Size>(Size(80, 55)),
+            backgroundColor: WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
+            minimumSize: WidgetStateProperty.all<Size>(Size(70, 45)),
           ),
-          child: Text(
+          child: const Text(
             'Me Apunto',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontFamily: 'PoppinsRegular'),
           ),
         ),
         SizedBox(height: 15),
         ElevatedButton(
-          onPressed: () {
-          },
+          onPressed: () {},
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-            minimumSize: MaterialStateProperty.all<Size>(Size(80, 55)),
+            backgroundColor: WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
+            minimumSize: WidgetStateProperty.all<Size>(const Size(70, 45)),
           ),
-          child: Text(
+          child: const Text(
             'Donar',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontFamily: 'PoppinsRegular'),
           ),
         ),
         SizedBox(height: 15),

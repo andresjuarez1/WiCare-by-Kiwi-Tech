@@ -15,10 +15,12 @@ class AttendedEventsPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: Text(
+        centerTitle: true,
+        title: const Text(
           'Eventos Asistidos',
           style: TextStyle(
             fontSize: 22,
+            fontFamily: 'PoppinsRegular',
             fontWeight: FontWeight.w600,
             color: Color(0xFF5CA666),
           ),
@@ -28,31 +30,13 @@ class AttendedEventsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Divider(
-              color: Colors.grey,
-              thickness: 1,
-              indent: 16,
-              endIndent: 16,
-            ),
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Text(
-                'Eventos Asistidos',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Color.fromARGB(255, 0, 0, 0),
-                ),
-              ),
-            ),
             SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: GridView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 8.0,
                   crossAxisSpacing: 8.0,

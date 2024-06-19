@@ -65,24 +65,24 @@ class VolunteerPage extends StatelessWidget {
     return Scaffold(
       appBar: Navbar(),
       drawer: CustomDrawer(),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             SearchEvents(
               onChanged: (value) {
-                // acción al cambiar el texto del campo de búsqueda
               },
             ),
             UpcomingEventsCarousel(
               imgList: imgList,
               navigateToEvent: _navigateToEvent,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 10),
             AttendedEventsList(
               attendedEvents: attendedEvents,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 10),
             FooterComponent(
               onDonateConfirmed: _onDonateConfirmed,
             ),

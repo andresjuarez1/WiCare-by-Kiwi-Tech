@@ -18,11 +18,12 @@ class UpcomingEventsCarousel extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 'Próximos eventos',
                 style: TextStyle(
+                  fontFamily: 'PoppinsRegular',
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                   color: Color(0xFF5CA666),
                 ),
               ),
@@ -35,9 +36,14 @@ class UpcomingEventsCarousel extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text(
+                child: const Text(
                   'Ver más',
-                  style: TextStyle(fontSize: 14, color: Color(0xFF717171)),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF717171),
+                    fontFamily: 'PoppinsRegular',
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ],
@@ -67,15 +73,16 @@ class UpcomingEventsCarousel extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        bottom: 30.0,
+                        bottom: 40.0,
                         left: 20.0,
                         child: Container(
                           width: MediaQuery.of(context).size.width - 40,
                           child: Text(
                             item['title']!,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 20.0,
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 18.0,
                               fontWeight: FontWeight.bold,
                             ),
                             overflow: TextOverflow.fade,
@@ -85,15 +92,16 @@ class UpcomingEventsCarousel extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        bottom: 10.0,
+                        bottom: 20.0,
                         left: 20.0,
                         child: Container(
                           width: MediaQuery.of(context).size.width - 40,
                           child: Text(
                             item['subtitle']!,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 16.0,
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 14.0,
                             ),
                             overflow: TextOverflow.fade,
                             maxLines: 2,
