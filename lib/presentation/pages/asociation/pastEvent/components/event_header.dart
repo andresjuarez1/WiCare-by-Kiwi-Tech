@@ -35,7 +35,7 @@ class EventHeader extends StatelessWidget {
         Positioned(
           left: screenWidth * 0.05,
           right: screenWidth * 0.05,
-          bottom: screenHeight * 0.35,
+          bottom: screenHeight * 0.40,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,6 +46,7 @@ class EventHeader extends StatelessWidget {
                   fontSize: screenHeight * 0.022,
                   fontWeight: FontWeight.w500,
                   color: Color(0xFFD3FFD4),
+                  fontFamily: 'PoppinsRegular',
                   letterSpacing: 4.0,
                 ),
                 textAlign: TextAlign.left,
@@ -54,7 +55,8 @@ class EventHeader extends StatelessWidget {
               Text(
                 eventTitle,
                 style: TextStyle(
-                  fontSize: screenHeight * 0.065,
+                  fontFamily: 'PoppinsRegular',
+                  fontSize: screenHeight * 0.050,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -64,6 +66,7 @@ class EventHeader extends StatelessWidget {
               Text(
                 eventLocation,
                 style: TextStyle(
+                  fontFamily: 'PoppinsRegular',
                   fontSize: screenHeight * 0.025,
                   fontWeight: FontWeight.w500,
                   color: Color(0xFFD3FFD4),

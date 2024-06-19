@@ -13,23 +13,23 @@ class ActionButtons extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => VolunteerListPage(
-                  volunteers: [], 
-                  navigateToVolunteerDetails: (context, title) {
-                  },
+                  volunteers: [],
+                  navigateToVolunteerDetails: (context, title) {},
                 ),
               ),
             );
           },
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF2E8139)),
-            minimumSize: WidgetStateProperty.all<Size>(const Size(80, 55)),
+            backgroundColor:
+                WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
+            minimumSize: WidgetStateProperty.all<Size>(Size(70, 45)),
           ),
           child: const Text(
             'Ver voluntarios',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontFamily: 'PoppinsRegular'),
           ),
         ),
-        const SizedBox(height: 15),
+        SizedBox(height: 15),
         ElevatedButton(
           onPressed: () {
             showDialog(
@@ -37,7 +37,8 @@ class ActionButtons extends StatelessWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Confirmar'),
-                  content: const Text('¿Estás seguro de que deseas borrar esta publicación?'),
+                  content: const Text(
+                      '¿Estás seguro de que deseas borrar esta publicación?'),
                   actions: [
                     TextButton(
                       onPressed: () {
@@ -47,7 +48,6 @@ class ActionButtons extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        // TODO: Añadir la lógica para borrar la publicación
                         print("Publicación borrada");
                         Navigator.of(context).pop();
                       },
@@ -59,15 +59,15 @@ class ActionButtons extends StatelessWidget {
             );
           },
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(const Color.fromARGB(255, 153, 52, 52)),
-            minimumSize: WidgetStateProperty.all<Size>(const Size(80, 55)),
+            backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 129, 46, 46)),
+            minimumSize: WidgetStateProperty.all<Size>(Size(70, 45)),
           ),
           child: const Text(
             'Borrar publicación',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontFamily: 'PoppinsRegular'),
           ),
         ),
-        const SizedBox(height: 15),
+        SizedBox(height: 15),
       ],
     );
   }

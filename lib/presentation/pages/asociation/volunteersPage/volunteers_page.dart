@@ -19,10 +19,11 @@ class VolunteerListPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: Text(
+        title: const Text(
           'Lista de Voluntarios',
           style: TextStyle(
             fontSize: 22,
+            fontFamily: 'PoppinsRegular',
             fontWeight: FontWeight.w600,
             color: Color(0xFF5CA666),
           ),
@@ -32,28 +33,10 @@ class VolunteerListPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Divider(
-              color: Colors.grey,
-              thickness: 1,
-              indent: 16,
-              endIndent: 16,
-            ),
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Text(
-                'Voluntarios',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Color.fromARGB(255, 0, 0, 0),
-                ),
-              ),
-            ),
             SizedBox(height: 20),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: volunteers.length,
               itemBuilder: (context, index) {
                 final volunteer = volunteers[index];

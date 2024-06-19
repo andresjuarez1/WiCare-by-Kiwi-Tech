@@ -123,13 +123,13 @@ class AssociationLandingPage extends StatelessWidget {
                 activeEvents: eventActiveImg,
                 navigateToEvent: _navigateToEvent,
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               VolunteersCarousel(
                 imgList: imgList,
                 navigateToVolunteers: _navigateToVolunteers,
                 navigateToVolunteerDetails: _navigateToVolunteers,
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               PastEventsList(
                 pastEvents: pastEvents,
                 navigateToPastEvent: _navigateToPastEvent,

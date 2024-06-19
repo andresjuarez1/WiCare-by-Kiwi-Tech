@@ -26,12 +26,13 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
           ),
-          Text(
+          const Text(
             'Bienvenida, asociación',
             style: TextStyle(
+              fontFamily: 'PoppinsRegular',
               color: Color(0xFF5CA666),
               fontSize: 20,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w500,
             ),
           ),
           Padding(

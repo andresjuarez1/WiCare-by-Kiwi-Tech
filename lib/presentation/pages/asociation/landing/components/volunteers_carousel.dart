@@ -22,11 +22,12 @@ class VolunteersCarousel extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 'Voluntarios activos',
                 style: TextStyle(
+                  fontFamily: 'PoppinsRegular',
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                   color: Color(0xFF5CA666),
                 ),
               ),
@@ -42,9 +43,14 @@ class VolunteersCarousel extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text(
+                child: const Text(
                   'Ver más',
-                  style: TextStyle(fontSize: 14, color: Color(0xFF717171)),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF717171),
+                    fontFamily: 'PoppinsRegular',
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ],

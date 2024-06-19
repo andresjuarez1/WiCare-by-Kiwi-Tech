@@ -13,11 +13,12 @@ class ActiveEvents extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Tus eventos activos',
             style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontFamily: 'PoppinsRegular',
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
               color: Color(0xFF5CA666),
             ),
           ),
@@ -35,7 +36,7 @@ class ActiveEvents extends StatelessWidget {
                   },
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 5.0),
-                    width: 300, 
+                    width: 300,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       image: DecorationImage(
@@ -51,15 +52,17 @@ class ActiveEvents extends StatelessWidget {
                         children: [
                           Text(
                             event['title']!,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
+                              fontFamily: 'PoppinsRegular',
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             event['description']!,
-                            style: TextStyle(
+                            style: const TextStyle(
+                              fontFamily: 'PoppinsRegular',
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.normal,

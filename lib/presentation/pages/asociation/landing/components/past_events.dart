@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class PastEventsList extends StatelessWidget {
   final List<Map<String, String>> pastEvents;
   final Function(BuildContext, Map<String, String>) navigateToPastEvent;
-  final Function(BuildContext) navigateToAllPastEvents; // Nueva función
+  final Function(BuildContext) navigateToAllPastEvents;
 
   PastEventsList({
     required this.pastEvents,
     required this.navigateToPastEvent,
-    required this.navigateToAllPastEvents, // Recibe la nueva función
+    required this.navigateToAllPastEvents,
   });
 
   @override
@@ -21,21 +21,27 @@ class PastEventsList extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 'Eventos Pasados',
                 style: TextStyle(
+                  fontFamily: 'PoppinsRegular',
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                   color: Color(0xFF5CA666),
                 ),
               ),
               TextButton(
                 onPressed: () {
-                  navigateToAllPastEvents(context); // Navega a todos los eventos pasados
+                  navigateToAllPastEvents(context);
                 },
-                child: Text(
+                child: const Text(
                   'Ver más',
-                  style: TextStyle(fontSize: 14, color: Color(0xFF717171)),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF717171),
+                    fontFamily: 'PoppinsRegular',
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ],
@@ -43,7 +49,7 @@ class PastEventsList extends StatelessWidget {
         ),
         SizedBox(height: 10.0),
         ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: pastEvents.length,
           itemBuilder: (BuildContext context, int index) {
@@ -51,7 +57,8 @@ class PastEventsList extends StatelessWidget {
             return InkWell(
               onTap: () => navigateToPastEvent(context, event),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -69,9 +76,11 @@ class PastEventsList extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(height: 10),
                           Text(
                             event['title']!,
-                            style: TextStyle(
+                            style: const TextStyle(
+                              fontFamily: 'PoppinsRegular',
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -80,6 +89,7 @@ class PastEventsList extends StatelessWidget {
                           Text(
                             event['location']!,
                             style: TextStyle(
+                              fontFamily: 'PoppinsRegular',
                               fontSize: 14.0,
                               color: Colors.grey[700],
                             ),
@@ -88,7 +98,8 @@ class PastEventsList extends StatelessWidget {
                           Text(
                             event['description']!,
                             style: TextStyle(
-                              fontSize: 14.0,
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 12.0,
                               color: Colors.grey[600],
                             ),
                           ),

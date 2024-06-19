@@ -18,9 +18,10 @@ class EventDescription extends StatelessWidget {
       children: [
         Text(
           eventTitle,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
+            fontFamily: 'PoppinsRegular',
             color: Color(0xFF5CA666),
           ),
         ),
@@ -33,9 +34,10 @@ class EventDescription extends StatelessWidget {
           ),
         ),
         SizedBox(height: 16),
-        Text(
+        const Text(
           'Descripción',
           style: TextStyle(
+            fontFamily: 'PoppinsRegular',
             fontSize: 22,
             fontWeight: FontWeight.w600,
           ),
@@ -43,9 +45,10 @@ class EventDescription extends StatelessWidget {
         SizedBox(height: 7),
         Text(
           eventDescription,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
+            fontFamily: 'PoppinsRegular',
           ),
           textAlign: TextAlign.justify,
         ),

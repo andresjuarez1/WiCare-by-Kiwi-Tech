@@ -22,6 +22,7 @@ class AllPastEventsPage extends StatelessWidget {
         title: const Text(
           'Eventos Pasados',
           style: TextStyle(
+            fontFamily: 'PoppinsRegular',
             fontSize: 22,
             fontWeight: FontWeight.w600,
             color: Color(0xFF5CA666),
@@ -32,25 +33,7 @@ class AllPastEventsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Divider (
-              color: Colors.grey,
-              thickness: 1,
-              indent: 16,
-              endIndent: 16,
-            ),
             const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.only(left: 15.0),
-              child: Text(
-                'Eventos',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Color.fromARGB(255, 0, 0, 0),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: GridView.builder(
@@ -132,7 +115,8 @@ class EventItem extends StatelessWidget {
                   title,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontFamily: 'PoppinsRegular',
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -140,14 +124,8 @@ class EventItem extends StatelessWidget {
                   location,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
-                  ),
-                ),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
+                    fontFamily: 'PoppinsRegular',
+                    fontSize: 13,
                   ),
                 ),
               ],

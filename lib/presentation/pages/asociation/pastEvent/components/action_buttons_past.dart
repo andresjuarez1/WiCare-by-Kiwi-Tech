@@ -21,13 +21,15 @@ class ActionButtons extends StatelessWidget {
             );
           },
           style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-            minimumSize: MaterialStateProperty.all<Size>(Size(80, 55)),
+            backgroundColor: WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
+            minimumSize: WidgetStateProperty.all<Size>(Size(80, 55)),
           ),
-          child: Text(
+          child: const Text(
             'Ver voluntarios',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: 'PoppinsRegular'),
           ),
         ),
         SizedBox(height: 15),

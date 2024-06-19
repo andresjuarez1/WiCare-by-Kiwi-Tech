@@ -22,7 +22,7 @@ class VolunteerCard extends StatelessWidget {
         ),
         title: Text(
           volunteerName,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'PoppinsRegular'),
         ),
         subtitle: Text(volunteerDescription),
         onTap: () {

@@ -51,12 +51,15 @@ class _PostEventState extends State<PostEvent> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Padding(
-          padding: const EdgeInsets.only(left: 40.0),
+        title: const Padding(
+          padding: EdgeInsets.only(left: 40.0),
           child: Text(
             'Crear Anuncio',
             style: TextStyle(
-              color: greenColor,
+              fontFamily: 'PoppinsRegular',
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF5CA666),
             ),
           ),
         ),
@@ -71,32 +74,44 @@ class _PostEventState extends State<PostEvent> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Nombre del evento',
-                  border: OutlineInputBorder(
+                  labelStyle: const TextStyle(
+                      fontFamily: 'PoppinsRegular',
+                      fontSize: 15.0,
+                      color: Colors.black),
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(color: greenColor),
                   ),
-                  labelStyle: TextStyle(
-                    fontSize: 15.0,
-                    color: greenColor,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(color: greenColor),
                   ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 12.0,
+                    horizontal: 16.0,
+                  ),
                 ),
               ),
               const SizedBox(height: 25),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Descripción',
-                  border: OutlineInputBorder(
+                  labelStyle: const TextStyle(
+                      fontFamily: 'PoppinsRegular',
+                      fontSize: 15.0,
+                      color: Colors.black),
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(color: greenColor),
+                    borderSide: BorderSide(color: Color(0xFF5CA666)),
                   ),
-                  labelStyle: TextStyle(
-                    fontSize: 15.0,
-                    color: greenColor,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(color: Color(0xFF5CA666)),
                   ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 12.0,
+                    horizontal: 16.0,
+                  ),
                 ),
                 maxLines: 3,
               ),
@@ -107,19 +122,26 @@ class _PostEventState extends State<PostEvent> {
                   child: TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Fecha',
-                      border: OutlineInputBorder(
+                      labelStyle: const TextStyle(
+                          fontFamily: 'PoppinsRegular',
+                          fontSize: 15.0,
+                          color: Colors.black),
+                      enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: greenColor),
+                        borderSide: BorderSide(color: Color(0xFF5CA666)),
                       ),
-                      labelStyle: TextStyle(
-                        fontSize: 15.0,
-                        color: greenColor,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: Color(0xFF5CA666)),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12.0, horizontal: 16.0),
+                        vertical: 12.0,
+                        horizontal: 16.0,
+                      ),
                     ),
                     controller: TextEditingController(
-                        text: selectedDate.toString().substring(0, 10)),
+                      text: selectedDate.toString().substring(0, 10),
+                    ),
                   ),
                 ),
               ),
@@ -127,29 +149,50 @@ class _PostEventState extends State<PostEvent> {
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Categoría',
-                  border: OutlineInputBorder(
+                  labelStyle: const TextStyle(
+                      fontFamily: 'PoppinsRegular',
+                      fontSize: 15.0,
+                      color: Colors.black),
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(color: greenColor),
+                    borderSide: BorderSide(color: Color(0xFF5CA666)),
                   ),
-                  labelStyle: TextStyle(
-                    fontSize: 15.0,
-                    color: greenColor,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(color: Color(0xFF5CA666)),
                   ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 12.0,
+                    horizontal: 16.0,
+                  ),
                 ),
-                items: [
-                  const DropdownMenuItem(
+                items: const [
+                  DropdownMenuItem(
                     value: 'Categoria1',
-                    child: Text('Categoria 1'),
+                    child: Text(
+                      'Categoria 1',
+                      style: TextStyle(
+                        fontFamily: 'PoppinsRegular',
+                      ),
+                    ),
                   ),
-                  const DropdownMenuItem(
+                  DropdownMenuItem(
                     value: 'Categoria2',
-                    child: Text('Categoria 2'),
+                    child: Text(
+                      'Categoria 2',
+                      style: TextStyle(
+                        fontFamily: 'PoppinsRegular',
+                      ),
+                    ),
                   ),
-                  const DropdownMenuItem(
+                  DropdownMenuItem(
                     value: 'Categoria3',
-                    child: Text('Categoria 3'),
+                    child: Text(
+                      'Categoria 3',
+                      style: TextStyle(
+                        fontFamily: 'PoppinsRegular',
+                      ),
+                    ),
                   ),
                 ],
                 onChanged: (value) {},
@@ -162,28 +205,28 @@ class _PostEventState extends State<PostEvent> {
                     onPressed: _selectImage,
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          WidgetStateProperty.all<Color>(Colors.white),
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
-                          side: BorderSide(color: greenColor),
+                          side: BorderSide(color: Color(0xFF5CA666)),
                         ),
                       ),
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                      padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                         const EdgeInsets.symmetric(vertical: 13.0),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Seleccionar imagen',
                       style: TextStyle(
-                        fontSize: 15.0,
-                        color: greenColor,
-                      ),
+                          fontFamily: 'PoppinsRegular',
+                          fontSize: 15.0,
+                          color: Colors.black),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 45),
+              const SizedBox(height: 35),
               Center(
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
@@ -191,19 +234,20 @@ class _PostEventState extends State<PostEvent> {
                     onPressed: () {},
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(greenColor),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          WidgetStateProperty.all<Color>(Color(0xFF5CA666)),
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                      padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                         const EdgeInsets.symmetric(vertical: 13.0),
                       ),
                     ),
                     child: const Text(
                       'Crear evento',
                       style: TextStyle(
+                        fontFamily: 'PoppinsRegular',
                         fontSize: 15.0,
                         color: Colors.white,
                       ),
