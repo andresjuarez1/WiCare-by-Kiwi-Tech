@@ -2,23 +2,46 @@ import 'package:flutter/material.dart';
 import 'register_asociation4.dart';
 
 class RegisterAsociationPage3 extends StatelessWidget {
+  final String phone;
+  final String rfc;
+  final String description;
+  final String representative;
+  final String companyName;
+  final String addressCompany;
+  final String foundation;
+  final String selectedSocial;
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _positionController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  RegisterAsociationPage3({required this.companyName, required this.addressCompany, required this.foundation, required this.representative, required this.phone, required this.rfc, required this.description, required this.selectedSocial});
   void _submitForm(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
       String name = _nameController.text;
       String position = _positionController.text;
-      String phone = _phoneController.text;
-      String address = _addressController.text;
+      String phoneManager = _phoneController.text;
+      String addressManager = _addressController.text;
 
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => RegisterAsociationPage4()),
+      MaterialPageRoute(builder: (context) => RegisterAsociationPage4(
+        companyName:companyName,
+        addressCompany:addressCompany,
+        foundation:foundation,
+        representative:representative,
+        phone:phone,
+        rfc:rfc,
+        description:description,
+        selectedSocial:selectedSocial,
+        nameManager:name,
+        position:position,
+        phoneManager:phoneManager,
+        addressManager:addressManager
+
+      )),
     );
     }
   }

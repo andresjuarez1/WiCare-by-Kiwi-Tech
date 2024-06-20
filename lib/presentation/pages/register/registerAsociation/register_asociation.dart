@@ -1,25 +1,33 @@
 import 'package:flutter/material.dart';
+import '../../../../domain/entities/association.dart';
 import 'register_asociation2.dart';
 
 class RegisterAsociationPage extends StatelessWidget {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _nameCompanyController = TextEditingController();
+  final TextEditingController _addressCompanyController = TextEditingController();
   final TextEditingController _foundationDateController = TextEditingController();
   final TextEditingController _representativeController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _submitForm(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
-      String name = _nameController.text;
-      String address = _addressController.text;
+      String nameCompany = _nameCompanyController.text;
+      String addressCompany = _addressCompanyController.text;
       String foundationDate = _foundationDateController.text;
       String representative = _representativeController.text;
 
-      // lógica de procesamiento o envío de datos
+
+      print(nameCompany);
+      print(addressCompany);
+      print(foundationDate);
+      print(representative);
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RegisterAsociationPage2()),
+        MaterialPageRoute(builder: (context) => RegisterAsociationPage2(companyName: nameCompany,
+          addressCompany: addressCompany,
+          foundation: foundationDate,
+          representative: representative,)),
       );
     }
   }
@@ -55,7 +63,7 @@ class RegisterAsociationPage extends StatelessWidget {
                       _buildLabel('Nombre de la Asociación'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _nameController,
+                        controller: _nameCompanyController,
                         label: 'Ingresa el nombre de la asociación',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -68,7 +76,7 @@ class RegisterAsociationPage extends StatelessWidget {
                       _buildLabel('Domicilio'),
                       SizedBox(height: 5.0),
                       _buildTextField(
-                        controller: _addressController,
+                        controller: _addressCompanyController,
                         label: 'Ingresa el domicilio de la asociación',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -82,7 +90,7 @@ class RegisterAsociationPage extends StatelessWidget {
                       SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _foundationDateController,
-                        label: 'Ingresa la fecha de fundación (DD/MM/AAAA)',
+                        label: 'Ingresa la fecha de fundación (DD-MM-AAAA)',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa la fecha de fundación de la asociación';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/presentation/pages/register/registerAsociation/registerAssociation.dart';
 import '../login/login_page.dart';
 import '../login/login_page.dart';
 import 'registerAsociation/register_asociation.dart';
@@ -30,8 +31,8 @@ class RegistrationPage extends StatelessWidget {
   void _onButton3Pressed(BuildContext context) {
       Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => RegisterAsociationPage()),
-    );
+      MaterialPageRoute(builder: (context) => RegisterAssociationPage(),
+    ));
   }
 
   @override

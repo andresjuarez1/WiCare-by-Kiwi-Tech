@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
 import 'register_asociation3.dart';
 
-class RegisterAsociationPage2 extends StatelessWidget {
+class RegisterAsociationPage2 extends StatefulWidget {
+  final String companyName;
+  final String addressCompany;
+  final String foundation;
+  final String representative;
+
+  RegisterAsociationPage2({
+    required this.companyName,
+    required this.addressCompany,
+    required this.foundation,
+    required this.representative,
+  });
+
+  @override
+  _RegisterAsociationPage2State createState() => _RegisterAsociationPage2State();
+}
+
+class _RegisterAsociationPage2State extends State<RegisterAsociationPage2> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _rfcController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final List<String> _socialReasons = ['Opción 1', 'Opción 2', 'Opción 3'];
-  String _selectedSocialReason = 'Opción 1';
+  String selectedSocialReason = 'Opción 1'; // Initial selected value
 
   void _submitForm(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
@@ -16,11 +33,20 @@ class RegisterAsociationPage2 extends StatelessWidget {
       String phone = _phoneController.text;
       String rfc = _rfcController.text;
 
-      // lógica de procesamiento o envío de datos
+      // Processing or sending data logic
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RegisterAsociationPage3()),
+        MaterialPageRoute(builder: (context) => RegisterAsociationPage3(
+          companyName: widget.companyName,
+          addressCompany: widget.addressCompany,
+          foundation: widget.foundation,
+          representative: widget.representative,
+          description: description,
+          phone: phone,
+          rfc: rfc,
+          selectedSocial: selectedSocialReason,
+        )),
       );
     }
   }
@@ -56,7 +82,7 @@ class RegisterAsociationPage2 extends StatelessWidget {
                       _buildLabel('Razón Social'),
                       SizedBox(height: 5.0),
                       DropdownButtonFormField<String>(
-                        value: _selectedSocialReason,
+                        value: selectedSocialReason,
                         items: _socialReasons.map((String reason) {
                           return DropdownMenuItem<String>(
                             value: reason,
@@ -64,7 +90,9 @@ class RegisterAsociationPage2 extends StatelessWidget {
                           );
                         }).toList(),
                         onChanged: (newValue) {
-                          _selectedSocialReason = newValue!;
+                          setState(() {
+                            selectedSocialReason = newValue!;
+                          });
                         },
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
