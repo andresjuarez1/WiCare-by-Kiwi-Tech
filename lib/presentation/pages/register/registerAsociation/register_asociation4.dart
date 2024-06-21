@@ -42,20 +42,20 @@ class RegisterAsociationPage4 extends StatelessWidget {
       String email = _emailController.text;
       String password = _passwordController.text;
       final association = Association(
-        name_company: companyName,
-        address_company: addressCompany,
-        foundationDate: foundation,
-        representative: representative,
-        socialReasons: selectedSocial,
+        name: companyName,
+        address: addressCompany,
+        foundation_date: foundation,
+        position: representative,
+        social_reason: selectedSocial,
         description: description,
-        phone_company: phone,
-        rfc: rfc,
+        cellphone: phone,
+        RFC: rfc,
         name_manager: nameManager,
-        position_manager: position,
         cellphone_manager: phoneManager,
         address_manager: addressManager,
         email: _emailController.text,
         password: _passwordController.text,
+        age: '', genre: '',
       );
 
       try {

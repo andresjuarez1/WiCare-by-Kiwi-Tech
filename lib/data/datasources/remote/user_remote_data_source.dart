@@ -43,9 +43,11 @@ class UserRemoteDataSource {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(association.toJson()),
     );
+    print(response.body);
+    print(association.toJson());
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to register association');
+      throw Exception('Failed to register association in user_remote');
     }
   }
 }

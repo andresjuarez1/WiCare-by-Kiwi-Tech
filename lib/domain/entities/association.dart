@@ -1,40 +1,39 @@
-// lib/domain/entities/association.dart
 class Association {
-  final String name_company;
-  final String address_company;
-  final String foundationDate;
-  final String representative;
-
-  final String socialReasons;
-  final String description;
-  final String phone_company;
-  final String rfc;
-
-  final String name_manager;
-  final String position_manager;
-  final String cellphone_manager;
-  final String address_manager;
-
+  final String name;
+  final String foundation_date;
   final String email;
   final String password;
+  final String position;
+  final String age;
+  final String name_manager;
+  final String cellphone_manager;
+  final String address_manager;
+  final String genre;
+  final String address;
+  final String social_reason;
+  final String description;
+  final String RFC;
+  final String cellphone;
+
 
   Association({
-    required this.name_company,
-    required this.address_company,
-    required this.foundationDate,
-    required this.representative,
-
-    required this.socialReasons,
-    required this.description,
-    required this.phone_company,
-    required this.rfc,
-
-    required this.name_manager,
-    required this.position_manager,
-    required this.cellphone_manager,
-    required this.address_manager,
-
+    required this.name,
+    required this.foundation_date,
     required this.email,
     required this.password,
+
+    required this.position,
+    required this.age,
+    required this.name_manager,
+    required this.cellphone_manager,
+
+    required this.address_manager,
+    required this.genre,
+    required this.address,
+    required this.social_reason,
+
+    required this.description,
+    required this.RFC,
+    required this.cellphone,
   });
 }

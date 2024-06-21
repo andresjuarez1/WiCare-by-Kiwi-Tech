@@ -20,7 +20,6 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   final _nameCompanyController = TextEditingController();
   final _addressCompanyController = TextEditingController();
   final _foundationDateController = TextEditingController();
-  final _representativeController = TextEditingController();
 
   final _descriptionController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -41,6 +40,9 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _ageController = TextEditingController();
+  final _genders = ['m', 'f', 'nb', 'Prefiero no decir'];
+  String? _selectedGenre;
 
   bool _termsAccepted = false;
 
@@ -49,20 +51,22 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
     if (_formKey.currentState?.validate() ?? false) {
       print('Formulario válido');
       final association = Association(
-        name_company: _nameCompanyController.text,
-        address_company: _addressCompanyController.text,
-        foundationDate: _foundationDateController.text,
-        representative: _representativeController.text,
-        socialReasons: _selectSocialReasons ?? '',
+        name: _nameCompanyController.text,
+        address: _addressCompanyController.text,
+        foundation_date: _foundationDateController.text,
+
+        social_reason: _selectSocialReasons ?? '',
         description: _descriptionController.text,
-        phone_company: _phoneController.text,
-        rfc: _rfcController.text,
+        cellphone: _phoneController.text,
+        RFC: _rfcController.text,
         name_manager: _nameManagerController.text,
-        position_manager: _positionManagerController.text,
+        position: _positionManagerController.text,
         cellphone_manager: _phoneManagerController.text,
         address_manager: _addressManagerController.text,
         email: _emailController.text,
         password: _passwordController.text,
+        age: _ageController.text,
+        genre: _selectedGenre ?? '',
       );
 
       try {
@@ -195,19 +199,6 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                         },
                       ),
                       SizedBox(height: 10.0),
-                      _buildLabel('Representante Legal o Gerente'),
-                      SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _representativeController,
-                        label: 'Ingresa el nombre del representante legal o gerente',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre del representante legal o gerente';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10.0),
                       _buildLabel('Descripción General'),
                       SizedBox(height: 5.0),
                       _buildTextField(
@@ -250,7 +241,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                       SizedBox(height: 10.0),
                       _buildLabel('Razón Social'),
                       SizedBox(height: 5.0),
-                      _buildSocialReasonnDropdown(),
+                      _buildSocialReasonDropdown(),
                       Text(
                         'Datos del Encargado',
                         style: TextStyle(
@@ -273,6 +264,27 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                         },
                       ),
                       SizedBox(height: 10.0),
+                      _buildLabel('Edad'),
+                      SizedBox(height: 5.0),
+                      _buildTextField(
+                        controller: _ageController,
+                        label: 'Ingresa tu edad',
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, ingresa tu edad';
+                          } else if (int.tryParse(value) == null) {
+                            return 'Por favor, ingresa un número válido';
+                          } else if (value.length > 3) {
+                            return 'La edad no debe tener más de 3 dígitos';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10.0),
+                      _buildLabel('Género'),
+                      SizedBox(height: 5.0),
+                      _buildGenderDropdown(),
                       _buildLabel('Puesto'),
                       SizedBox(height: 5.0),
                       _buildTextField(
@@ -472,7 +484,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
     );
   }
 
-  Widget _buildSocialReasonnDropdown() {
+  Widget _buildSocialReasonDropdown() {
     return DropdownButtonFormField<String>(
       value: _selectSocialReasons,
       onChanged: (value) {
@@ -494,4 +506,27 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       ),
     );
   }
+  Widget _buildGenderDropdown() {
+    return DropdownButtonFormField<String>(
+      value: _selectedGenre,
+      onChanged: (value) {
+        setState(() {
+          _selectedGenre = value;
+        });
+      },
+      items: _genders.map((gender) {
+        return DropdownMenuItem<String>(
+          value: gender,
+          child: Text(gender),
+        );
+      }).toList(),
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+      ),
+    );
+  }
 }
+
