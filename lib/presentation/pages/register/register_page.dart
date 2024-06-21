@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:locura1/presentation/pages/register/registerAsociation/registerAssociation.dart';
 import '../login/login_page.dart';
-import '../login/login_page.dart';
-import 'registerAsociation/register_asociation.dart';
 import 'registerEnterprise/register_enterprise.dart';
 import 'registerVolunteer/register_volunteer.dart';
 

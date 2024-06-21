@@ -1,10 +1,13 @@
 // lib/presentation/pages/register_volunteer_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:locura1/domain/use_cases/register_association_user.dart';
 import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
 import '../../../../domain/entities/association.dart';
+import '../../../../domain/entities/volunteer.dart';
+import '../../../../domain/use_cases/register_volunteer_user.dart';
 import '../../login/login_page.dart';
 
 class RegisterAssociationPage extends StatefulWidget {
@@ -38,12 +41,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _ageController = TextEditingController();
-  final Map<String, String> _genderMap = {
-    'Masculino': 'm',
-    'Femenino': 'f',
-    'No binario': 'nb',
-    'Prefiero no decir': 'Prefiero no decir',
-  };
+  final _genders = ['m', 'f', 'nb', 'Prefiero no decir'];
   String? _selectedGenre;
 
   bool _termsAccepted = false;
@@ -516,7 +514,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
           _selectedGenre = value;
         });
       },
-      items: _genderMap.keys.map((gender) {
+      items: _genders.map((gender) {
         return DropdownMenuItem<String>(
           value: gender,
           child: Text(gender),
