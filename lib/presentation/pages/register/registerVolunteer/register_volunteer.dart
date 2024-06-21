@@ -19,7 +19,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-  TextEditingController();
+      TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final List<String> _occupations = [
@@ -132,6 +132,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      SizedBox(height: 60.0),
                       Image.asset(
                         'assets/wicare-logo-inicio.png',
                         width: 180,
@@ -320,7 +321,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                               ),
                             ),
                             padding:
-                            MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                MaterialStateProperty.all<EdgeInsetsGeometry>(
                               EdgeInsets.symmetric(vertical: 13.0),
                             ),
                           ),
@@ -333,7 +334,6 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20.0),
                     ],
                   ),
                 ),
@@ -362,10 +362,10 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
 
   Widget _buildTextField(
       {required TextEditingController controller,
-        required String label,
-        bool obscureText = false,
-        TextInputType keyboardType = TextInputType.text,
-        String? Function(String?)? validator}) {
+      required String label,
+      bool obscureText = false,
+      TextInputType keyboardType = TextInputType.text,
+      String? Function(String?)? validator}) {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,

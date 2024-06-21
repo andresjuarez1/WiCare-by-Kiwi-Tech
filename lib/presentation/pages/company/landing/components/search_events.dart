@@ -17,7 +17,15 @@ class SearchEvents extends StatelessWidget {
           ),
           prefixIcon: Icon(Icons.search),
           contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-          labelStyle: TextStyle(color: Color(0xFFA3A3A3)),
+          labelStyle: const TextStyle(
+            color: Color(0xFFA3A3A3),
+            fontFamily: 'PoppinsRegular',
+            fontSize: 14.0,
+            fontWeight: FontWeight.w100
+          ),
+        ),
+        style: TextStyle(
+          fontFamily: 'PoppinsRegular',
         ),
         onChanged: onChanged,
       ),

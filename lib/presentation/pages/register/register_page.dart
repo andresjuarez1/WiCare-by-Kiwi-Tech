@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:locura1/presentation/pages/register/registerAsociation/registerAssociation.dart';
+import '../login/login_page.dart';
 import '../login/login_page.dart';
 import 'registerEnterprise/register_enterprise.dart';
 import 'registerVolunteer/register_volunteer.dart';
+import 'registerAsociation/registerAssociation.dart';
 
 class RegistrationPage extends StatelessWidget {
    void _navigateToLoginPage(BuildContext context) {
@@ -47,7 +48,7 @@ class RegistrationPage extends StatelessWidget {
                 width: 180,
               ),
               SizedBox(height: 40),
-              Text(
+              const Text(
                 'Selecciona una opción:',
                 style: TextStyle(
                   fontSize: 18.0,
@@ -60,17 +61,17 @@ class RegistrationPage extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => _onButton1Pressed(context),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    backgroundColor: WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                       EdgeInsets.symmetric(vertical: 13.0),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Voluntario',
                     style: TextStyle(
                       fontSize: 15.0,
@@ -85,17 +86,17 @@ class RegistrationPage extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => _onButton2Pressed(context),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    backgroundColor: WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                       EdgeInsets.symmetric(vertical: 13.0),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Empresas',
                     style: TextStyle(
                       fontSize: 15.0,
@@ -110,17 +111,17 @@ class RegistrationPage extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => _onButton3Pressed(context),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    backgroundColor: WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                       EdgeInsets.symmetric(vertical: 13.0),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Asociación',
                     style: TextStyle(
                       fontSize: 15.0,
@@ -134,7 +135,7 @@ class RegistrationPage extends StatelessWidget {
                   onTap: () => _navigateToLoginPage(context),
                   child: Container(
                     margin: EdgeInsets.only(left: 20.0),
-                    child: Text(
+                    child: const Text(
                       '¿Ya tienes una cuenta? Inicia sesión',
                       style: TextStyle(fontSize: 14.0, color: Colors.blue),
                     ),

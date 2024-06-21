@@ -3,7 +3,6 @@ import '../register/register_page.dart';
 import '../volunteer/landing/landingVolunteer.dart';
 import '../company/landing/company_landing.dart';
 import '../asociation/landing/asociation_landing.dart';
-import '../register/register_page.dart';
 import '../../../../domain/use_cases/login_user.dart';
 
 class LoginPage extends StatelessWidget {
@@ -17,9 +16,7 @@ class LoginPage extends StatelessWidget {
       String email = _emailController.text;
       String password = _passwordController.text;
 
-
       final user = await _loginUser.call(email, password);
-
 
       if (user != null) {
         final data = user.email;
@@ -78,7 +75,7 @@ class LoginPage extends StatelessWidget {
                     width: 180.0,
                   ),
                   SizedBox(height: 40.0),
-                  Row(
+                  const Row(
                     children: [
                       Text(
                         'Correo electrónico',
@@ -99,11 +96,11 @@ class LoginPage extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         fontSize: 15.0,
                         color: Color(0xFFBCBCBC),
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         vertical: 12.0,
                         horizontal: 16.0,
                       ),
@@ -116,7 +113,7 @@ class LoginPage extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: 20.0),
-                  Row(
+                  const Row(
                     children: [
                       Text(
                         'Contraseña',
@@ -138,11 +135,11 @@ class LoginPage extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         fontSize: 15.0,
                         color: Color(0xFFBCBCBC),
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         vertical: 12.0,
                         horizontal: 16.0,
                       ),
@@ -161,18 +158,17 @@ class LoginPage extends StatelessWidget {
                       onPressed: () => _submitForm(context),
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                            WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                           EdgeInsets.symmetric(vertical: 13.0),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Ingresa',
                         style: TextStyle(
                           fontSize: 15.0,
@@ -185,8 +181,8 @@ class LoginPage extends StatelessWidget {
                   GestureDetector(
                     onTap: () => _navigateToRegistrationPage(context),
                     child: Container(
-                      margin: EdgeInsets.only(left: 20.0),
-                      child: Text(
+                      margin: const EdgeInsets.only(left: 20.0),
+                      child: const Text(
                         '¿No estás registrado? Regístrate',
                         style: TextStyle(fontSize: 14.0, color: Colors.blue),
                       ),

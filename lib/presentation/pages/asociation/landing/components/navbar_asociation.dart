@@ -27,7 +27,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           const Text(
-            'Bienvenida, asociación',
+            'Hola, asociación',
             style: TextStyle(
               fontFamily: 'PoppinsRegular',
               color: Color(0xFF5CA666),

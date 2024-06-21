@@ -8,7 +8,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white, 
+      backgroundColor: Colors.white,
       leading: Builder(
         builder: (context) {
           return IconButton(
@@ -26,9 +26,13 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
           );
         },
       ),
-      title: Text(
-        'Bienvenia, empresa',
-        style: TextStyle(color: Color(0xFF5CA666), fontSize: 20, fontWeight: FontWeight.w600),
+      title: const Text(
+        'Hola, empresa',
+        style: TextStyle(
+            color: Color(0xFF5CA666),
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            fontFamily: 'PoppinsRegular'),
       ),
       centerTitle: true,
       actions: [
@@ -39,7 +43,6 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  // Navegar a la página de perfil
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ProfilePage()),

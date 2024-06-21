@@ -27,13 +27,12 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
         },
       ),
       title: const Text(
-        'Bienvenido, usuario',
+        'Hola, usuario',
         style: TextStyle(
             color: Color(0xFF5CA666),
             fontSize: 20,
             fontWeight: FontWeight.w500,
-            fontFamily: 'PoppinsRegular'
-            ),
+            fontFamily: 'PoppinsRegular'),
       ),
       centerTitle: true,
       actions: [

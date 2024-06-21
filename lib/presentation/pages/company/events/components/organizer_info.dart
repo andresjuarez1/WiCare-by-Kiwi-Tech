@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class OrganizerInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -13,8 +13,9 @@ class OrganizerInfo extends StatelessWidget {
             child: Text(
               'Información del encargado',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 20,
                 fontWeight: FontWeight.w600,
+                fontFamily: 'PoppinsRegular',
               ),
             ),
           ),
@@ -36,16 +37,18 @@ class OrganizerInfo extends StatelessWidget {
                     Text(
                       'Christian Bumteros',
                       style: TextStyle(
+                        fontFamily: 'PoppinsRegular',
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     SizedBox(height: 5),
                     Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                       style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w300,
+                        fontFamily: 'PoppinsRegular',
+                        fontSize: 14.5,
+                        fontWeight: FontWeight.w200,
                       ),
                     ),
                   ],
