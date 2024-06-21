@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Tipo de usuario desconocido')),
+            SnackBar(content: Text('Usuario desconocido')),
           );
         }
       } else {
