@@ -1,3 +1,4 @@
+// lib/presentation/pages/register_volunteer_page.dart
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:locura1/domain/use_cases/register_association_user.dart';
@@ -530,4 +531,3 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
     );
   }
 }
-
