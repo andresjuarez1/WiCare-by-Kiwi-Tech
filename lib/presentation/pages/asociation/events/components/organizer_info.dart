@@ -23,13 +23,6 @@ class OrganizerInfo extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: CircleAvatar(
-                  radius: 60,
-                  backgroundImage: AssetImage('assets/perfil_volunteer.jpg'),
-                ),
-              ),
-              SizedBox(width: 15),
-              Expanded(
                 flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +31,7 @@ class OrganizerInfo extends StatelessWidget {
                       'Christian Bumteros',
                       style: TextStyle(
                         fontFamily: 'PoppinsRegular',
-                        fontSize: 18,
+                        fontSize: 15.5,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -47,9 +40,10 @@ class OrganizerInfo extends StatelessWidget {
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                       style: TextStyle(
                         fontFamily: 'PoppinsRegular',
-                        fontSize: 14.5,
+                        fontSize: 13,
                         fontWeight: FontWeight.w200,
                       ),
+                      textAlign: TextAlign.justify,
                     ),
                   ],
                 ),

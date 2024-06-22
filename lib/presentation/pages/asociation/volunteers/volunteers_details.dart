@@ -9,14 +9,17 @@ class VolunteerDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF5CA666)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF5CA666)),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: const Center(
+        title: const Padding(
+          padding: EdgeInsets.only(left: 60.0),
           child: Text(
             'Voluntario',
             style: TextStyle(
@@ -28,24 +31,18 @@ class VolunteerDetailsPage extends StatelessWidget {
           ),
         ),
         automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CircleAvatar(
                 radius: 80.0,
                 backgroundImage: AssetImage(imageUrl),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
                 volunteerName,
                 style: const TextStyle(
@@ -55,7 +52,7 @@ class VolunteerDetailsPage extends StatelessWidget {
                   color: Color(0xFF5CA666),
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
@@ -70,7 +67,7 @@ class VolunteerDetailsPage extends StatelessWidget {
                         color: Color(0xFF5CA666),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     const Text(
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet.',
                       style: TextStyle(
@@ -79,8 +76,8 @@ class VolunteerDetailsPage extends StatelessWidget {
                       ),
                       textAlign: TextAlign.justify,
                     ),
-                    Divider(color: Color.fromARGB(255, 228, 228, 228)),
-                    SizedBox(height: 5),
+                    const Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                    const SizedBox(height: 5),
                     const Text(
                       'Correo electrónico',
                       style: TextStyle(
@@ -90,7 +87,7 @@ class VolunteerDetailsPage extends StatelessWidget {
                         color: Color(0xFF5CA666),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     const Text(
                       'hola@hola.com',
                       style: TextStyle(
@@ -99,8 +96,8 @@ class VolunteerDetailsPage extends StatelessWidget {
                       ),
                       textAlign: TextAlign.justify,
                     ),
-                    Divider(color: Color.fromARGB(255, 228, 228, 228)),
-                    SizedBox(height: 5),
+                    const Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                    const SizedBox(height: 5),
                     const Text(
                       'Teléfono',
                       style: TextStyle(
@@ -110,7 +107,7 @@ class VolunteerDetailsPage extends StatelessWidget {
                         color: Color(0xFF5CA666),
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     const Text(
                       '12345678910',
                       style: TextStyle(
@@ -119,22 +116,22 @@ class VolunteerDetailsPage extends StatelessWidget {
                       ),
                       textAlign: TextAlign.justify,
                     ),
-                    Divider(color: Color.fromARGB(255, 228, 228, 228)),
-                    SizedBox(height: 30),
+                    const Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                    const SizedBox(height: 30),
                     Center(
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
-                            Color(0xFF5CA666),
+                            const Color(0xFF5CA666),
                           ),
                           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-                            EdgeInsets.symmetric(
+                            const EdgeInsets.symmetric(
                                 vertical: 13.0, horizontal: 20.0),
                           ),
                         ),
                         child: const Text(
-                          'Contactar voluntario',
+                          'Aceptar ayuda',
                           style: TextStyle(
                             fontFamily: 'PoppinsRegular',
                             fontSize: 18,
@@ -143,7 +140,7 @@ class VolunteerDetailsPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                   ],
                 ),
               ),

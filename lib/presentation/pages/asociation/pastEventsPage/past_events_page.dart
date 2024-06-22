@@ -19,13 +19,16 @@ class AllPastEventsPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Eventos Pasados',
-          style: TextStyle(
-            fontFamily: 'PoppinsRegular',
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF5CA666),
+        title: const Padding(
+          padding: EdgeInsets.only(left: 60.0),
+          child: Text(
+            'Voluntario',
+            style: TextStyle(
+              fontFamily: 'PoppinsRegular',
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF5CA666),
+            ),
           ),
         ),
       ),

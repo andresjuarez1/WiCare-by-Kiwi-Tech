@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../login/login_page.dart';
-import '../../userProfile/asociation_profile.dart';
+import '../../asociationProfile/asociation_profile.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override

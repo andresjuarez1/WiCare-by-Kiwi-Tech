@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../dialogs/donatiwi_dialog.dart';
+
 class FooterComponent extends StatelessWidget {
   final VoidCallback onDonateConfirmed;
 
@@ -45,50 +47,7 @@ class FooterComponent extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text(
-                      'Donatiwi',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'PoppinsRegular',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    content: const Text(
-                      'Kiwitech es una empresa orgullosamente chiapaneca que trabaja para innovar día con día',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: 'PoppinsRegular',
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStateProperty.all<Color>(Color(0xFFBB3737)),
-                          foregroundColor:
-                              WidgetStateProperty.all<Color>(Colors.white),
-                        ),
-                        child: Text('Cancelar'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          onDonateConfirmed();
-                        },
-                        style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
-                          foregroundColor:
-                              WidgetStateProperty.all<Color>(Colors.white),
-                        ),
-                        child: Text('Donatiwi'),
-                      ),
-                    ],
-                  );
+                  return DonatiwiDialog();
                 },
               );
             },

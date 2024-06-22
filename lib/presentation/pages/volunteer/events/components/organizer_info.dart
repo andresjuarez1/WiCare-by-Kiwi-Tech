@@ -43,6 +43,7 @@ class OrganizerInfo extends StatelessWidget {
                         fontSize: 13,
                         fontWeight: FontWeight.w200,
                       ),
+                      textAlign: TextAlign.justify,
                     ),
                   ],
                 ),

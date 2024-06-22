@@ -46,10 +46,9 @@ class ProfilePage extends StatelessWidget {
                 radius: 50.0,
                 backgroundImage: AssetImage('assets/maranatha.jpg'),
               ),
-              SizedBox(height: 20),
               Align(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
+                  padding: EdgeInsets.only(left: 20.0),
                   child: Text(
                     'Iglesia de San Juan',
                     style: TextStyle(
@@ -61,7 +60,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 20),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Column(
@@ -93,7 +92,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                     SizedBox(height: 5),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
                       child: Divider(color: Color.fromARGB(255, 228, 228, 228)),
                     ),
                     Padding(
@@ -121,7 +120,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
                       child: Divider(color: Color.fromARGB(255, 228, 228, 228)),
                     ),
                     SizedBox(height: 5),
@@ -149,16 +148,62 @@ class ProfilePage extends StatelessWidget {
                         textAlign: TextAlign.justify,
                       ),
                     ),
-                    SizedBox(height: 15),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
                       child: Divider(color: Color.fromARGB(255, 228, 228, 228)),
                     ),
                     SizedBox(height: 5),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        'Datos bancarios',
+                        style: TextStyle(
+                          fontFamily: 'PoppinsRegular',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF5CA666),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Folio: 192039123',
+                            style: TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 14.5,
+                            ),
+                            textAlign: TextAlign.justify,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Banco: Banco Ejemplo',
+                            style: TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 14.5,
+                            ),
+                            textAlign: TextAlign.justify,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Número de cuenta: 1234567890',
+                            style: TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 14.5,
+                            ),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ],
+                      ),
+                    ),
+
                   ],
                 ),
               ),
-              SizedBox(height: 90),
             ],
           ),
         ),
