@@ -3,8 +3,9 @@ import 'components/navbar.dart';
 import 'components/custom_drawer.dart';
 import 'components/search_events.dart';
 import 'components/upcoming_events_carousel.dart';
-import 'components/attended_events_list.dart';
 import 'components/donation_part.dart';
+import 'components/new_events_carousel.dart';
+import '../newEvent/event.dart';
 import '../events/event.dart';
 
 class VolunteerPage extends StatelessWidget {
@@ -23,6 +24,24 @@ class VolunteerPage extends StatelessWidget {
       'image': 'assets/carrusel-image1.png',
       'title': 'Extinguir el fuego en el mactumatza 3',
       'subtitle': 'Organización 3'
+    },
+  ];
+
+  final List<Map<String, String>> newEvents = [
+    {
+      'image': 'assets/carrusel-image1.png',
+      'title': 'Nuevo evento 1',
+      'subtitle': 'Organización 4'
+    },
+    {
+      'image': 'assets/carrusel-image1.png',
+      'title': 'Nuevo evento 2',
+      'subtitle': 'Organización 5'
+    },
+    {
+      'image': 'assets/carrusel-image1.png',
+      'title': 'Nuevo evento 3',
+      'subtitle': 'Organización 6'
     },
   ];
 
@@ -56,6 +75,15 @@ class VolunteerPage extends StatelessWidget {
     );
   }
 
+  void _navigateToNewEvent(BuildContext context, String title) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => NewEventPage(eventTitle: title),
+      ),
+    );
+  }
+
   void _onDonateConfirmed() {
     print('Donación confirmada');
   }
@@ -64,7 +92,8 @@ class VolunteerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Navbar(),
-      drawer: CustomDrawer(),
+      drawer: CustomDrawer(
+          attendedEvents: attendedEvents),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
@@ -72,20 +101,24 @@ class VolunteerPage extends StatelessWidget {
             const SizedBox(height: 20),
             SearchEvents(
               onChanged: (value) {
+                // acción al cambiar el texto del campo de búsqueda
               },
             ),
+            const SizedBox(height: 10),
             UpcomingEventsCarousel(
               imgList: imgList,
               navigateToEvent: _navigateToEvent,
             ),
-            const SizedBox(height: 10),
-            AttendedEventsList(
-              attendedEvents: attendedEvents,
+            const SizedBox(height: 30),
+            NewEventsCarousel(
+              imgList: newEvents,
+              navigateToEvent: _navigateToNewEvent,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 30),
             FooterComponent(
               onDonateConfirmed: _onDonateConfirmed,
             ),
+            const SizedBox(height: 10),
           ],
         ),
       ),

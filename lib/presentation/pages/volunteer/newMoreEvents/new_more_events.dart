@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MoreEventsPage extends StatelessWidget {
+class NewMoreEventsPage extends StatelessWidget {
   final List<Map<String, String>> events = [
     {
       'title': 'Evento 1',
@@ -146,7 +146,6 @@ class EventItem extends StatelessWidget {
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 14,
-                    fontFamily: 'PoppinsRegular',
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -154,8 +153,8 @@ class EventItem extends StatelessWidget {
                   location,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontFamily: 'PoppinsRegular',
                     fontSize: 13,
+                    fontFamily: 'PoppinsRegular',
                   ),
                 ),
               ],

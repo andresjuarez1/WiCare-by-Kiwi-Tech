@@ -40,12 +40,16 @@ class ConfirmationDialog extends StatelessWidget {
             onConfirm();
             Navigator.of(context).pop();
           },
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
+          ),
           child: const Text(
-            'Sí',
+            'Confirmar',
             style: TextStyle(
-                color: Colors.green,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'PoppinsRegular'),
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'PoppinsRegular',
+            ),
           ),
         ),
       ],
