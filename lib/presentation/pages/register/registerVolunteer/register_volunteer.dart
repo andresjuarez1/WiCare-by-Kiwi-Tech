@@ -138,7 +138,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                         width: 180,
                       ),
                       SizedBox(height: 25.0),
-                      Text(
+                      const Text(
                         '¡Bienvenido, voluntario!',
                         style: TextStyle(
                           fontSize: 18.0,
@@ -146,7 +146,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 30.0),
+                      SizedBox(height: 20.0),
                       _buildLabel('Nombre completo'),
                       SizedBox(height: 5.0),
                       _buildTextField(
@@ -306,22 +306,22 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 40.0),
+                      SizedBox(height: 20.0),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () => _submitForm(context),
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
+                            backgroundColor: WidgetStateProperty.all<Color>(
                                 Color(0xFF2E8139)),
-                            shape: MaterialStateProperty.all<
+                            shape: WidgetStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
                             padding:
-                                MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                WidgetStateProperty.all<EdgeInsetsGeometry>(
                               EdgeInsets.symmetric(vertical: 13.0),
                             ),
                           ),
