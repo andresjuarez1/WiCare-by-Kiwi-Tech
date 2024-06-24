@@ -1,123 +1,112 @@
-import 'dart:convert';
+// lib/presentation/pages/register_volunteer_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart'; // Importa el paquete dotenv
+import '../../../../data/datasources/remote/user_remote_data_source.dart';
+import '../../../../data/repositories/user_repository_impl.dart';
+import '../../../../domain/entities/volunteer.dart';
+import '../../../../domain/use_cases/register_volunteer_user.dart';
 import '../../login/login_page.dart';
-
 class RegisterVolunteerPage extends StatefulWidget {
   @override
   _RegisterVolunteerPageState createState() => _RegisterVolunteerPageState();
 }
-
 class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _ageController = TextEditingController();
-  final TextEditingController _curpController = TextEditingController();
-  final TextEditingController _cellphoneController = TextEditingController();
-  final TextEditingController _postalController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  final List<String> _occupations = [
-    'Estudiante',
-    'Trabajador',
-    'Desempleado',
-    'Jubilado',
-    'Otro'
-  ];
-
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _ageController = TextEditingController();
+  final _curpController = TextEditingController();
+  final _cellphoneController = TextEditingController();
+  final _postalController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _occupations = ['Estudiante', 'Trabajador', 'Desempleado', 'Jubilado', 'Otro'];
   final Map<String, String> _genderMap = {
     'Masculino': 'm',
     'Femenino': 'f',
     'No binario': 'nb',
     'Prefiero no decir': 'Prefiero no decir',
   };
-
   String? _selectedOccupation;
   String? _selectedGenre;
   bool _termsAccepted = false;
-
-  Future<void> _submitForm(BuildContext context) async {
+  void _registerVolunteer() async {
+    print('Botón "Crear Cuenta" presionado');
     if (_formKey.currentState?.validate() ?? false) {
-      String name = _nameController.text;
-      String age = _ageController.text;
-      String curp = _curpController.text;
-      String cellphone = _cellphoneController.text;
-      String postal = _postalController.text;
-      String address = _addressController.text;
-      String occupation = _selectedOccupation ?? '';
-      String genre = _genderMap[_selectedGenre] ?? '';
-      String email = _emailController.text;
-      String password = _passwordController.text;
-
-      Map<String, dynamic> data = {
-        'name': name,
-        'email': email,
-        'password': password,
-        'curp': curp,
-        'occupation': occupation,
-        'age': age,
-        'postal': postal,
-        'cellphone': cellphone,
-        'address': address,
-        'genre': genre,
-      };
-
-      String body = json.encode(data);
-
-      Uri url = Uri.parse('${dotenv.env['API_URL']}/user/volunteer');
-
+      print('Formulario válido');
+      final volunteer = Volunteer(
+        name: _nameController.text,
+        age: _ageController.text,
+        curp: _curpController.text,
+        cellphone: _cellphoneController.text,
+        postal: _postalController.text,
+        address: _addressController.text,
+        occupation: _selectedOccupation ?? '',
+        genre: _selectedGenre ?? '',
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
       try {
-        print('Sending request to $url');
-        print('Request body: $body');
-
-        final response = await http.post(
-          url,
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: body,
+        print('Intentando registrar voluntario: ${volunteer.email}');
+        final remoteDataSource = UserRemoteDataSource(http.Client());
+        final repository = UserRepositoryImpl(remoteDataSource);
+        final registerVolunteerUseCase = RegisterVolunteerUseCase(repository);
+        await registerVolunteerUseCase.execute(volunteer);
+        print('Usuario registrado correctamente: ${volunteer.email}');
+        _showSuccessDialog();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
         );
-
-        print('Response status: ${response.statusCode}');
-        print('Response body: ${response.body}');
-
-        if (response.statusCode == 200) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LoginPage()),
-          );
-        } else {
-          throw Exception('Failed to register volunteer: ${response.body}');
-        }
-      } catch (e) {
-        print('Error: $e');
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Error'),
-              content: Text(
-                  'Hubo un problema al registrar el voluntario. Por favor, inténtalo de nuevo más tarde.'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Aceptar'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
+      } catch (error) {
+        print('Error al registrar usuario: $error');
+        _showErrorDialog(error.toString());
       }
     }
+    else{
+      print('Error al registrar usuario: no entra avalidar el form ');
+    }
   }
-
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Registro Exitoso'),
+          content: Text('Tu cuenta de voluntario ha sido creada exitosamente.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,21 +121,20 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 60.0),
                       Image.asset(
                         'assets/wicare-logo-inicio.png',
                         width: 180,
                       ),
                       SizedBox(height: 25.0),
-                      const Text(
-                        '¡Bienvenido, voluntario!',
+                      Text(
+                        '¡Bienvenido, voluntario nueva vista!',
                         style: TextStyle(
                           fontSize: 18.0,
                           color: Color(0xFF2E8139),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 20.0),
+                      SizedBox(height: 30.0),
                       _buildLabel('Nombre completo'),
                       SizedBox(height: 5.0),
                       _buildTextField(
@@ -306,22 +294,22 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20.0),
+                      SizedBox(height: 40.0),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () => _submitForm(context),
+                          onPressed: _registerVolunteer,
                           style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all<Color>(
+                            backgroundColor: MaterialStateProperty.all<Color>(
                                 Color(0xFF2E8139)),
-                            shape: WidgetStateProperty.all<
+                            shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
                             padding:
-                                WidgetStateProperty.all<EdgeInsetsGeometry>(
+                            MaterialStateProperty.all<EdgeInsetsGeometry>(
                               EdgeInsets.symmetric(vertical: 13.0),
                             ),
                           ),
@@ -334,9 +322,22 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 20.0),
                     ],
                   ),
                 ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 15,
+            left: 20,
+            right: 20,
+            child: Container(
+              width: double.infinity,
+              child: Image.asset(
+                'assets/progress-bar-volunteer3.png',
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -344,7 +345,6 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       ),
     );
   }
-
   Widget _buildLabel(String text) {
     return Row(
       children: [
@@ -359,13 +359,13 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       ],
     );
   }
-
-  Widget _buildTextField(
-      {required TextEditingController controller,
-      required String label,
-      bool obscureText = false,
-      TextInputType keyboardType = TextInputType.text,
-      String? Function(String?)? validator}) {
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    bool obscureText = false,
+    TextInputType keyboardType = TextInputType.text,
+    String? Function(String?)? validator,
+  }) {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
@@ -381,7 +381,6 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       validator: validator,
     );
   }
-
   Widget _buildOccupationDropdown() {
     return DropdownButtonFormField<String>(
       value: _selectedOccupation,
@@ -404,7 +403,6 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       ),
     );
   }
-
   Widget _buildGenderDropdown() {
     return DropdownButtonFormField<String>(
       value: _selectedGenre,
