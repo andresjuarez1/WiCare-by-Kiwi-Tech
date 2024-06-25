@@ -41,7 +41,8 @@ class _PostEventState extends State<PostEvent> {
       try {
         // Aquí puedes enviar el evento a donde sea necesario
         print('Creando evento:');
-        final String? token = await _getToken(); // Obtener el token
+        final String? token = await _getToken();
+        print(token);
         if (token == null) {
           print('Token no disponible');
           return;
@@ -50,6 +51,7 @@ class _PostEventState extends State<PostEvent> {
         final repository = EventRepositoryImpl(remoteDataSource);
         final createEventUseCase = CreateEventUseCase(repository);
         await createEventUseCase.execute(event);
+        print('evento creado');
       } catch (error) {
         print('Error al crear evento: $error');
       }

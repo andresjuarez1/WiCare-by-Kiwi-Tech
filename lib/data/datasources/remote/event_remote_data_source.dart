@@ -9,6 +9,7 @@ class EventRemoteDataSource {
   EventRemoteDataSource(this.client, this.token);
 
   Future<void> createEvent(EventModel eventModel) async {
+    print('estoy en source');
     final url = Uri.parse('http://3.212.131.198:9000/event');
     final headers = {
       'Content-Type': 'application/json',
