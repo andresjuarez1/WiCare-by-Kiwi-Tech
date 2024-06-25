@@ -22,7 +22,7 @@ class EventModel {
       'description': description,
       'hour': hour,
       'date': date,
-      'category': cathegory,
+      'cathegory': cathegory,
       'location': location,
     };
   }

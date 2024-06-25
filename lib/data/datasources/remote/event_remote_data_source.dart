@@ -8,27 +8,21 @@ class EventRemoteDataSource {
 
   EventRemoteDataSource(this.client, this.token);
 
-  Future<void> createEvent(EventModel eventModel) async {
-    print('estoy en source');
-    final url = Uri.parse('http://3.212.131.198:9000/event');
+  Future<void> createEvent(EventModel event) async {
+    // Define la URL del endpoint.
+    final url = Uri.parse('http://192.81.209.151:9000/event');
+
+    // Define los headers, incluyendo el token de autorización.
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer $token', // Agrega el token en el encabezado de autorización.
     };
 
-    final body = jsonEncode({
-      'name': eventModel.name,
-      'description': eventModel.description,
-      'hour': eventModel.hour,
-      'date': eventModel.date,
-      'cathegory': eventModel.cathegory,
-      'location': eventModel.location,
-    });
-
+    final body = jsonEncode(event.toJson());
     final response = await client.post(url, headers: headers, body: body);
 
-    if (response.statusCode != 201) {
-      throw Exception('Error al crear el evento');
+    if (response.statusCode != 200) { // Asegúrate de que el estado de respuesta esperado sea 201.
+      throw Exception('Failed to create event in source');
     }
   }
 }

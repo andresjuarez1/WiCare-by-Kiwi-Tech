@@ -42,7 +42,6 @@ class _PostEventState extends State<PostEvent> {
         // Aquí puedes enviar el evento a donde sea necesario
         print('Creando evento:');
         final String? token = await _getToken();
-        print(token);
         if (token == null) {
           print('Token no disponible');
           return;
