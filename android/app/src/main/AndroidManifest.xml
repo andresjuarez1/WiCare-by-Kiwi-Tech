@@ -3,6 +3,10 @@
         android:label="wicare"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher2">
+
+            <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyBpeU9kbClqV677GBKiWMcwvcenM-oxwCQ"/>
+               
         <activity
             android:name=".MainActivity"
             android:exported="true"

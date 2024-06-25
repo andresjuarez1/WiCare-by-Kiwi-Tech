@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../map/map.dart';
 import 'components/navbar.dart';
 import 'components/custom_drawer.dart';
 import 'components/search_events.dart';
@@ -103,6 +104,16 @@ class VolunteerPage extends StatelessWidget {
               onChanged: (value) {
                 // acción al cambiar el texto del campo de búsqueda
               },
+            ),
+            //boton para ir a otra pagina
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MapPage()),
+                );
+              },
+              child: Text('Ir a Mapa'),
             ),
             const SizedBox(height: 10),
             UpcomingEventsCarousel(
