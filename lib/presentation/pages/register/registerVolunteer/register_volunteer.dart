@@ -7,6 +7,7 @@ import '../../../../data/repositories/user_repository_impl.dart';
 import '../../../../domain/entities/volunteer.dart';
 import '../../../../domain/use_cases/register_volunteer_user.dart';
 import '../../login/login_page.dart';
+
 class RegisterVolunteerPage extends StatefulWidget {
   @override
   _RegisterVolunteerPageState createState() => _RegisterVolunteerPageState();

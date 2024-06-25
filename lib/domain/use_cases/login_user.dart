@@ -2,17 +2,36 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../entities/users.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginUser {
   Future<User?> call(String email, String password) async {
     final response = await http.post(
-      Uri.parse('http://146.190.64.233:3000/user'),
+      Uri.parse('http://192.81.209.151:9000/user'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
     );
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body)['data'];
+      print ('estoy aqui');
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      final responseData = jsonDecode(response.body);
+
+      final String? token = responseData['token'];
+      if (token == null) {
+        print('Token no encontrado en la respuesta.');
+        return null;
+      }
+
+      // Guardar el token en SharedPreferences
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      await sharedPreferences.setString('token', token);
+      print('Token guardado en SharedPreferences: $token');
+
+      final data = responseData['data'];
+
       return User(email: email, role: data['role']);
     } else {
       return null;

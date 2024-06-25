@@ -4,6 +4,7 @@ import '../volunteer/landing/landingVolunteer.dart';
 import '../company/landing/company_landing.dart';
 import '../asociation/landing/asociation_landing.dart';
 import '../../../../domain/use_cases/login_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
