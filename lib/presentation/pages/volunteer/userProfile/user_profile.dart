@@ -39,8 +39,6 @@ class _ProfilePageState extends State<ProfilePage> {
       print('Error: No se encontró userId o token en SharedPreferences');
       return;
     }
-
-    // Llamar al caso de uso para obtener el perfil del usuario
     setState(() {
       _userProfileFuture = _getVolunteerProfileUseCase(userId, token);
     });

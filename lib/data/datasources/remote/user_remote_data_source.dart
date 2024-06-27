@@ -132,8 +132,9 @@ class UserRemoteDataSource {
     }
   }
   Future<Map<String, dynamic>> getProfileAssociation(int userId, String token) async {
-    final String url = 'http://192.81.209.151:9000/user/volunteer/$userId';
-
+    print(userId);
+    final String url = 'http://192.81.209.151:9000/user/association/$userId';
+    print('estpy aqui');
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -142,11 +143,11 @@ class UserRemoteDataSource {
           'Authorization': 'Bearer $token',
         },
       );
-
+        print(response.body);
       if (response.statusCode == 200) {
         return jsonDecode(response.body)['data'];
       } else {
-        throw Exception('Failed to get volunteer profile');
+        throw Exception('Failed to get association profile');
       }
     } catch (e) {
       throw Exception('Error in request: $e');

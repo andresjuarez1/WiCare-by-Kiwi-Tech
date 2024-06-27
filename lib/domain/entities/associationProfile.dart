@@ -3,15 +3,15 @@
 class AssociationProfile {
   final String name;
   final String cellphone;
-  final String occupation;
-  final String genre;
+  final String location;
+  final String description;
   final String email;
 
   AssociationProfile({
     required this.name,
     required this.cellphone,
-    required this.occupation,
-    required this.genre,
+    required this.location,
+    required this.description,
     required this.email,
   });
 
@@ -19,8 +19,8 @@ class AssociationProfile {
     return AssociationProfile(
       name: json['name'],
       cellphone: json['cellphone'],
-      occupation: json['occupation'],
-      genre: json['genre'],
+      location: json['location'],
+      description: json['description'],
       email: json['email'],
     );
   }

@@ -6,7 +6,7 @@ class GetassociationprofileUseCase {
 
   GetassociationprofileUseCase(this.repository);
 
-  Future<Future<AssociationProfile>> call(int userId, String token) async {
+  Future<AssociationProfile> call(int userId, String token) async {
     return repository.getAssociationProfile(userId, token);
   }
 }

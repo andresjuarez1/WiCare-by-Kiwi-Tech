@@ -2,15 +2,15 @@
 class ProfileAssociationModel {
   final String name;
   final String cellphone;
-  final String occupation;
-  final String genre;
+  final String location;
+  final String description;
   final String email;
 
   ProfileAssociationModel({
     required this.name,
     required this.cellphone,
-    required this.occupation,
-    required this.genre,
+    required this.location,
+    required this.description,
     required this.email,
   });
 
@@ -18,8 +18,8 @@ class ProfileAssociationModel {
     return ProfileAssociationModel(
       name: json['name'],
       cellphone: json['cellphone'],
-      occupation: json['occupation'],
-      genre: json['genre'],
+      location: json['location'],
+      description: json['description'],
       email: json['email'],
     );
   }
@@ -28,8 +28,8 @@ class ProfileAssociationModel {
     return {
       'name': name,
       'cellphone': cellphone,
-      'occupation': occupation,
-      'genre': genre,
+      'occupation': location,
+      'description': description,
       'email': email,
     };
   }

@@ -8,8 +8,8 @@ ProfileAssociationModel profileToProfileModel(AssociationProfile profile) {
   return ProfileAssociationModel(
     name: profile.name,
     cellphone: profile.cellphone,
-    occupation: profile.occupation,
-    genre: profile.genre,
+    location: profile.location,
+    description: profile.description,
     email: profile.email,
   );
 }
@@ -19,8 +19,8 @@ AssociationProfile profileModelToProfile(ProfileAssociationModel profileModel) {
   return AssociationProfile(
     name: profileModel.name,
     cellphone: profileModel.cellphone,
-    occupation: profileModel.occupation,
-    genre: profileModel.genre,
+    location: profileModel.location,
+    description: profileModel.description,
     email: profileModel.email,
   );
 }
