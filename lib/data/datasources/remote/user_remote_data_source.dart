@@ -63,20 +63,6 @@ class UserRemoteDataSource {
       throw Exception('Failed to register association in user_remote');
     }
   }
-  /*Future<void> getProfileAssociation(ProfileModel profile) async {
-    final response = await client.get(
-      Uri.parse('http://192.81.209.151:9000/user/association'),
-      headers: {'Content-Type': 'application/json'},
-
-    );
-    print(response.body);
-    print(profile.toJson());
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to register association in user_remote');
-    }
-  }*/
-
   Future<void> getProfileVolunteer2(int userId, String token) async {
     final String url = 'http://192.81.209.151:9000/user/volunteer/$userId';
     try {
@@ -121,5 +107,49 @@ class UserRemoteDataSource {
       throw Exception('Error in request: $e');
     }
   }
+  Future<void> getProfileAssociation2(int userId, String token) async {
+    final String url = 'http://192.81.209.151:9000/user/association/$userId';
 
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Perfil de la asociación:');
+        print(data);
+      } else {
+        print('Error: ${response.statusCode}');
+        print('Mensaje de error: ${response.body}');
+      }
+    } catch (e) {
+      print('Error en la solicitud: $e');
+    }
+  }
+  Future<Map<String, dynamic>> getProfileAssociation(int userId, String token) async {
+    final String url = 'http://192.81.209.151:9000/user/volunteer/$userId';
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body)['data'];
+      } else {
+        throw Exception('Failed to get volunteer profile');
+      }
+    } catch (e) {
+      throw Exception('Error in request: $e');
+    }
+  }
 }

@@ -7,6 +7,6 @@ class GetvolunteerprofileUseCase {
   GetvolunteerprofileUseCase(this.repository);
 
   Future<VolunteerProfile> call(int userId, String token) async {
-    return repository.getUserProfile(userId, token);
+    return repository.getVolunteerProfile(userId, token);
   }
 }

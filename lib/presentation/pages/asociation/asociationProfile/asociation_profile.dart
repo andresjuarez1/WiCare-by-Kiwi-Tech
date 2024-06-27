@@ -1,7 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/domain/entities/associationProfile.dart';
+import 'package:locura1/domain/use_cases/getAssociationProfile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../editProfile/edit_profile.dart';
+import 'package:http/http.dart' as http;
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  late final GetassociationprofileUseCase _getVolunteerProfileUseCase;
+  late Future<AssociationProfile> _userProfileFuture;
+  @override
+  void initState() {
+    super.initState();
+    _getProfile();
+  }
+  Future <void> _getProfile() async {
+    print('Botón "Obtener info de empresa" presionado');
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    final int? userId = prefs.getInt('userId');
+    final userRemoteDataSource = UserRemoteDataSource(http.Client());
+    if (token != null && userId != null) {
+      final profile = await userRemoteDataSource.getProfileAssociation2(userId, token);
+      print('Perfil del usuario fin:');
+
+    } else {
+      throw Exception('Token o userId no encontrados en SharedPreferences');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +46,7 @@ class ProfilePage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: const Center(
+        title: Center(
           child: Text(
             'Mi asociación',
             style: TextStyle(
@@ -38,7 +70,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(
+      body:  Center(
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -197,6 +229,11 @@ class ProfilePage extends StatelessWidget {
                             ),
                             textAlign: TextAlign.justify,
                           ),
+                          ElevatedButton(
+                            onPressed: _getProfile,
+                            child: Text('Obtener info'),
+                          ),
+
                         ],
                       ),
                     ),
