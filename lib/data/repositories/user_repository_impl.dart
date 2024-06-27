@@ -3,10 +3,12 @@ import 'package:locura1/data/mappers/association_mappers.dart';
 import 'package:locura1/domain/entities/volunteer.dart';
 import 'package:locura1/domain/entities/association.dart';
 
+import '../../domain/entities/volunteerProfile.dart';
 import '../../domain/entities/users.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../datasources/remote/user_remote_data_source.dart';
 import '../mappers/volunteer_mappers.dart';
+import '../models/volunteerProfile_model.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource remoteDataSource;
@@ -28,4 +30,11 @@ class UserRepositoryImpl implements UserRepository {
     final associationModel = associationToAssociationModel(association);
     await remoteDataSource.registerAssociation(associationModel);
   }
+  @override
+  Future<VolunteerProfile> getUserProfile(int userId, String token) async {
+    final profileData = await remoteDataSource.getProfileVolunteer(userId, token);
+    return VolunteerProfile.fromJson(profileData);
+  }
+
+
 }

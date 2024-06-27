@@ -106,6 +106,10 @@ class LoginPage extends StatelessWidget {
                         horizontal: 16.0,
                       ),
                     ),
+                    enableInteractiveSelection: false,
+                    autocorrect: false, // Desactiva la autocorrección
+                    enableSuggestions: false,// Desactiva las sugerencias
+                    autofillHints: null, // Evita el autocompletado
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, ingresa tu correo electrónico';

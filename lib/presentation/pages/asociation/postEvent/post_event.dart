@@ -21,6 +21,7 @@ class _PostEventState extends State<PostEvent> {
   String? _selectedCategories;
   DateTime _selectedDate = DateTime.now();
   TimeOfDay? _selectedTime;
+
   Future<String?> _getToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');

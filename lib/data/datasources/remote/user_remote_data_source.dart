@@ -1,6 +1,7 @@
 // lib/data/datasources/remote/user_remote_data_source.dart
 import 'package:http/http.dart' as http;
 import 'package:locura1/data/models/association_model.dart';
+import 'package:locura1/data/models/volunteerProfile_model.dart';
 import 'dart:convert';
 
 import '../../models/user_model.dart';
@@ -11,7 +12,6 @@ class UserRemoteDataSource {
   final http.Client client;
 
   UserRemoteDataSource(this.client);
-
   Future<UserModel> login(String email, String password) async {
     final response = await client.post(
       Uri.parse('http://192.81.209.151:9000/user'),
@@ -39,7 +39,6 @@ class UserRemoteDataSource {
       throw Exception('Failed to login');
     }
   }
-
   Future<void> registerVolunteer(VolunteerModel volunteer) async {
     final response = await client.post(
       Uri.parse('http://192.81.209.151:9000/user/volunteer'),
@@ -64,4 +63,63 @@ class UserRemoteDataSource {
       throw Exception('Failed to register association in user_remote');
     }
   }
+  /*Future<void> getProfileAssociation(ProfileModel profile) async {
+    final response = await client.get(
+      Uri.parse('http://192.81.209.151:9000/user/association'),
+      headers: {'Content-Type': 'application/json'},
+
+    );
+    print(response.body);
+    print(profile.toJson());
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to register association in user_remote');
+    }
+  }*/
+
+  Future<void> getProfileVolunteer2(int userId, String token) async {
+    final String url = 'http://192.81.209.151:9000/user/volunteer/$userId';
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Perfil del usuario:');
+        print(data);
+      } else {
+        print('Error: ${response.statusCode}');
+        print('Mensaje de error: ${response.body}');
+      }
+    } catch (e) {
+      print('Error en la solicitud: $e');
+    }
+  }
+  Future<Map<String, dynamic>> getProfileVolunteer(int userId, String token) async {
+    final String url = 'http://192.81.209.151:9000/user/volunteer/$userId';
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body)['data'];
+      } else {
+        throw Exception('Failed to get volunteer profile');
+      }
+    } catch (e) {
+      throw Exception('Error in request: $e');
+    }
+  }
+
 }
