@@ -4,7 +4,6 @@ import '../volunteer/landing/landingVolunteer.dart';
 import '../company/landing/company_landing.dart';
 import '../asociation/landing/asociation_landing.dart';
 import '../../../../domain/use_cases/login_user.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -14,40 +13,14 @@ class LoginPage extends StatelessWidget {
 
   void _submitForm(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      String email = _emailController.text;
-      String password = _passwordController.text;
-
-      final user = await _loginUser.call(email, password);
-
-      if (user != null) {
-        final data = user.email;
-        String role = user.role;
-
-        if (role == 'volunteer') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => VolunteerPage()),
-          );
-        } else if (role == 'company') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => CompanyLandingPage()),
-          );
-        } else if (role == 'association') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => AssociationLandingPage()),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Usuario desconocido')),
-          );
-        }
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: Credenciales incorrectas')),
-        );
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AssociationLandingPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: Credenciales incorrectas')),
+      );
     }
   }
 
@@ -159,13 +132,13 @@ class LoginPage extends StatelessWidget {
                       onPressed: () => _submitForm(context),
                       style: ButtonStyle(
                         backgroundColor:
-                            WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
-                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            MaterialStateProperty.all<Color>(Color(0xFF2E8139)),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                           EdgeInsets.symmetric(vertical: 13.0),
                         ),
                       ),
