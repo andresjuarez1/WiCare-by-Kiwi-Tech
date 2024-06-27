@@ -25,4 +25,28 @@ class EventRemoteDataSource {
       throw Exception('Failed to create event in source');
     }
   }
+  Future<void> getAllEvents(token ) async {
+    final String url = 'http://192.81.209.151:9000/event';
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Eventos');
+        print(data);
+      } else {
+        print('Error: ${response.statusCode}');
+        print('Mensaje de error: ${response.body}');
+      }
+    } catch (e) {
+      print('Error en la solicitud: $e');
+    }
+  }
 }

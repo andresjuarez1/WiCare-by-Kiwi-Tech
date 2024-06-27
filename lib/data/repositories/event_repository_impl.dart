@@ -14,4 +14,5 @@ class EventRepositoryImpl implements EventRepository {
     final eventModel = eventToEventModel(event);
     await remoteDataSource.createEvent(eventModel);
   }
+
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../data/datasources/remote/event_remote_data_source.dart';
 import 'components/navbar.dart';
 import 'components/custom_drawer.dart';
 import 'components/search_events.dart';
@@ -7,8 +9,25 @@ import 'components/donation_part.dart';
 import 'components/new_events_carousel.dart';
 import '../newEvent/event.dart';
 import '../events/event.dart';
+import 'package:http/http.dart' as http;
 
 class VolunteerPage extends StatelessWidget {
+  Future <void> _getProfile() async {
+    print('Botón "Obtener eventos');
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    print(token);
+
+    if (token != null ) {
+      final EventRemoteDataSource eventRemoteDataSource = EventRemoteDataSource(http.Client(), token);
+      await eventRemoteDataSource.getAllEvents(token);
+      print('Eventos todos');
+
+    } else {
+      throw Exception('Token o userId no encontrados en SharedPreferences');
+    }
+  }
+
   final List<Map<String, String>> imgList = [
     {
       'image': 'assets/carrusel-image1.png',
@@ -98,6 +117,10 @@ class VolunteerPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            ElevatedButton(
+              onPressed: _getProfile,
+              child: Text('Obtener info'),
+            ),
             const SizedBox(height: 20),
             SearchEvents(
               onChanged: (value) {
