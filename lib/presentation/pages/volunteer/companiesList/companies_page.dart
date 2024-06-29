@@ -55,7 +55,6 @@ class CompaniesPage extends StatelessWidget {
                     const SizedBox(width: 20),
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 2.0), 
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       child: ClipRRect(

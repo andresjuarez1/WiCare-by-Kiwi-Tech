@@ -47,7 +47,6 @@ class AttendedEventsPage extends StatelessWidget {
                   return EventItem(
                     title: attendedEvents[index]['title']!,
                     location: attendedEvents[index]['location']!,
-                    description: attendedEvents[index]['description']!,
                     image: attendedEvents[index]['image']!,
                   );
                 },
@@ -64,13 +63,11 @@ class AttendedEventsPage extends StatelessWidget {
 class EventItem extends StatelessWidget {
   final String title;
   final String location;
-  final String description;
   final String image;
 
   EventItem({
     required this.title,
     required this.location,
-    required this.description,
     required this.image,
   });
 
@@ -119,13 +116,7 @@ class EventItem extends StatelessWidget {
                     fontSize: 14,
                   ),
                 ),
-                Text(
-                  description,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                ),
+
               ],
             ),
           ),

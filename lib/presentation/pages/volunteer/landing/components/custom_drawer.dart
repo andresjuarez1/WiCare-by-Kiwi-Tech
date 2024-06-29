@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../company/assistedEvents/attended_events_page.dart';
+import '../../../volunteer/assistedEvents/attended_events_page.dart';
 import '../../../login/login_page.dart';
 import '../../companiesList/companies_page.dart';
 

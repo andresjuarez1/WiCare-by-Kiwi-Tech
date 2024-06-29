@@ -31,58 +31,46 @@ class VolunteerPage extends StatelessWidget {
   final List<Map<String, String>> imgList = [
     {
       'image': 'assets/carrusel-image1.png',
-      'title': 'Extinguir el fuego en el mactumatza 1',
-      'subtitle': 'Organización 1'
+      'title': 'Extinguir el fuego en el mactumatza ',
+      'subtitle': 'Iglesia del nazareno'
     },
     {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Extinguir el fuego en el mactumatza 2',
-      'subtitle': 'Organización 2'
-    },
-    {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Extinguir el fuego en el mactumatza 3',
-      'subtitle': 'Organización 3'
+      'image': 'assets/madres.jpg',
+      'title': 'Día de las madres',
+      'subtitle': 'Casa hogar "Nueva vida"'
     },
   ];
 
   final List<Map<String, String>> newEvents = [
     {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Nuevo evento 1',
-      'subtitle': 'Organización 4'
+      'image': 'assets/parque.jpg',
+      'title': 'Pintar parque de pluma de oro',
+      'subtitle': 'Nueva alejandría'
     },
     {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Nuevo evento 2',
-      'subtitle': 'Organización 5'
+      'image': 'assets/dia-niños.jpg',
+      'title': 'Día del niño',
+      'subtitle': 'Casa hogar "Nueva vida"'
     },
     {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Nuevo evento 3',
-      'subtitle': 'Organización 6'
+      'image': 'assets/perro.jpg',
+      'title': 'Cuidado de perros abandonados',
+      'subtitle': 'Organización perruna'
     },
   ];
 
   final List<Map<String, String>> attendedEvents = [
     {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Evento Asistido 1',
-      'location': 'Lugar 1',
-      'description': 'Descripción del evento asistido 1'
+      'image': 'assets/basura.jpg',
+      'title': 'Recoger basura en el río',
+      'location': 'Rio nilo',
     },
     {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Evento Asistido 2',
-      'location': 'Lugar 2',
-      'description': 'Descripción del evento asistido 2'
+      'image': 'assets/escuela.jpg',
+      'title': 'Limpiar escuela primaria',
+      'location': 'Escuela primaria "Niños héroes"',
     },
-    {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Evento Asistido 3',
-      'location': 'Lugar 3',
-      'description': 'Descripción del evento asistido 3'
-    },
+
   ];
 
   void _navigateToEvent(BuildContext context, String title) {
@@ -117,14 +105,13 @@ class VolunteerPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ElevatedButton(
-              onPressed: _getProfile,
-              child: Text('Obtener info'),
-            ),
+            // ElevatedButton(
+            //   onPressed: _getProfile,
+            //   child: Text('Obtener info'),
+            // ),
             const SizedBox(height: 20),
             SearchEvents(
               onChanged: (value) {
-                // acción al cambiar el texto del campo de búsqueda
               },
             ),
             const SizedBox(height: 10),

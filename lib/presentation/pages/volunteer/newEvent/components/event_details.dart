@@ -22,7 +22,7 @@ class EventDetails extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vel pretium libero. Donec sit amet lacus sit amet orci tristique eleifend sed in velit. Sed a lobortis ipsum, non finibus justo. Donec ac gravida justo. ',
+            'Día del niño en la asociación nueva vida, se realizará una actividad para todos los niños de la asociación, se les dará un pequeño detalle y se les realizará una actividad de relajación. Se necesita voluntarios para la organización del evento.',
             style: TextStyle(
               fontSize: 15.5,
               fontWeight: FontWeight.w200,

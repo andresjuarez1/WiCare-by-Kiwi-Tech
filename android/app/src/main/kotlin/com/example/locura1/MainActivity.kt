@@ -8,6 +8,5 @@ class MainActivity: FlutterActivity() {
         super.onCreate(savedInstanceState)
 
         // Desactiva las capturas de pantalla
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
     }
 }

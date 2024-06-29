@@ -14,10 +14,12 @@ class EventHeader extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         Image.asset(
-          'assets/carrusel-image1.png',
+          'assets/madres.jpg',
           fit: BoxFit.cover,
+          color: Colors.black.withOpacity(0.5),
+          colorBlendMode: BlendMode.darken,
         ),
-        Positioned(
+        Positioned(          
           left: screenWidth * 0.05,
           right: screenWidth * 0.05,
           bottom: screenHeight * 0.40,

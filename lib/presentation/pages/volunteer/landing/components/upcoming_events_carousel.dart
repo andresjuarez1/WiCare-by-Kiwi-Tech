@@ -68,11 +68,15 @@ class UpcomingEventsCarousel extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                         child: Image.asset(
                           item['image']!,
+                          color: Colors.black.withOpacity(0.4),
+                          colorBlendMode: BlendMode.darken,
                           fit: BoxFit.cover,
                           width: 1000,
+                          height: 200.0,
                         ),
                       ),
                       Positioned(
+                        width: 250.0,
                         bottom: 40.0,
                         left: 20.0,
                         child: Container(
