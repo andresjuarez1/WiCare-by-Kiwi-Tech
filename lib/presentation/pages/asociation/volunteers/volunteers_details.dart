@@ -69,7 +69,7 @@ class VolunteerDetailsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     const Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet.',
+                      'Samuel garcía presidente de nuevo león quiere ayudar a la comunidad',
                       style: TextStyle(
                         fontFamily: 'PoppinsRegular',
                         fontSize: 14.5,
@@ -89,7 +89,7 @@ class VolunteerDetailsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     const Text(
-                      'hola@hola.com',
+                      'samuel@gmail.com',
                       style: TextStyle(
                         fontFamily: 'PoppinsRegular',
                         fontSize: 14.5,

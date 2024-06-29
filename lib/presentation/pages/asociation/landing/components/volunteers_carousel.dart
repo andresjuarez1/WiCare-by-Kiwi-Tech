@@ -77,6 +77,7 @@ class VolunteersCarousel extends StatelessWidget {
                           item['image']!,
                           fit: BoxFit.cover,
                           width: 1000,
+                          height: 200.0,
                         ),
                       ),
                       Container(

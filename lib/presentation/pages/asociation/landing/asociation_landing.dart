@@ -13,45 +13,39 @@ import 'components/custom_drawer.dart';
 class AssociationLandingPage extends StatelessWidget {
   final List<Map<String, String>> imgList = [
     {
-      'image': 'assets/messi.jpg',
-      'title': 'Voluntario 1',
+      'image': 'assets/mau.jpg',
+      'title': 'Mau',
     },
     {
       'image': 'assets/messi.jpg',
-      'title': 'Voluntario 2',
+      'title': 'Leo',
     },
     {
-      'image': 'assets/messi.jpg',
-      'title': 'Voluntario 3',
+      'image': 'assets/samuel.jpg',
+      'title': 'Samuel',
     },
   ];
 
   final List<Map<String, String>> pastEvents = [
     {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Evento Pasado 1',
-      'location': 'Lugar 1',
-      'description': 'Descripción del evento pasado 1'
+      'image': 'assets/dia-niños.jpg',
+      'title': 'Día del niño',
+      'location': 'Asilo Corazón',
+      'description': ''
     },
     {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Evento Pasado 2',
-      'location': 'Lugar 2',
+      'image': 'assets/abuelitos.jpg',
+      'title': 'Pintar con los abuelitos',
+      'location': 'Asilo Corazón',
       'description': 'Descripción del evento pasado 2'
-    },
-    {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Evento Pasado 3',
-      'location': 'Lugar 3',
-      'description': 'Descripción del evento pasado 3'
     },
   ];
 
   final List<Map<String, String>> eventActiveImg = [
     {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Extinguir el fuego del mactumactza',
-      'description': 'Descripción del evento activo'
+      'image': 'assets/madres.jpg',
+      'title': 'Día de las madres',
+      'description': 'Asilo corazón'
     }
   ];
 

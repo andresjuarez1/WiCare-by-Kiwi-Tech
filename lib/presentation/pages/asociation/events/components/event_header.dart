@@ -14,8 +14,11 @@ class EventHeader extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         Image.asset(
-          'assets/carrusel-image1.png',
+          'assets/madres.jpg',
           fit: BoxFit.cover,
+        //opacar la imagen
+          color: Colors.black.withOpacity(0.4),
+          colorBlendMode: BlendMode.darken,
         ),
         Positioned(
           left: screenWidth * 0.05,

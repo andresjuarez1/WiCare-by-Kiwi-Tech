@@ -42,6 +42,10 @@ class ActiveEvents extends StatelessWidget {
                       image: DecorationImage(
                         image: AssetImage(event['image']!),
                         fit: BoxFit.cover,
+                        //opacar la imagen
+                        colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.3), BlendMode.darken
+                        ),
                       ),
                     ),
                     child: Padding(

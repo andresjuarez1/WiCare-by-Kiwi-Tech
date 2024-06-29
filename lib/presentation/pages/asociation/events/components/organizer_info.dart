@@ -37,7 +37,7 @@ class OrganizerInfo extends StatelessWidget {
                     ),
                     SizedBox(height: 5),
                     Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                      'Encargado de la asociación corazon',
                       style: TextStyle(
                         fontFamily: 'PoppinsRegular',
                         fontSize: 13,

@@ -22,7 +22,7 @@ class EventDetails extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vel pretium libero. Donec sit amet lacus sit amet orci tristique eleifend sed in velit. Sed a lobortis ipsum, non finibus justo. Donec ac gravida justo. ',
+            'Día de las madres es una actividad que se realiza cada año en la asociación corazón, en la cual se celebra a todas las madres de la comunidad, se les brinda un espacio de esparcimiento y se les obsequian regalos. La actividad se realiza en el mes de mayo y se lleva a cabo en las instalaciones de la asociación.',
             style: TextStyle(
               fontSize: 15.5,
               fontWeight: FontWeight.w200,

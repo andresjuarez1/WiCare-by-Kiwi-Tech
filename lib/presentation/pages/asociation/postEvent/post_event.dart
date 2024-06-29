@@ -17,7 +17,14 @@ class _PostEventState extends State<PostEvent> {
   final _eventNameController = TextEditingController();
   final _location = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _categories = ['Ambiental', 'Social', 'Educativa', 'Sanitaria', 'Cultural', 'Animales'];
+  final _categories = [
+    'Ambiental',
+    'Social',
+    'Educativa',
+    'Sanitaria',
+    'Cultural',
+    'Animales'
+  ];
   String? _selectedCategories;
   DateTime _selectedDate = DateTime.now();
   TimeOfDay? _selectedTime;
@@ -34,10 +41,12 @@ class _PostEventState extends State<PostEvent> {
       final event = Event(
         name: _eventNameController.text,
         description: _descriptionController.text,
-        hour: _selectedTime != null ? '${_selectedTime!.hour}:${_selectedTime!.minute}' : '',
+        hour: _selectedTime != null
+            ? '${_selectedTime!.hour}:${_selectedTime!.minute}'
+            : '',
         date: _selectedDate.toString().substring(0, 10),
         cathegory: _selectedCategories ?? '',
-        location:_location.text,
+        location: _location.text,
       );
       try {
         // Aquí puedes enviar el evento a donde sea necesario
@@ -118,7 +127,7 @@ class _PostEventState extends State<PostEvent> {
         title: const Padding(
           padding: EdgeInsets.only(left: 40.0),
           child: Text(
-            'Crear Evento XD',
+            'Crear Evento',
             style: TextStyle(
               fontFamily: 'PoppinsRegular',
               fontSize: 22,
@@ -298,8 +307,7 @@ class _PostEventState extends State<PostEvent> {
                     return null;
                   },
                 ),
-                Text('Categoria'),
-                SizedBox(height: 5),
+                SizedBox(height: 25), // Añadir un espacio aquí
                 _buildCategoryDropdown(),
                 SizedBox(height: 25),
                 Center(
@@ -372,11 +380,28 @@ class _PostEventState extends State<PostEvent> {
         );
       }).toList(),
       decoration: InputDecoration(
-        border: OutlineInputBorder(
+        labelText: 'Categoría',
+        labelStyle: const TextStyle(
+          fontFamily: 'PoppinsRegular',
+          fontSize: 15.0,
+          color: Colors.black,
+        ),
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Color(0xFF5CA666)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Color(0xFF5CA666)),
         ),
         contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
       ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Por favor selecciona una categoría';
+        }
+        return null;
+      },
     );
   }
 }

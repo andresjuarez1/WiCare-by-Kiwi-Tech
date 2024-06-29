@@ -34,6 +34,7 @@ class CustomDrawer extends StatelessWidget {
                 );
               },
             ),
+            SizedBox(height: 450.0),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text('Cerrar sesión'),
