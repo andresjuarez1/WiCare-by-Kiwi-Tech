@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../../../domain/entities/miniEvent.dart';
+import '../../mappers/mini_events_mappers.dart';
 import '../../models/event_model.dart';
+import '../../models/mini_event_model.dart';
 
 class EventRemoteDataSource {
   final http.Client client;
@@ -47,6 +50,34 @@ class EventRemoteDataSource {
       }
     } catch (e) {
       print('Error en la solicitud: $e');
+    }
+  }
+  Future<List<MiniEvent>> getAllMiniEvents() async {
+    final url = Uri.parse('http://192.81.209.151:9000/event');
+
+    try {
+      final response = await client.get(url, headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        print('Eventos recibidos: $data');
+
+        // Convierte la respuesta JSON a una lista de MiniEventModel.
+        final events = data.map((event) => MiniEventModel.fromJson(event)).toList();
+
+        // Convierte la lista de MiniEventModel a una lista de MiniEvent usando el mapper.
+        return events.map((eventModel) => miniEventModelToMiniEvent(eventModel)).toList();
+      } else {
+        print('Error al obtener los eventos: ${response.statusCode}');
+        print('Mensaje de error: ${response.body}');
+        throw Exception('Failed to get events: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error en la solicitud: $e');
+      throw Exception('Failed to get events: $e');
     }
   }
 }

@@ -27,9 +27,9 @@ class LoginUser {
       // Guardar el token en SharedPreferences
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       await sharedPreferences.setString('token', token);
-      print('Token guardado en SharedPreferences: $token');
+      //print('Token guardado en SharedPreferences: $token');
       await sharedPreferences.setInt('userId', userId);
-      print('ID guardado en SharedPreferences: $userId');
+      //print('ID guardado en SharedPreferences: $userId');
 
       final data = responseData['data'];
 

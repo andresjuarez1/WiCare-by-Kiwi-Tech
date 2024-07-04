@@ -1,22 +1,7 @@
-//associationName
-
-// lib/domain/entities/volunteer_profile.dart
-
-class Minievent {
+// domain/entities/mini_event.dart
+class MiniEvent {
   final String name;
   final String associationName;
 
-  Minievent({
-    required this.name,
-    required this.associationName,
-
-  });
-
-  factory Minievent.fromJson(Map<String, dynamic> json) {
-    return Minievent(
-      name: json['name'],
-      associationName: json['associationName'],
-
-    );
-  }
+  MiniEvent({required this.name, required this.associationName});
 }

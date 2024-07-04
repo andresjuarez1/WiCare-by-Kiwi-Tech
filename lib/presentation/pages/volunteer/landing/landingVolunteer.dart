@@ -1,65 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../data/datasources/remote/event_remote_data_source.dart';
+import '../../../../domain/entities/miniEvent.dart';
 import 'components/navbar.dart';
 import 'components/custom_drawer.dart';
 import 'components/search_events.dart';
 import 'components/upcoming_events_carousel.dart';
 import 'components/donation_part.dart';
-import 'components/new_events_carousel.dart';
+import 'components/new_carousel.dart';
 import '../newEvent/event.dart';
 import '../events/event.dart';
 import 'package:http/http.dart' as http;
 
-class VolunteerPage extends StatelessWidget {
-  Future <void> _getProfile() async {
-    print('Botón "Obtener eventos');
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
-    print(token);
+class VolunteerPage extends StatefulWidget {
+  @override
+  _VolunteerPageState createState() => _VolunteerPageState();
+}
 
-    if (token != null ) {
-      final EventRemoteDataSource eventRemoteDataSource = EventRemoteDataSource(http.Client(), token);
-      await eventRemoteDataSource.getAllEvents(token);
-      print('Eventos todos');
-
-    } else {
-      throw Exception('Token o userId no encontrados en SharedPreferences');
-    }
-  }
-
-  final List<Map<String, String>> imgList = [
-    {
-      'image': 'assets/carrusel-image1.png',
-      'title': 'Extinguir el fuego en el mactumatza ',
-      'subtitle': 'Iglesia del nazareno'
-    },
-    {
-      'image': 'assets/madres.jpg',
-      'title': 'Día de las madres',
-      'subtitle': 'Casa hogar "Nueva vida"'
-    },
-  ];
-
-  final List<Map<String, String>> newEvents = [
-    {
-      'image': 'assets/parque.jpg',
-      'title': 'Pintar parque de pluma de oro',
-      'subtitle': 'Nueva alejandría'
-    },
-    {
-      'image': 'assets/dia-niños.jpg',
-      'title': 'Día del niño',
-      'subtitle': 'Casa hogar "Nueva vida"'
-    },
-    {
-      'image': 'assets/perro.jpg',
-      'title': 'Cuidado de perros abandonados',
-      'subtitle': 'Organización perruna'
-    },
-  ];
-
-  final List<Map<String, String>> attendedEvents = [
+class _VolunteerPageState extends State<VolunteerPage> {
+  List<MiniEvent> eventsList = [];
+  List<Map<String, String>> attendedEvents = [
     {
       'image': 'assets/basura.jpg',
       'title': 'Recoger basura en el río',
@@ -70,8 +30,29 @@ class VolunteerPage extends StatelessWidget {
       'title': 'Limpiar escuela primaria',
       'location': 'Escuela primaria "Niños héroes"',
     },
-
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _getProfile();
+  }
+
+  Future<void> _getProfile() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
+    if (token != null) {
+      final EventRemoteDataSource eventRemoteDataSource = EventRemoteDataSource(http.Client(), token);
+      final List<MiniEvent> events = await eventRemoteDataSource.getAllMiniEvents();
+
+      setState(() {
+        eventsList = events;
+      });
+    } else {
+      throw Exception('Token o userId no encontrados en SharedPreferences');
+    }
+  }
 
   void _navigateToEvent(BuildContext context, String title) {
     Navigator.push(
@@ -99,29 +80,20 @@ class VolunteerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Navbar(),
-      drawer: CustomDrawer(
-          attendedEvents: attendedEvents),
+      drawer: CustomDrawer(attendedEvents: attendedEvents),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // ElevatedButton(
-            //   onPressed: _getProfile,
-            //   child: Text('Obtener info'),
-            // ),
             const SizedBox(height: 20),
             SearchEvents(
               onChanged: (value) {
+                // Acción al cambiar el texto del campo de búsqueda
               },
-            ),
-            const SizedBox(height: 10),
-            UpcomingEventsCarousel(
-              imgList: imgList,
-              navigateToEvent: _navigateToEvent,
             ),
             const SizedBox(height: 30),
             NewEventsCarousel(
-              imgList: newEvents,
+              eventsList: eventsList,
               navigateToEvent: _navigateToNewEvent,
             ),
             const SizedBox(height: 30),

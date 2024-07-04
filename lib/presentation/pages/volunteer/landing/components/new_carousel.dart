@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import '../../../../../domain/entities/miniEvent.dart';
 import '../../newMoreEvents/new_more_events.dart';
 
 class NewEventsCarousel extends StatelessWidget {
-  final List<Map<String, String>> imgList;
+  final List<MiniEvent> eventsList;
   final Function(BuildContext, String) navigateToEvent;
 
-  NewEventsCarousel({required this.imgList, required this.navigateToEvent});
+  NewEventsCarousel({
+    required this.eventsList,
+    required this.navigateToEvent,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,24 +58,31 @@ class NewEventsCarousel extends StatelessWidget {
             autoPlay: true,
             enlargeCenterPage: true,
           ),
-          items: imgList.map((item) {
+          items: eventsList.map((event) {
             return Builder(
               builder: (BuildContext context) {
                 return InkWell(
                   onTap: () {
-                    navigateToEvent(context, item['title']!);
+                    navigateToEvent(context, event.name);
                   },
                   child: Stack(
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
-                        child: Image.asset(
-                          item['image']!,
-                          color: Colors.black.withOpacity(0.4),
-                          colorBlendMode: BlendMode.darken,
-                          fit: BoxFit.cover,
+                        child: Container(
                           width: 1000,
                           height: 200.0,
+                          color: Colors.grey.shade300, // Placeholder color
+                          child: Center(
+                            child: Text(
+                              event.name,
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       Positioned(
@@ -81,7 +92,7 @@ class NewEventsCarousel extends StatelessWidget {
                         child: Container(
                           width: MediaQuery.of(context).size.width - 40,
                           child: Text(
-                            item['title']!,
+                            event.name,
                             style: const TextStyle(
                               color: Colors.white,
                               fontFamily: 'PoppinsRegular',
@@ -100,7 +111,7 @@ class NewEventsCarousel extends StatelessWidget {
                         child: Container(
                           width: MediaQuery.of(context).size.width - 40,
                           child: Text(
-                            item['subtitle']!,
+                            event.associationName,
                             style: const TextStyle(
                               color: Colors.white,
                               fontFamily: 'PoppinsRegular',

@@ -1,3 +1,4 @@
+// lib/presentation/profile_page.dart
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,6 +6,8 @@ import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
 import '../../../../domain/entities/volunteerProfile.dart';
 import '../../../../domain/use_cases/getVolunteerProfile.dart';
+//GetvolunteerprofileUseCase
+//VolunteerProfile
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -30,11 +33,12 @@ class _ProfilePageState extends State<ProfilePage> {
     final userRepository = UserRepositoryImpl(userRemoteDataSource);
     _getVolunteerProfileUseCase = GetvolunteerprofileUseCase(userRepository);
 
+    // Aquí puedes manejar el caso en que userId o token sean nulos
     if (userId == null || token == null) {
+      // Manejo de error o redirección si es necesario
       print('Error: No se encontró userId o token en SharedPreferences');
       return;
     }
-
     setState(() {
       _userProfileFuture = _getVolunteerProfileUseCase(userId, token);
     });
@@ -44,18 +48,18 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Perfil'),
+        title: Text('Perfil'),
       ),
       body: Center(
         child: FutureBuilder<VolunteerProfile>(
           future: _userProfileFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (!snapshot.hasData) {
-              return const Text('No hay datos');
+              return Text('No hay datos');
             }
 
             final userProfile = snapshot.data!;
@@ -64,26 +68,26 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 50.0,
                     backgroundImage: AssetImage('assets/perfil_volunteer.jpg'),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   Text(
                     userProfile.name,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF5CA666),
                     ),
                   ),
-                  const SizedBox(height: 15),
+                  SizedBox(height: 15),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: Text(
                             'Descripción',
@@ -95,11 +99,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        const Padding(
+                        SizedBox(height: 10),
+                        Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
-                            'Estudiante de la carrera en ingeniería en software con ganas de ayudar a las personas',
+                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna. tempor incididunt ut labore et dolore magna.',
                             style: TextStyle(
                               fontFamily: 'PoppinsRegular',
                               fontSize: 14.5,
@@ -107,10 +111,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             textAlign: TextAlign.justify,
                           ),
                         ),
-                        const SizedBox(height: 5),
-                        const Divider(
-                            color: Color.fromARGB(255, 228, 228, 228)),
-                        const Padding(
+                        SizedBox(height: 5),
+                        Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                        Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: Text(
                             'Correo electrónico',
@@ -122,22 +125,21 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
                             userProfile.email,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'PoppinsRegular',
                               fontSize: 14.5,
                             ),
                             textAlign: TextAlign.justify,
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        const Divider(
-                            color: Color.fromARGB(255, 228, 228, 228)),
-                        const Padding(
+                        SizedBox(height: 10),
+                        Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                        Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: Text(
                             'Teléfono',
@@ -149,22 +151,21 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
                             userProfile.cellphone,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'PoppinsRegular',
                               fontSize: 14.5,
                             ),
                             textAlign: TextAlign.justify,
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        const Divider(
-                            color: Color.fromARGB(255, 228, 228, 228)),
-                        const Padding(
+                        SizedBox(height: 10),
+                        Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                        Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: Text(
                             'Género',
@@ -176,28 +177,21 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
-                            userProfile.genre == 'm'
-                                ? 'Masculino'
-                                : userProfile.genre == 'f'
-                                    ? 'Femenino'
-                                    : userProfile.genre == 'nb'
-                                        ? 'No binario'
-                                        : 'No especificado',
-                            style: const TextStyle(
+                            userProfile.genre,
+                            style: TextStyle(
                               fontFamily: 'PoppinsRegular',
                               fontSize: 14.5,
                             ),
                             textAlign: TextAlign.justify,
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        const Divider(
-                            color: Color.fromARGB(255, 228, 228, 228)),
-                        const Padding(
+                        SizedBox(height: 10),
+                        Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                        Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: Text(
                             'Ocupación',
@@ -209,12 +203,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
                             userProfile.occupation,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'PoppinsRegular',
                               fontSize: 14.5,
                             ),

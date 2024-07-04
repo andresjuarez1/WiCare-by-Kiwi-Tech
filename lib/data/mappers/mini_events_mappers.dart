@@ -1,21 +1,18 @@
-
-import 'package:locura1/data/models/mini_event_model.dart';
+// mappers/mini_event_mapper.dart
 import '../../domain/entities/miniEvent.dart';
 
+import '../models/mini_event_model.dart';
 
-// Convierte un objeto Profile a ProfileModel
-MiniEventModel miniEventToMiniEventModel(Minievent profile) {
-  return MiniEventModel(
-    name: profile.name,
-    associationName: profile.associationName,
+MiniEvent miniEventModelToMiniEvent(MiniEventModel model) {
+  return MiniEvent(
+    name: model.name,
+    associationName: model.associationName,
   );
 }
 
-// Convierte un objeto ProfileModel a Profile
-Minievent MiniEventToMiniEvent(MiniEventModel profileModel) {
-  return Minievent(
-    name: profileModel.name,
-    associationName: profileModel.associationName,
-
+MiniEventModel miniEventToMiniEventModel(MiniEvent entity) {
+  return MiniEventModel(
+    name: entity.name,
+    associationName: entity.associationName,
   );
 }
