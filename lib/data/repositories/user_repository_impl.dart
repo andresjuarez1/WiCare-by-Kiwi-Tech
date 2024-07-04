@@ -6,6 +6,7 @@ import 'package:locura1/domain/entities/association.dart';
 
 import '../../domain/entities/associationProfile.dart';
 import '../../domain/entities/company.dart';
+import '../../domain/entities/companyProfile.dart';
 import '../../domain/entities/volunteerProfile.dart';
 import '../../domain/entities/users.dart';
 import '../../domain/repositories/user_repository.dart';
@@ -48,5 +49,9 @@ class UserRepositoryImpl implements UserRepository {
     final profileData = await remoteDataSource.getProfileAssociation(userId, token);
     return AssociationProfile.fromJson(profileData);
   }
-
+  @override
+  Future<CompanyProfile> getCompanyProfile(int userId, String token) async {
+    final profileData = await remoteDataSource.getProfileCompany(userId, token);
+    return CompanyProfile.fromJson(profileData);
+  }
 }

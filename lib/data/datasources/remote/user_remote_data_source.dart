@@ -167,4 +167,25 @@ class UserRemoteDataSource {
       throw Exception('Error in request: $e');
     }
   }
+  Future<Map<String, dynamic>> getProfileCompany(int userId, String token) async {
+    //print(userId);
+    final String url = 'http://192.81.209.151:9000/user/company/$userId';
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body)['data'];
+      } else {
+        throw Exception('Failed to get company profile');
+      }
+    } catch (e) {
+      throw Exception('Error in request: $e');
+    }
+  }
 }
