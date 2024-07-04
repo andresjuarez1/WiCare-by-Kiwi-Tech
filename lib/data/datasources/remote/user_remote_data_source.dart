@@ -4,6 +4,7 @@ import 'package:locura1/data/models/association_model.dart';
 import 'package:locura1/data/models/volunteerProfile_model.dart';
 import 'dart:convert';
 
+import '../../models/company_model.dart';
 import '../../models/user_model.dart';
 import '../../models/volunteer_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,6 +62,19 @@ class UserRemoteDataSource {
 
     if (response.statusCode != 200) {
       throw Exception('Failed to register association in user_remote');
+    }
+  }
+  Future<void> registerCompany(CompanyModel company) async {
+    final response = await client.post(
+      Uri.parse('http://192.81.209.151:9000/user/company'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(company.toJson()),
+    );
+    print(response.body);
+    print(company.toJson());
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to register company in user_remote');
     }
   }
   Future<void> getProfileVolunteer2(int userId, String token) async {

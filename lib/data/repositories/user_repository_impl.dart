@@ -1,9 +1,11 @@
 // lib/data/repositories/user_repository_impl.dart
 import 'package:locura1/data/mappers/association_mappers.dart';
+import 'package:locura1/data/mappers/company_mappers.dart';
 import 'package:locura1/domain/entities/volunteer.dart';
 import 'package:locura1/domain/entities/association.dart';
 
 import '../../domain/entities/associationProfile.dart';
+import '../../domain/entities/company.dart';
 import '../../domain/entities/volunteerProfile.dart';
 import '../../domain/entities/users.dart';
 import '../../domain/repositories/user_repository.dart';
@@ -30,6 +32,11 @@ class UserRepositoryImpl implements UserRepository {
   Future<void> registerAssociation(Association association) async {
     final associationModel = associationToAssociationModel(association);
     await remoteDataSource.registerAssociation(associationModel);
+  }
+  @override
+  Future<void> registerCompany(Company company) async {
+    final companyModel = companyToCompanyModel(company);
+    await remoteDataSource.registerCompany(companyModel);
   }
   @override
   Future<VolunteerProfile> getVolunteerProfile(int userId, String token) async {

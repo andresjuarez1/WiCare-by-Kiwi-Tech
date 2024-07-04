@@ -193,7 +193,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                       const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _foundationDateController,
-                        label: 'Ingresa la fecha de fundación (DD-MM-AAAA)',
+                        label: 'Ingresa la fecha de fundación (AAAA-MM-DD)',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa la fecha de fundación de la asociación';

@@ -1,4 +1,6 @@
 // lib/domain/repositories/user_repository.dart
+import 'package:locura1/domain/entities/company.dart';
+
 import '../entities/association.dart';
 import '../entities/associationProfile.dart';
 import '../entities/volunteerProfile.dart';
@@ -9,6 +11,7 @@ abstract class UserRepository {
   Future<User> loginUser(String email, String password);
   Future<void> registerVolunteer(Volunteer volunteer);
   Future<void> registerAssociation(Association association);
+  Future<void> registerCompany(Company company);
   Future<VolunteerProfile> getVolunteerProfile(int userId, String token);
   Future<AssociationProfile> getAssociationProfile(int userId, String token);
 }
