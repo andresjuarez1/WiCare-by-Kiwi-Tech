@@ -97,9 +97,8 @@ class _VolunteerPageState extends State<VolunteerPage> {
               navigateToEvent: _navigateToNewEvent,
             ),
             const SizedBox(height: 30),
-            FooterComponent(
-              onDonateConfirmed: _onDonateConfirmed,
-            ),
+            FooterComponent(),
+
             const SizedBox(height: 10),
           ],
         ),
