@@ -13,23 +13,23 @@ class ConfirmationDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      titleTextStyle: TextStyle(
+      titleTextStyle: const TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
         color: Colors.black,
       ),
-      contentTextStyle: TextStyle(
+      contentTextStyle: const TextStyle(
         fontSize: 16,
         color: Colors.black,
       ),
-      title: Text("Confirmación"),
-      content: Text("¿Seguro que quieres mandar ayuda?"),
+      title: const Text("Confirmación"),
+      content: const Text("¿Seguro que quieres mandar ayuda?"),
       actions: <Widget>[
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(
+          child: const Text(
             'Cancelar',
             style: TextStyle(
               color: Colors.red,
@@ -42,7 +42,7 @@ class ConfirmationDialog extends StatelessWidget {
             onConfirm();
             Navigator.of(context).pop();
           },
-          child: Text(
+          child: const Text(
             'Sí',
             style: TextStyle(
               color: Colors.green,

@@ -15,8 +15,8 @@ class SearchEvents extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25.0),
           ),
-          prefixIcon: Icon(Icons.search),
-          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+          prefixIcon: const Icon(Icons.search),
+          contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
           labelStyle: const TextStyle(
             color: Color(0xFFA3A3A3),
             fontFamily: 'PoppinsRegular',
@@ -24,7 +24,7 @@ class SearchEvents extends StatelessWidget {
             fontWeight: FontWeight.w100
           ),
         ),
-        style: TextStyle(
+        style: const TextStyle(
           fontFamily: 'PoppinsRegular',
         ),
         onChanged: onChanged,

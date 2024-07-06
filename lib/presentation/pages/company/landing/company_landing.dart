@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import '../../moreEvents/more_events.dart';
 import './components/navbar.dart';
 import './components/custom_drawer.dart';
 import './components/search_events.dart';

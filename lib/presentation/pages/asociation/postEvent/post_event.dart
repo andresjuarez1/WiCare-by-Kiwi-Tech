@@ -145,7 +145,7 @@ class _PostEventState extends State<PostEvent> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 TextFormField(
                   controller: _eventNameController,
                   decoration: InputDecoration(
@@ -162,7 +162,7 @@ class _PostEventState extends State<PostEvent> {
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(color: greenColor),
                     ),
-                    contentPadding: EdgeInsets.symmetric(
+                    contentPadding: const EdgeInsets.symmetric(
                       vertical: 12.0,
                       horizontal: 16.0,
                     ),
@@ -174,7 +174,7 @@ class _PostEventState extends State<PostEvent> {
                     return null;
                   },
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 TextFormField(
                   controller: _descriptionController,
                   decoration: InputDecoration(
@@ -185,11 +185,11 @@ class _PostEventState extends State<PostEvent> {
                         color: Colors.black),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: Color(0xFF5CA666)),
+                      borderSide: const BorderSide(color: Color(0xFF5CA666)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: Color(0xFF5CA666)),
+                      borderSide: const BorderSide(color: Color(0xFF5CA666)),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 12.0,
@@ -204,7 +204,7 @@ class _PostEventState extends State<PostEvent> {
                     return null;
                   },
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 GestureDetector(
                   onTap: () => _selectDate(context),
                   child: AbsorbPointer(
@@ -217,11 +217,11 @@ class _PostEventState extends State<PostEvent> {
                             color: Colors.black),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: Color(0xFF5CA666)),
+                          borderSide: const BorderSide(color: Color(0xFF5CA666)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: Color(0xFF5CA666)),
+                          borderSide: const BorderSide(color: Color(0xFF5CA666)),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           vertical: 12.0,
@@ -240,7 +240,7 @@ class _PostEventState extends State<PostEvent> {
                     ),
                   ),
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 GestureDetector(
                   onTap: () => _selectTime(context),
                   child: AbsorbPointer(
@@ -253,11 +253,11 @@ class _PostEventState extends State<PostEvent> {
                             color: Colors.black),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: Color(0xFF5CA666)),
+                          borderSide: const BorderSide(color: Color(0xFF5CA666)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: Color(0xFF5CA666)),
+                          borderSide: const BorderSide(color: Color(0xFF5CA666)),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           vertical: 12.0,
@@ -278,7 +278,7 @@ class _PostEventState extends State<PostEvent> {
                     ),
                   ),
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 TextFormField(
                   controller: _location,
                   decoration: InputDecoration(
@@ -295,7 +295,7 @@ class _PostEventState extends State<PostEvent> {
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(color: greenColor),
                     ),
-                    contentPadding: EdgeInsets.symmetric(
+                    contentPadding: const EdgeInsets.symmetric(
                       vertical: 12.0,
                       horizontal: 16.0,
                     ),
@@ -307,9 +307,9 @@ class _PostEventState extends State<PostEvent> {
                     return null;
                   },
                 ),
-                SizedBox(height: 25), // Añadir un espacio aquí
+                const SizedBox(height: 25),
                 _buildCategoryDropdown(),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 Center(
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.6,
@@ -319,7 +319,7 @@ class _PostEventState extends State<PostEvent> {
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
-                          side: BorderSide(color: Color(0xFF5CA666)),
+                          side: const BorderSide(color: Color(0xFF5CA666)),
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 13.0),
                       ),
@@ -340,7 +340,7 @@ class _PostEventState extends State<PostEvent> {
                     child: ElevatedButton(
                       onPressed: _createEvent,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF5CA666),
+                        backgroundColor: const Color(0xFF5CA666),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -388,13 +388,13 @@ class _PostEventState extends State<PostEvent> {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Color(0xFF5CA666)),
+          borderSide: const BorderSide(color: Color(0xFF5CA666)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Color(0xFF5CA666)),
+          borderSide: const BorderSide(color: Color(0xFF5CA666)),
         ),
-        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+        contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {

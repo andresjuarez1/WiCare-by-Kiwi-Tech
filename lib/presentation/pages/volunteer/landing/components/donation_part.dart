@@ -10,7 +10,7 @@ class FooterComponent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Column(
         children: [
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -23,8 +23,8 @@ class FooterComponent extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(width: 10),
-              Expanded(
+              const SizedBox(width: 10),
+              const Expanded(
                 child: Text(
                   'WiCare es una app hecha por “KiwiTech” para la comunidad. Ayúdanos a seguir innovando y uniendo a las personas a través de la tecnología',
                   textAlign: TextAlign.left,
@@ -37,13 +37,13 @@ class FooterComponent extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               _launchURL('https://buymeacoffee.com/wicare');
             },
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+              backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
             ),
             child: const Text(
               '¡Invítanos un kiwi!',
@@ -54,7 +54,7 @@ class FooterComponent extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
         ],
       ),
     );
@@ -69,7 +69,6 @@ class FooterComponent extends StatelessWidget {
       }
     } catch (e) {
       print('Error launching URL: $e');
-      // Aquí puedes manejar el error de manera adecuada, como mostrar un mensaje al usuario
     }
   }
 }

@@ -6,8 +6,6 @@ import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../domain/use_cases/getCompanyProfile.dart';
-
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -16,7 +14,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late final GetcompanyprofileUseCase _getCompanyProfileUseCase;
   late Future<CompanyProfile> _userProfileFuture;
-  bool _isLoading = true; // Controla el estado de carga inicial
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -34,11 +32,10 @@ class _ProfilePageState extends State<ProfilePage> {
     _getCompanyProfileUseCase = GetcompanyprofileUseCase(userRepository);
 
     if (userId == null || token == null) {
-      // Manejo de error o redirección si es necesario
       print('Error: No se encontró userId o token en SharedPreferences');
       setState(() {
         _userProfileFuture = Future.error('Token o userId no encontrados en SharedPreferences');
-        _isLoading = false; // Finaliza la carga
+        _isLoading = false;
       });
       return;
     }
@@ -47,14 +44,13 @@ class _ProfilePageState extends State<ProfilePage> {
       _userProfileFuture = _getCompanyProfileUseCase(userId, token);
     });
 
-    // Actualiza el estado de carga cuando se completa el futuro
     _userProfileFuture.then((_) {
       setState(() {
-        _isLoading = false; // Finaliza la carga
+        _isLoading = false;
       });
     }).catchError((error) {
       setState(() {
-        _isLoading = false; // Finaliza la carga
+        _isLoading = false;
       });
       print('Error al obtener el perfil: $error');
     });
@@ -64,19 +60,19 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfil'),
+        title: const Text('Perfil'),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : FutureBuilder<CompanyProfile>(
         future: _userProfileFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData) {
-            return Center(child: Text('No hay datos'));
+            return const Center(child: Text('No hay datos'));
           }
 
           final userProfile = snapshot.data!;
@@ -85,26 +81,26 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 50.0,
                   backgroundImage: AssetImage('assets/maranatha.jpg'),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   userProfile.name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                     color: Color(0xFF5CA666),
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(left: 20.0),
                         child: Text(
                           'Descripción',
@@ -116,21 +112,21 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Text(
                           userProfile.description ?? '',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'PoppinsRegular',
                             fontSize: 14.5,
                           ),
                           textAlign: TextAlign.justify,
                         ),
                       ),
-                      SizedBox(height: 5),
-                      Divider(color: Color.fromARGB(255, 228, 228, 228)),
-                      Padding(
+                      const SizedBox(height: 5),
+                      const Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                      const Padding(
                         padding: EdgeInsets.only(left: 20.0),
                         child: Text(
                           'Correo electrónico',
@@ -142,21 +138,21 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Text(
                           userProfile.email ?? '',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'PoppinsRegular',
                             fontSize: 14.5,
                           ),
                           textAlign: TextAlign.justify,
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Divider(color: Color.fromARGB(255, 228, 228, 228)),
-                      Padding(
+                      const SizedBox(height: 10),
+                      const Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                      const Padding(
                         padding: EdgeInsets.only(left: 20.0),
                         child: Text(
                           'Teléfono',
@@ -168,21 +164,21 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Text(
                           userProfile.cellphone ?? '',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'PoppinsRegular',
                             fontSize: 14.5,
                           ),
                           textAlign: TextAlign.justify,
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Divider(color: Color.fromARGB(255, 228, 228, 228)),
-                      Padding(
+                      const SizedBox(height: 10),
+                      const Divider(color: Color.fromARGB(255, 228, 228, 228)),
+                      const Padding(
                         padding: EdgeInsets.only(left: 20.0),
                         child: Text(
                           'Ubicación',
@@ -194,12 +190,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Text(
                           userProfile.location ?? '',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'PoppinsRegular',
                             fontSize: 14.5,
                           ),
