@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:locura1/domain/entities/associationProfile.dart';
 import 'package:locura1/domain/use_cases/getAssociationProfile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import './google_maps.dart';
 import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
 import 'package:http/http.dart' as http;
@@ -200,6 +201,18 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontSize: 14.5,
                           ),
                           textAlign: TextAlign.justify,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => GoogleMaps()),
+                            );
+                          },
+                          child: const Text('Ver en Google Maps'),
                         ),
                       ),
                     ],
