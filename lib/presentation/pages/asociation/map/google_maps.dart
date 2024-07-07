@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class GoogleMaps extends StatefulWidget {
-  const GoogleMaps({super.key});
+class GoogleMapsWidget extends StatefulWidget {
+  const GoogleMapsWidget({Key? key}) : super(key: key);
 
   @override
-  State<GoogleMaps> createState() => _GoogleMapsState();
+  _GoogleMapsWidgetState createState() => _GoogleMapsWidgetState();
 }
 
-class _GoogleMapsState extends State<GoogleMaps> {
+class _GoogleMapsWidgetState extends State<GoogleMapsWidget> {
   static const googlePlex = LatLng(16.754272, -93.128144);
   final Set<Marker> _markers = {};
 
@@ -29,10 +29,13 @@ class _GoogleMapsState extends State<GoogleMaps> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: GoogleMap(
-          initialCameraPosition: const CameraPosition(target: googlePlex, zoom: 16),
-          markers: _markers,
-        ),
-      );
+  Widget build(BuildContext context) {
+    return Container(
+      height: 300,
+      child: GoogleMap(
+        initialCameraPosition: const CameraPosition(target: googlePlex, zoom: 16),
+        markers: _markers,
+      ),
+    );
+  }
 }

@@ -5,7 +5,6 @@ import '../../../../domain/entities/miniEvent.dart';
 import 'components/navbar.dart';
 import 'components/custom_drawer.dart';
 import 'components/search_events.dart';
-import 'components/upcoming_events_carousel.dart';
 import 'components/donation_part.dart';
 import 'components/new_carousel.dart';
 import '../newEvent/event.dart';
