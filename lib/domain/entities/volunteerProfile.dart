@@ -1,5 +1,3 @@
-// lib/domain/entities/volunteer_profile.dart
-
 class VolunteerProfile {
   final String name;
   final String cellphone;

@@ -82,9 +82,7 @@ class CompanyLandingPage extends StatelessWidget {
               attendedEvents: attendedEvents,
             ),
             SizedBox(height: 20),
-            FooterComponent(
-              onDonateConfirmed: _onDonateConfirmed,
-            ),
+            FooterComponent(),
           ],
         ),
       ),

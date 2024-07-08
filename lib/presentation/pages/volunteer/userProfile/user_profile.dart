@@ -1,4 +1,3 @@
-// lib/presentation/profile_page.dart
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,8 +42,18 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Perfil'),
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Perfil',
+          style: TextStyle(
+            fontSize: 22,
+            fontFamily: 'PoppinsRegular',
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF5CA666),
+          ),
+        ),
       ),
       body: Center(
         child: FutureBuilder<VolunteerProfile>(
@@ -83,33 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            'Descripción',
-                            style: TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF5CA666),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna. tempor incididunt ut labore et dolore magna.',
-                            style: TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 14.5,
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
                         const SizedBox(height: 5),
-                        const Divider(
-                            color: Color.fromARGB(255, 228, 228, 228)),
                         const Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: Text(
@@ -180,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
-                            userProfile.genre,
+                            _getGenderText(userProfile.genre),
                             style: const TextStyle(
                               fontFamily: 'PoppinsRegular',
                               fontSize: 14.5,
@@ -225,5 +208,18 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  String _getGenderText(String genre) {
+    switch (genre) {
+      case 'm':
+        return 'Masculino';
+      case 'f':
+        return 'Femenino';
+      case 'nb':
+        return 'No Binario';
+      default:
+        return 'Género no especificado';
+    }
   }
 }

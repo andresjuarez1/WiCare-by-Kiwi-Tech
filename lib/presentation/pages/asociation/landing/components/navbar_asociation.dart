@@ -27,7 +27,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           const Text(
-            'Hola, asilo corazon',
+            'Hola, ...',
             style: TextStyle(
               fontFamily: 'PoppinsRegular',
               color: Color(0xFF5CA666),

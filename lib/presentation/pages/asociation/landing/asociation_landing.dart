@@ -150,7 +150,6 @@ class AssociationLandingPage extends StatelessWidget {
                 navigateToPastEvent: _navigateToPastEvent,
                 navigateToAllPastEvents: _navigateToAllPastEvents,
               ),
-              
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () => _navigateToSelectLocation(context),
@@ -160,11 +159,8 @@ class AssociationLandingPage extends StatelessWidget {
                 onPressed: () => _navigateToShowLocation(context),
                 child: const Text('Mostrar Ubicación Guardada'),
               ),
-
-              SizedBox(height: 20),
-              FooterComponent(
-                onDonateConfirmed: _onDonateConfirmed,
-              ),
+              FooterComponent(),
+              const SizedBox(height: 10),
             ],
           ),
         ),
