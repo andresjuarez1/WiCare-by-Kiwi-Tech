@@ -5,6 +5,7 @@ class ProfileAssociationModel {
   final String location;
   final String description;
   final String email;
+  final String profilePicture;
 
   ProfileAssociationModel({
     required this.name,
@@ -12,6 +13,7 @@ class ProfileAssociationModel {
     required this.location,
     required this.description,
     required this.email,
+    required this.profilePicture,
   });
 
   factory ProfileAssociationModel.fromJson(Map<String, dynamic> json) {
@@ -21,6 +23,7 @@ class ProfileAssociationModel {
       location: json['location'],
       description: json['description'],
       email: json['email'],
+      profilePicture: json['profilePicture'],
     );
   }
 
@@ -31,6 +34,7 @@ class ProfileAssociationModel {
       'occupation': location,
       'description': description,
       'email': email,
+      'profilePicture': profilePicture,
     };
   }
 }

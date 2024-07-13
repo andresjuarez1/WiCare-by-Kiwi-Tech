@@ -34,6 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
       print('Error: No se encontró userId o token en SharedPreferences');
       return;
     }
+
     setState(() {
       _userProfileFuture = _getVolunteerProfileUseCase(userId, token);
     });
@@ -69,13 +70,23 @@ class _ProfilePageState extends State<ProfilePage> {
 
             final userProfile = snapshot.data!;
 
+            // Imprimir datos del perfil en la consola
+            print('Datos del perfil:');
+            print('Nombre: ${userProfile.name}');
+            print('Correo electrónico: ${userProfile.email}');
+            print('Teléfono: ${userProfile.cellphone}');
+            print('Género: ${_getGenderText(userProfile.genre)}');
+            print('Ocupación: ${userProfile.occupation}');
+            print('URL de la imagen de perfil: ${userProfile.profilePicture}');
+
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 50.0,
-                    backgroundImage: AssetImage('assets/perfil_volunteer.jpg'),
+                    backgroundImage: NetworkImage(userProfile.profilePicture),
+                    onBackgroundImageError: (_, __) => const AssetImage('assets/perfil_volunteer.jpg'), // Imagen de respaldo
                   ),
                   const SizedBox(height: 10),
                   Text(

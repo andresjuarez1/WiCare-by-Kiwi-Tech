@@ -122,11 +122,25 @@ class _NavbarState extends State<Navbar> {
                     MaterialPageRoute(builder: (context) => ProfilePage()),
                   );
                 },
-                child: Image.asset(
-                  'assets/perfil_volunteer.jpg',
-                  width: 35.0,
-                  height: 35.0,
-                  fit: BoxFit.cover,
+                child: FutureBuilder<VolunteerProfile?>(
+                  future: _userProfileFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return const Icon(Icons.account_circle_outlined);
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return const Icon(Icons.account_circle_outlined);
+                    }
+
+                    final userProfile = snapshot.data!;
+                    return CircleAvatar(
+                      backgroundImage: userProfile.profilePicture != null
+                          ? NetworkImage(userProfile.profilePicture)
+                          : AssetImage('assets/perfil_volunteer.jpg'),
+                      radius: 15,
+                    );
+                  },
                 ),
               ),
             ),

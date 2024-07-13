@@ -16,6 +16,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late final GetassociationprofileUseCase _getAssociationProfileUseCase;
   late Future<AssociationProfile> _userProfileFuture;
   bool _isLoading = true;
+  String _profilePictureUrl = '';
 
   @override
   void initState() {
@@ -47,9 +48,11 @@ class _ProfilePageState extends State<ProfilePage> {
       _userProfileFuture = _getAssociationProfileUseCase(userId, token);
     });
 
-    _userProfileFuture.then((_) {
+    _userProfileFuture.then((profile) {
       setState(() {
         _isLoading = false;
+        _profilePictureUrl = profile.profilePicture;
+        print('url desde la nueva varibale,$_profilePictureUrl');
       });
     }).catchError((error) {
       setState(() {
@@ -66,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text(
-          'Perfil',
+          'Perfil2',
           style: TextStyle(
             fontSize: 22,
             fontFamily: 'PoppinsRegular',
@@ -78,177 +81,209 @@ class _ProfilePageState extends State<ProfilePage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : FutureBuilder<AssociationProfile>(
-              future: _userProfileFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData) {
-                  return const Center(child: Text('No hay datos'));
-                }
+        future: _userProfileFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData) {
+            return const Center(child: Text('No hay datos'));
+          }
 
-                final userProfile = snapshot.data!;
+          final userProfile = snapshot.data!;
+          print('URL de perfil: ${userProfile.profilePicture}');
+          _profilePictureUrl = userProfile.profilePicture;
 
-                return SingleChildScrollView(
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Mostrar imagen o contenedor gris si no hay URL válida
+                _profilePictureUrl.isNotEmpty
+                    ? Image.network(
+                  _profilePictureUrl,
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    }
+                  },
+                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                    print('Error cargando imagen: $error');
+                    return Container(
+                      width: 100,
+                      height: 100,
+                      color: Colors.grey,
+                    );
+                  },
+                )
+                    : Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.grey,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  userProfile.name,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF5CA666),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Align(
+                  alignment: Alignment.centerLeft,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CircleAvatar(
-                        radius: 50.0,
-                        backgroundImage: AssetImage('assets/maranatha.jpg'),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          'Descripción',
+                          style: TextStyle(
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF5CA666),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        userProfile.name,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF5CA666),
+                      Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Text(
+                          userProfile.description ?? '',
+                          style: const TextStyle(
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 14.5,
+                          ),
+                          textAlign: TextAlign.justify,
                         ),
                       ),
-                      const SizedBox(height: 15),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                'Descripción',
-                                style: TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF5CA666),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                userProfile.description ?? '',
-                                style: const TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 14.5,
-                                ),
-                                textAlign: TextAlign.justify,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            const Divider(
-                                color: Color.fromARGB(255, 228, 228, 228)),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                'Correo electrónico',
-                                style: TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF5CA666),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                userProfile.email ?? '',
-                                style: const TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 14.5,
-                                ),
-                                textAlign: TextAlign.justify,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Divider(
-                                color: Color.fromARGB(255, 228, 228, 228)),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                'Teléfono',
-                                style: TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF5CA666),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                userProfile.cellphone ?? '',
-                                style: const TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 14.5,
-                                ),
-                                textAlign: TextAlign.justify,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Divider(
-                                color: Color.fromARGB(255, 228, 228, 228)),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                'Ubicación',
-                                style: TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF5CA666),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                userProfile.location ?? '',
-                                style: const TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 14.5,
-                                ),
-                                textAlign: TextAlign.justify,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                'Mapa',
-                                style: TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF5CA666),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
-                              child: GoogleMapsWidget(),
-                            ),
-                            const SizedBox(height: 20),
-                          ],
+                      const SizedBox(height: 5),
+                      const Divider(
+                          color: Color.fromARGB(255, 228, 228, 228)),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          'Correo electrónico',
+                          style: TextStyle(
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF5CA666),
+                          ),
                         ),
                       ),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Text(
+                          userProfile.email ?? '',
+                          style: const TextStyle(
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 14.5,
+                          ),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Divider(
+                          color: Color.fromARGB(255, 228, 228, 228)),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          'Teléfono',
+                          style: TextStyle(
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF5CA666),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Text(
+                          userProfile.cellphone ?? '',
+                          style: const TextStyle(
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 14.5,
+                          ),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Divider(
+                          color: Color.fromARGB(255, 228, 228, 228)),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          'Ubicación',
+                          style: TextStyle(
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF5CA666),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Text(
+                          '${userProfile.location.latitude},${userProfile.location.longitude}',
+                          style: const TextStyle(
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 14.5,
+                          ),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          'Mapa',
+                          style: TextStyle(
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF5CA666),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: GoogleMapsWidget(),
+                      ),
+                      const SizedBox(height: 20),
                     ],
                   ),
-                );
-              },
+                ),
+              ],
             ),
+          );
+        },
+      ),
     );
   }
 }

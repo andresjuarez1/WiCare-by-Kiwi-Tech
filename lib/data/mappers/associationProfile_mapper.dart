@@ -11,6 +11,7 @@ ProfileAssociationModel profileToProfileModel(AssociationProfile profile) {
     location: profile.location,
     description: profile.description,
     email: profile.email,
+    profilePicture: profile.profilePicture,
   );
 }
 
@@ -22,5 +23,6 @@ AssociationProfile profileModelToProfile(ProfileAssociationModel profileModel) {
     location: profileModel.location,
     description: profileModel.description,
     email: profileModel.email,
+      profilePicture : profileModel.profilePicture,
   );
 }

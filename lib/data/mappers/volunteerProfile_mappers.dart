@@ -10,6 +10,7 @@ ProfileVolunteerModel profileToProfileModel(VolunteerProfile profile) {
     occupation: profile.occupation,
     genre: profile.genre,
     email: profile.email,
+    profilePicture : profile.profilePicture
   );
 }
 
@@ -21,5 +22,6 @@ VolunteerProfile profileModelToProfile(ProfileVolunteerModel profileModel) {
     occupation: profileModel.occupation,
     genre: profileModel.genre,
     email: profileModel.email,
+      profilePicture : profileModel.profilePicture,
   );
 }
