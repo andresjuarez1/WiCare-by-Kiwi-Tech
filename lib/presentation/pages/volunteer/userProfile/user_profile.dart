@@ -1,4 +1,3 @@
-// lib/presentation/profile_page.dart
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,8 +5,6 @@ import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
 import '../../../../domain/entities/volunteerProfile.dart';
 import '../../../../domain/use_cases/getVolunteerProfile.dart';
-//GetvolunteerprofileUseCase
-//VolunteerProfile
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -33,9 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final userRepository = UserRepositoryImpl(userRemoteDataSource);
     _getVolunteerProfileUseCase = GetvolunteerprofileUseCase(userRepository);
 
-    // Aquí puedes manejar el caso en que userId o token sean nulos
     if (userId == null || token == null) {
-      // Manejo de error o redirección si es necesario
       print('Error: No se encontró userId o token en SharedPreferences');
       return;
     }
@@ -47,19 +42,29 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Perfil'),
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Perfil',
+          style: TextStyle(
+            fontSize: 22,
+            fontFamily: 'PoppinsRegular',
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF5CA666),
+          ),
+        ),
       ),
       body: Center(
         child: FutureBuilder<VolunteerProfile>(
           future: _userProfileFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (!snapshot.hasData) {
-              return Text('No hay datos');
+              return const Text('No hay datos');
             }
 
             final userProfile = snapshot.data!;
@@ -68,52 +73,27 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 50.0,
                     backgroundImage: AssetImage('assets/perfil_volunteer.jpg'),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     userProfile.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF5CA666),
                     ),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            'Descripción',
-                            style: TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF5CA666),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna. tempor incididunt ut labore et dolore magna.',
-                            style: TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 14.5,
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Divider(color: Color.fromARGB(255, 228, 228, 228)),
-                        Padding(
+                        const SizedBox(height: 5),
+                        const Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: Text(
                             'Correo electrónico',
@@ -125,21 +105,22 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
                             userProfile.email,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'PoppinsRegular',
                               fontSize: 14.5,
                             ),
                             textAlign: TextAlign.justify,
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Divider(color: Color.fromARGB(255, 228, 228, 228)),
-                        Padding(
+                        const SizedBox(height: 10),
+                        const Divider(
+                            color: Color.fromARGB(255, 228, 228, 228)),
+                        const Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: Text(
                             'Teléfono',
@@ -151,21 +132,22 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
                             userProfile.cellphone,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'PoppinsRegular',
                               fontSize: 14.5,
                             ),
                             textAlign: TextAlign.justify,
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Divider(color: Color.fromARGB(255, 228, 228, 228)),
-                        Padding(
+                        const SizedBox(height: 10),
+                        const Divider(
+                            color: Color.fromARGB(255, 228, 228, 228)),
+                        const Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: Text(
                             'Género',
@@ -177,21 +159,22 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
-                            userProfile.genre,
-                            style: TextStyle(
+                            _getGenderText(userProfile.genre),
+                            style: const TextStyle(
                               fontFamily: 'PoppinsRegular',
                               fontSize: 14.5,
                             ),
                             textAlign: TextAlign.justify,
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Divider(color: Color.fromARGB(255, 228, 228, 228)),
-                        Padding(
+                        const SizedBox(height: 10),
+                        const Divider(
+                            color: Color.fromARGB(255, 228, 228, 228)),
+                        const Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: Text(
                             'Ocupación',
@@ -203,12 +186,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
                             userProfile.occupation,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'PoppinsRegular',
                               fontSize: 14.5,
                             ),
@@ -225,5 +208,18 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  String _getGenderText(String genre) {
+    switch (genre) {
+      case 'm':
+        return 'Masculino';
+      case 'f':
+        return 'Femenino';
+      case 'nb':
+        return 'No Binario';
+      default:
+        return 'Género no especificado';
+    }
   }
 }

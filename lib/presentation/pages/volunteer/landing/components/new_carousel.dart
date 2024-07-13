@@ -72,11 +72,11 @@ class NewEventsCarousel extends StatelessWidget {
                         child: Container(
                           width: 1000,
                           height: 200.0,
-                          color: Colors.grey.shade300, // Placeholder color
+                          color: Colors.grey.shade300,
                           child: Center(
                             child: Text(
                               event.name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 24,
                                 color: Colors.black54,
                                 fontWeight: FontWeight.bold,

@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../dialogs/donatiwi_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FooterComponent extends StatelessWidget {
-  final VoidCallback onDonateConfirmed;
-
-  const FooterComponent({Key? key, required this.onDonateConfirmed})
-      : super(key: key);
+  const FooterComponent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +10,7 @@ class FooterComponent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Column(
         children: [
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -27,7 +23,7 @@ class FooterComponent extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               const Expanded(
                 child: Text(
                   'WiCare es una app hecha por “KiwiTech” para la comunidad. Ayúdanos a seguir innovando y uniendo a las personas a través de la tecnología',
@@ -41,15 +37,10 @@ class FooterComponent extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return DonatiwiDialog();
-                },
-              );
+              _launchURL('https://buymeacoffee.com/wicare');
             },
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
@@ -63,9 +54,21 @@ class FooterComponent extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
         ],
       ),
     );
+  }
+
+  void _launchURL(String url) async {
+    try {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print('Error launching URL: $e');
+    }
   }
 }

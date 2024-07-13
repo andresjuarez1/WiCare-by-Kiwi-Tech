@@ -4,7 +4,6 @@ import 'package:locura1/domain/use_cases/register_company_user.dart';
 import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
 import '../../../../domain/entities/company.dart';
-import '../../../../domain/entities/company.dart';
 import '../../login/login_page.dart';
 
 class RegisterCompanyPage extends StatefulWidget {

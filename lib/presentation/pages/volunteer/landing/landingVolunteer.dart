@@ -5,7 +5,6 @@ import '../../../../domain/entities/miniEvent.dart';
 import 'components/navbar.dart';
 import 'components/custom_drawer.dart';
 import 'components/search_events.dart';
-import 'components/upcoming_events_carousel.dart';
 import 'components/donation_part.dart';
 import 'components/new_carousel.dart';
 import '../newEvent/event.dart';
@@ -43,8 +42,10 @@ class _VolunteerPageState extends State<VolunteerPage> {
     final String? token = prefs.getString('token');
 
     if (token != null) {
-      final EventRemoteDataSource eventRemoteDataSource = EventRemoteDataSource(http.Client(), token);
-      final List<MiniEvent> events = await eventRemoteDataSource.getAllMiniEvents();
+      final EventRemoteDataSource eventRemoteDataSource =
+          EventRemoteDataSource(http.Client(), token);
+      final List<MiniEvent> events =
+          await eventRemoteDataSource.getAllMiniEvents();
 
       setState(() {
         eventsList = events;
@@ -87,9 +88,7 @@ class _VolunteerPageState extends State<VolunteerPage> {
           children: [
             const SizedBox(height: 20),
             SearchEvents(
-              onChanged: (value) {
-                // Acción al cambiar el texto del campo de búsqueda
-              },
+              onChanged: (value) {},
             ),
             const SizedBox(height: 30),
             NewEventsCarousel(
@@ -98,7 +97,6 @@ class _VolunteerPageState extends State<VolunteerPage> {
             ),
             const SizedBox(height: 30),
             FooterComponent(),
-
             const SizedBox(height: 10),
           ],
         ),

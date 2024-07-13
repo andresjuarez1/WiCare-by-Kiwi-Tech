@@ -7,7 +7,6 @@ class CompaniesPage extends StatelessWidget {
     {'name': 'Empresa 3', 'image': 'assets/bbva.jpg'},
     {'name': 'Empresa 4', 'image': 'assets/bbva.jpg'},
     {'name': 'Empresa 5', 'image': 'assets/bbva.jpg'},
-    {'name': 'Empresa 6', 'image': 'assets/bbva.jpg'},
     {'name': 'Empresa 7', 'image': 'assets/bbva.jpg'},
   ];
 
@@ -30,15 +29,15 @@ class CompaniesPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),
-        child: ListView.builder(
+        child: ListView.separated(
           itemCount: companies.length,
+          separatorBuilder: (context, index) => const Divider(
+            color: Color.fromARGB(255, 200, 200, 200),
+            thickness: 1,
+            height: 1,
+          ),
           itemBuilder: (context, index) {
             return Container(
-              margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-              decoration: BoxDecoration(
-                color: Color(0xFFD3FFD4),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
               child: ListTile(
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 9.0, horizontal: 16.0),
@@ -61,8 +60,8 @@ class CompaniesPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5.0),
                         child: Image.asset(
                           companies[index]['image']!,
-                          width: 70,
-                          height: 70,
+                          width: 55,
+                          height: 55,
                           fit: BoxFit.cover,
                         ),
                       ),
