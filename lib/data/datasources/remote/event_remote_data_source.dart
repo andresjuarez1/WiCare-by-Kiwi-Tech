@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../../../domain/entities/miniEvent.dart';
 import '../../mappers/mini_events_mappers.dart';
@@ -11,7 +12,7 @@ class EventRemoteDataSource {
 
   EventRemoteDataSource(this.client, this.token);
 
-  Future<void> createEvent(EventModel event) async {
+  Future<void> createEvent2(EventModel event) async {
     // Define la URL del endpoint.
     final url = Uri.parse('http://192.81.209.151:9000/event');
 
@@ -25,6 +26,38 @@ class EventRemoteDataSource {
     final response = await client.post(url, headers: headers, body: body);
 
     if (response.statusCode != 200) { // Asegúrate de que el estado de respuesta esperado sea 201.
+      throw Exception('Failed to create event in source');
+    }
+  }
+  Future<void> createEvent(EventModel event, File imageFile) async {
+    final url = Uri.parse('http://192.81.209.151:9000/event');
+
+    // Define los headers, incluyendo el token de autorización.
+    final headers = {
+      'Authorization': 'Bearer $token', // Agrega el token en el encabezado de autorización.
+    };
+
+    // Crear un MultipartRequest
+    var request = http.MultipartRequest('POST', url)
+      ..headers.addAll(headers)
+      ..fields['name'] = event.name
+      ..fields['description'] = event.description
+      ..fields['hour_start'] = event.hour_start
+      ..fields['hour_end'] = event.hour_end
+      ..fields['date'] = event.date
+      ..fields['cathegory'] = event.cathegory
+      ..fields['location'] = event.location;
+
+    // Adjuntar la imagen al request si existe
+    if (imageFile != null) {
+      request.files.add(await http.MultipartFile.fromPath('picture', imageFile.path));
+    }
+
+    // Enviar el request y obtener la respuesta
+    var response = await request.send();
+
+    // Verificar el estado de la respuesta
+    if (response.statusCode != 201) { // Asegúrate de que el estado de respuesta esperado sea 201.
       throw Exception('Failed to create event in source');
     }
   }

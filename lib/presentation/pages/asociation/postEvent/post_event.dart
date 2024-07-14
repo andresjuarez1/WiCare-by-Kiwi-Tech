@@ -50,27 +50,46 @@ class _PostEventState extends State<PostEvent> {
     print('Botón "Crear evento" presionado');
     if (_formKey.currentState?.validate() ?? false) {
       print('Formulario válido');
+
+      // Validar que se haya seleccionado hora de inicio y fin
+      if (_selectedStartTime == null || _selectedEndTime == null) {
+        print('Por favor selecciona una hora de inicio y una hora de fin');
+        return;
+      }
+
+      // Validar que se haya seleccionado una imagen
+      if (_image == null) {
+        print('No se ha seleccionado una imagen');
+        return;
+      }
+
+      // Construir el objeto Event con todos los campos necesarios, incluyendo la imagen
       final event = Event(
         name: _eventNameController.text,
         description: _descriptionController.text,
-        hour: _selectedStartTime != null
-            ? '${_selectedStartTime!.hour}:${_selectedStartTime!.minute} - ${_selectedEndTime!.hour}:${_selectedEndTime!.minute}'
-            : '',
+        hour_start: '${_selectedStartTime!.hour}:${_selectedStartTime!.minute}',
+        hour_end: '${_selectedEndTime!.hour}:${_selectedEndTime!.minute}',
         date: _selectedDate.toString().substring(0, 10),
         cathegory: _selectedCategories ?? '',
         location: _location.text,
+        picture: '', // Aquí deberías asignar el valor de la imagen, por ejemplo, la URL o el nombre del archivo si se sube al servidor
       );
+
       try {
         final String? token = await _getToken();
         if (token == null) {
           print('Token no disponible');
           return;
         }
+
+        // Crear una instancia del repositorio y el caso de uso
         final remoteDataSource = EventRemoteDataSource(http.Client(), token);
         final repository = EventRepositoryImpl(remoteDataSource);
         final createEventUseCase = CreateEventUseCase(repository);
-        await createEventUseCase.execute(event);
-        print('Evento creado');
+
+        // Ejecutar el caso de uso para crear el evento
+        await createEventUseCase.execute(event, _image!);
+        print('Evento creado exitosamente');
       } catch (error) {
         print('Error al crear evento: $error');
       }
@@ -78,6 +97,7 @@ class _PostEventState extends State<PostEvent> {
       print('Formulario inválido');
     }
   }
+
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
