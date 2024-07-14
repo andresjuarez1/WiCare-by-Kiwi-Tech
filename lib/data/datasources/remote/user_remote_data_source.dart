@@ -1,9 +1,11 @@
 // lib/data/datasources/remote/user_remote_data_source.dart
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:locura1/data/models/association_model.dart';
 import 'package:locura1/data/models/volunteerProfile_model.dart';
 import 'dart:convert';
-
+import 'package:http_parser/http_parser.dart';
 import '../../models/company_model.dart';
 import '../../models/user_model.dart';
 import '../../models/volunteer_model.dart';
@@ -148,7 +150,7 @@ class UserRemoteDataSource {
   Future<Map<String, dynamic>> getProfileAssociation(int userId, String token) async {
     print(userId);
     final String url = 'http://192.81.209.151:9000/user/association/$userId';
-    print('estpy aqui');
+    //print('estpy aqui');
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -157,7 +159,7 @@ class UserRemoteDataSource {
           'Authorization': 'Bearer $token',
         },
       );
-        print(response.body);
+        //print(response.body);
       if (response.statusCode == 200) {
         return jsonDecode(response.body)['data'];
       } else {
@@ -186,6 +188,35 @@ class UserRemoteDataSource {
       }
     } catch (e) {
       throw Exception('Error in request: $e');
+    }
+  }
+  Future<void> updateProfilePicture(int userId, File imageFile) async {
+    try {
+      final Uri uri = Uri.parse('http://192.81.209.151:9000/user/upload/$userId');
+      final request = http.MultipartRequest('PUT', uri);
+
+      // Adjunta el archivo de imagen como FormData
+      request.files.add(
+        http.MultipartFile(
+          'file',
+          imageFile.readAsBytes().asStream(),
+          imageFile.lengthSync(),
+          filename: imageFile.path.split('/').last,
+          contentType: MediaType('image', 'jpeg'), // Ajusta según el tipo de archivo
+        ),
+      );
+
+      // Realiza la solicitud
+      final streamedResponse = await request.send();
+
+      // Maneja la respuesta
+      if (streamedResponse.statusCode == 200) {
+        print('Imagen de perfil actualizada con éxito');
+      } else {
+        throw Exception('Error al actualizar la imagen de perfil: ${streamedResponse.reasonPhrase}');
+      }
+    } catch (e) {
+      throw Exception('Error en la solicitud: $e');
     }
   }
 }

@@ -195,9 +195,29 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                       _buildTextField(
                         controller: _foundationDateController,
                         label: 'Ingresa la fecha de fundación (AAAA-MM-DD)',
+                        keyboardType: TextInputType.datetime,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa la fecha de fundación de la empresa';
+                          }
+                          // Expresión regular para validar el formato de fecha AAAA-MM-DD
+                          bool isValidFormat = RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value);
+                          if (!isValidFormat) {
+                            return 'El formato de la fecha debe ser AAAA-MM-DD';
+                          }
+                          // Convertir la cadena de la fecha a un objeto DateTime
+                          DateTime? foundationDate;
+                          try {
+                            foundationDate = DateTime.parse(value);
+                          } catch (e) {
+                            return 'Por favor, ingresa una fecha válida';
+                          }
+                          // Obtener la fecha actual sin la hora
+                          DateTime currentDate = DateTime.now();
+                          DateTime today = DateTime(currentDate.year, currentDate.month, currentDate.day);
+                          // Verificar que la fecha ingresada no sea futura
+                          if (foundationDate.isAfter(today)) {
+                            return 'La fecha de fundación no puede ser una fecha futura';
                           }
                           return null;
                         },
@@ -212,6 +232,12 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa una descripción general';
                           }
+                          int length = value.length;
+                          if (length < 40) {
+                            return 'La descripción debe tener al menos 40 caracteres';
+                          } else if (length > 100) {
+                            return 'La descripción no debe tener más de 100 caracteres';
+                          }
                           return null;
                         },
                       ),
@@ -224,7 +250,9 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                         keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el teléfono de la empresa';
+                            return 'Por favor, ingresa tu teléfono';
+                          } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                            return 'El número telefónico debe tener 10 dígitos';
                           }
                           return null;
                         },
@@ -234,10 +262,12 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                       const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _rfcController,
-                        label: 'Ingresa el RFC de la empresa',
+                        label: 'Ingresa tu RFC',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el RFC de la empresa';
+                            return 'Por favor, ingresa tu RFC';
+                          } else if (!RegExp(r'^[A-ZÑ&]{3}\d{6}[A-Z\d]{3}$').hasMatch(value)) {
+                            return 'El RFC debe tener 12 caracteres con el formato correcto';
                           }
                           return null;
                         },
@@ -263,7 +293,9 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                         label: 'Ingresa el nombre del encargado',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre';
+                            return 'Por favor, ingresa tu nombre completo';
+                          } else if (RegExp(r'[0-9]').hasMatch(value)) {
+                            return 'El nombre no debe contener números';
                           }
                           return null;
                         },
@@ -278,10 +310,13 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu edad';
-                          } else if (int.tryParse(value) == null) {
+                          }
+                          int? age = int.tryParse(value);
+                          if (age == null) {
                             return 'Por favor, ingresa un número válido';
-                          } else if (value.length > 3) {
-                            return 'La edad no debe tener más de 3 dígitos';
+                          }
+                          if (age <= 20 || age >= 70) {
+                            return 'La edad debe estar entre 20 y 70 años';
                           }
                           return null;
                         },
@@ -311,7 +346,9 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                         keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el teléfono';
+                            return 'Por favor, ingresa tu teléfono';
+                          } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                            return 'El número telefónico debe tener 10 dígitos';
                           }
                           return null;
                         },
@@ -349,6 +386,10 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu correo electrónico';
                           }
+                          bool isValidEmail = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value);
+                          if (!isValidEmail) {
+                            return 'Ingresa un correo electrónico válido';
+                          }
                           return null;
                         },
                       ),
@@ -362,6 +403,13 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu contraseña';
+                          }
+                          if (value.length < 8) {
+                            return 'La contraseña debe tener al menos 8 caracteres';
+                          }
+                          bool isValidPassword = RegExp(r'^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$').hasMatch(value);
+                          if (!isValidPassword) {
+                            return 'La contraseña debe contener al menos:\n Una letra en mayúscula\n Un dígito \n Un carácter especial';
                           }
                           return null;
                         },

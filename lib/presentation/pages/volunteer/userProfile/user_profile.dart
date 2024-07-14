@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:locura1/presentation/pages/volunteer/userProfile/profilePicture.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
@@ -55,6 +56,20 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Color(0xFF5CA666),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.camera_alt),
+            onPressed: () {
+              // Navegar a la página de subir imagen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UploadProfilePicturePage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: FutureBuilder<VolunteerProfile>(
@@ -85,8 +100,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   CircleAvatar(
                     radius: 50.0,
-                    backgroundImage: NetworkImage(userProfile.profilePicture),
-                    onBackgroundImageError: (_, __) => const AssetImage('assets/perfil_volunteer.jpg'), // Imagen de respaldo
+                    backgroundImage: userProfile.profilePicture != null
+                        ? NetworkImage(userProfile.profilePicture!)
+                        : AssetImage('assets/default_profile.png'),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -217,6 +233,18 @@ class _ProfilePageState extends State<ProfilePage> {
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navegar a la página de subir imagen
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UploadProfilePicturePage(),
+            ),
+          );
+        },
+        child: Icon(Icons.camera_alt),
       ),
     );
   }

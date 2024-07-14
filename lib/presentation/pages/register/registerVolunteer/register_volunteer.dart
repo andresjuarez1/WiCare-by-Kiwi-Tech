@@ -173,10 +173,13 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu edad';
-                          } else if (int.tryParse(value) == null) {
+                          }
+                          int? age = int.tryParse(value);
+                          if (age == null) {
                             return 'Por favor, ingresa un número válido';
-                          } else if (value.length > 3) {
-                            return 'La edad no debe tener más de 3 dígitos';
+                          }
+                          if (age <= 15 || age >= 70) {
+                            return 'La edad debe estar entre 15 y 70 años';
                           }
                           return null;
                         },
@@ -258,6 +261,10 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu correo electrónico';
                           }
+                          bool isValidEmail = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value);
+                          if (!isValidEmail) {
+                            return 'Ingresa un correo electrónico válido';
+                          }
                           return null;
                         },
                       ),
@@ -271,6 +278,13 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu contraseña';
+                          }
+                          if (value.length < 8) {
+                            return 'La contraseña debe tener al menos 8 caracteres';
+                          }
+                          bool isValidPassword = RegExp(r'^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$').hasMatch(value);
+                          if (!isValidPassword) {
+                            return 'La contraseña debe contener al menos:\n Una letra en mayúscula\n Un dígito \n Un carácter especial';
                           }
                           return null;
                         },

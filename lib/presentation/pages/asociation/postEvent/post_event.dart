@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../../../../data/datasources/remote/event_remote_data_source.dart';
 import '../../../../data/repositories/event_repository_impl.dart';
 import '../../../../domain/entities/event.dart';
 import '../../../../domain/use_cases/create_event.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PostEvent extends StatefulWidget {
   @override
@@ -27,7 +28,18 @@ class _PostEventState extends State<PostEvent> {
   ];
   String? _selectedCategories;
   DateTime _selectedDate = DateTime.now();
-  TimeOfDay? _selectedTime;
+  TimeOfDay? _selectedStartTime;
+  TimeOfDay? _selectedEndTime;
+  File? _image;
+
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
 
   Future<String?> _getToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -41,16 +53,14 @@ class _PostEventState extends State<PostEvent> {
       final event = Event(
         name: _eventNameController.text,
         description: _descriptionController.text,
-        hour: _selectedTime != null
-            ? '${_selectedTime!.hour}:${_selectedTime!.minute}'
+        hour: _selectedStartTime != null
+            ? '${_selectedStartTime!.hour}:${_selectedStartTime!.minute} - ${_selectedEndTime!.hour}:${_selectedEndTime!.minute}'
             : '',
         date: _selectedDate.toString().substring(0, 10),
         cathegory: _selectedCategories ?? '',
         location: _location.text,
       );
       try {
-        // Aquí puedes enviar el evento a donde sea necesario
-        print('Creando evento:');
         final String? token = await _getToken();
         if (token == null) {
           print('Token no disponible');
@@ -60,7 +70,7 @@ class _PostEventState extends State<PostEvent> {
         final repository = EventRepositoryImpl(remoteDataSource);
         final createEventUseCase = CreateEventUseCase(repository);
         await createEventUseCase.execute(event);
-        print('evento creado');
+        print('Evento creado');
       } catch (error) {
         print('Error al crear evento: $error');
       }
@@ -96,24 +106,19 @@ class _PostEventState extends State<PostEvent> {
     }
   }
 
-  Future<void> _selectTime(BuildContext context) async {
+  Future<void> _selectTime(BuildContext context, bool isStartTime) async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
     if (pickedTime != null) {
       setState(() {
-        _selectedTime = pickedTime;
+        if (isStartTime) {
+          _selectedStartTime = pickedTime;
+        } else {
+          _selectedEndTime = pickedTime;
+        }
       });
-    }
-  }
-
-  Future<void> _selectImage() async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedImage != null) {
-      // Aquí puedes procesar la imagen seleccionada
     }
   }
 
@@ -212,9 +217,10 @@ class _PostEventState extends State<PostEvent> {
                       decoration: InputDecoration(
                         labelText: 'Fecha',
                         labelStyle: const TextStyle(
-                            fontFamily: 'PoppinsRegular',
-                            fontSize: 15.0,
-                            color: Colors.black),
+                          fontFamily: 'PoppinsRegular',
+                          fontSize: 15.0,
+                          color: Colors.black,
+                        ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: const BorderSide(color: Color(0xFF5CA666)),
@@ -235,6 +241,16 @@ class _PostEventState extends State<PostEvent> {
                         if (value == null || value.isEmpty) {
                           return 'Por favor selecciona una fecha';
                         }
+                        DateTime inputDate;
+                        try {
+                          inputDate = DateTime.parse(value);
+                        } catch (e) {
+                          return 'Formato de fecha inválido';
+                        }
+                        DateTime currentDate = DateTime.now();
+                        if (inputDate.isBefore(currentDate)) {
+                          return 'La fecha no puede ser anterior a la fecha actual';
+                        }
                         return null;
                       },
                     ),
@@ -242,11 +258,11 @@ class _PostEventState extends State<PostEvent> {
                 ),
                 const SizedBox(height: 25),
                 GestureDetector(
-                  onTap: () => _selectTime(context),
+                  onTap: () => _selectTime(context, true),
                   child: AbsorbPointer(
                     child: TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'Hora',
+                        labelText: 'Hora de inicio',
                         labelStyle: const TextStyle(
                             fontFamily: 'PoppinsRegular',
                             fontSize: 15.0,
@@ -265,18 +281,107 @@ class _PostEventState extends State<PostEvent> {
                         ),
                       ),
                       controller: TextEditingController(
-                        text: _selectedTime != null
-                            ? '${_selectedTime!.hour}:${_selectedTime!.minute}'
+                        text: _selectedStartTime != null
+                            ? _selectedStartTime!.format(context)
                             : '',
                       ),
                       validator: (value) {
-                        if (_selectedTime == null) {
-                          return 'Por favor selecciona una hora';
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor selecciona una hora de inicio';
                         }
                         return null;
                       },
                     ),
                   ),
+                ),
+                const SizedBox(height: 25),
+                GestureDetector(
+                  onTap: () => _selectTime(context, false),
+                  child: AbsorbPointer(
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Hora de fin',
+                        labelStyle: const TextStyle(
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 15.0,
+                            color: Colors.black),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 12.0,
+                          horizontal: 16.0,
+                        ),
+                      ),
+                      controller: TextEditingController(
+                        text: _selectedEndTime != null
+                            ? _selectedEndTime!.format(context)
+                            : '',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor selecciona una hora de fin';
+                        }
+                        if (_selectedStartTime != null &&
+                            _selectedEndTime != null) {
+                          if (_selectedEndTime!.hour <
+                              _selectedStartTime!.hour ||
+                              (_selectedEndTime!.hour ==
+                                  _selectedStartTime!.hour &&
+                                  _selectedEndTime!.minute <
+                                      _selectedStartTime!.minute)) {
+                            return 'La hora de fin no puede ser anterior a la hora de inicio';
+                          }
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 25),
+                DropdownButtonFormField<String>(
+                  value: _selectedCategories,
+                  items: _categories.map((category) {
+                    return DropdownMenuItem<String>(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedCategories = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Categoría',
+                    labelStyle: const TextStyle(
+                        fontFamily: 'PoppinsRegular',
+                        fontSize: 15.0,
+                        color: Colors.black),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 12.0,
+                      horizontal: 16.0,
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor selecciona una categoría';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 25),
                 TextFormField(
@@ -289,11 +394,11 @@ class _PostEventState extends State<PostEvent> {
                         color: Colors.black),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: greenColor),
+                      borderSide: const BorderSide(color: Color(0xFF5CA666)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: greenColor),
+                      borderSide: const BorderSide(color: Color(0xFF5CA666)),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 12.0,
@@ -302,58 +407,72 @@ class _PostEventState extends State<PostEvent> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa la ubicación del evento';
+                      return 'Por favor ingresa la ubicación';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 25),
-                _buildCategoryDropdown(),
-                const SizedBox(height: 25),
-                Center(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: ElevatedButton(
-                      onPressed: _selectImage,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          side: const BorderSide(color: Color(0xFF5CA666)),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 13.0),
-                      ),
-                      child: const Text(
-                        'Seleccionar imagen',
-                        style: TextStyle(
-                            fontFamily: 'PoppinsRegular',
-                            fontSize: 15.0,
-                            color: Colors.black),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Imagen del evento',
+                      style: TextStyle(
+                        fontFamily: 'PoppinsRegular',
+                        fontSize: 15.0,
+                        color: Colors.black,
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: _pickImage,
+                      child: Container(
+                        width: double.infinity,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFF5CA666)),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: _image != null
+                            ? Image.file(
+                          _image!,
+                          fit: BoxFit.cover,
+                        )
+                            : const Center(
+                          child: Text(
+                            'Selecciona una imagen',
+                            style: TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 15.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 35),
-                Center(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: ElevatedButton(
-                      onPressed: _createEvent,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF5CA666),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 13.0),
-                      ),
-                      child: const Text(
-                        'Crear evento',
-                        style: TextStyle(
-                          fontFamily: 'PoppinsRegular',
-                          fontSize: 15.0,
-                          color: Colors.white,
-                        ),
-                      ),
+                const SizedBox(height: 25),
+                ElevatedButton(
+                  onPressed: _createEvent,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF5CA666),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16.0,
+                      horizontal: 24.0,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: const Text(
+                    'Crear evento',
+                    style: TextStyle(
+                      fontFamily: 'PoppinsRegular',
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -362,46 +481,6 @@ class _PostEventState extends State<PostEvent> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildCategoryDropdown() {
-    return DropdownButtonFormField<String>(
-      value: _selectedCategories,
-      onChanged: (value) {
-        setState(() {
-          _selectedCategories = value;
-        });
-      },
-      items: _categories.map((category) {
-        return DropdownMenuItem<String>(
-          value: category,
-          child: Text(category),
-        );
-      }).toList(),
-      decoration: InputDecoration(
-        labelText: 'Categoría',
-        labelStyle: const TextStyle(
-          fontFamily: 'PoppinsRegular',
-          fontSize: 15.0,
-          color: Colors.black,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: const BorderSide(color: Color(0xFF5CA666)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: const BorderSide(color: Color(0xFF5CA666)),
-        ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Por favor selecciona una categoría';
-        }
-        return null;
-      },
     );
   }
 }

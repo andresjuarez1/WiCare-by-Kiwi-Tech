@@ -5,7 +5,7 @@ class ProfileVolunteerModel {
   final String occupation;
   final String genre;
   final String email;
-  final String profilePicture;
+  final String? profilePicture;
 
   ProfileVolunteerModel({
     required this.name,
@@ -13,7 +13,7 @@ class ProfileVolunteerModel {
     required this.occupation,
     required this.genre,
     required this.email,
-    required this.profilePicture
+    this.profilePicture
   });
 
   factory ProfileVolunteerModel.fromJson(Map<String, dynamic> json) {

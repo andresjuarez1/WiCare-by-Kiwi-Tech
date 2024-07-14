@@ -136,8 +136,8 @@ class _NavbarState extends State<Navbar> {
                     final userProfile = snapshot.data!;
                     return CircleAvatar(
                       backgroundImage: userProfile.profilePicture != null
-                          ? NetworkImage(userProfile.profilePicture)
-                          : AssetImage('assets/perfil_volunteer.jpg'),
+                          ? NetworkImage(userProfile.profilePicture!)
+                          : AssetImage('assets/default_profile.png'),
                       radius: 15,
                     );
                   },
