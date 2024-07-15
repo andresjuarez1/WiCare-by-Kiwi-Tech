@@ -5,23 +5,30 @@ import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
 import '../../../../domain/entities/association.dart';
 import '../../login/login_page.dart';
-import '../map/select_location_page.dart';
+import './map/select_location_page.dart';
+import './map/select_location_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterAssociationPage extends StatefulWidget {
   @override
   _RegisterAssociationPageState createState() =>
       _RegisterAssociationPageState();
+
+  _RegisterAssociationPageState createStateManager() =>
+      _RegisterAssociationPageState();  
 }
 
 class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   double? _latitude;
   double? _longitude;
+  double? _latitudeManager;
+  double? _longitudeManager;
 
   @override
   void initState() {
     super.initState();
     _loadSavedLocation();
+    _loadSavedLocationManager();
   }
 
   Future<void> _loadSavedLocation() async {
@@ -32,7 +39,6 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       _latitudeController.text = _latitude?.toString() ?? '';
       _longitudeController.text = _longitude?.toString() ?? '';
     });
-    print('Ubicación cargada: Latitud: $_latitude, Longitud: $_longitude');
   }
 
   void _navigateToSelectLocationPage() async {
@@ -46,16 +52,84 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   }
 
   Widget _buildAddressButton() {
-    return ElevatedButton(
-      onPressed: _navigateToSelectLocationPage,
-      child: const Text('Seleccionar Ubicación en el Mapa'),
+    return _buildStyledButton('Seleccionar Ubicación en el Mapa');
+  }
+
+  Widget _buildStyledButton(String text) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _navigateToSelectLocationPage,
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+            EdgeInsets.symmetric(vertical: 13.0),
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 15.0,
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 
+  Future<void> _loadSavedLocationManager() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _latitudeManager = prefs.getDouble('latitude_manager');
+      _longitudeManager = prefs.getDouble('longitude_manager');
+      _latitudeManagerController.text = _latitudeManager?.toString() ?? '';
+      _longitudeManagerController.text = _longitudeManager?.toString() ?? '';
+    });
+  }
+
+  void _navigateToSelectLocationPageManager() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SelectLocationPageManager()),
+    );
+    if (result != null && result is bool && result) {
+      _loadSavedLocationManager();
+    }
+  }
+
   Widget _buildAddressButtonManager() {
-    return ElevatedButton(
-      onPressed: _navigateToSelectLocationPage,
-      child: const Text('Seleccionar Ubicación en el Mapa'),
+    return _buildStyledButtonManager('Seleccionar Ubicación en el Mapa');
+  }
+
+  Widget _buildStyledButtonManager(String text) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _navigateToSelectLocationPageManager,
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+            EdgeInsets.symmetric(vertical: 13.0),
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 15.0,
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 
@@ -63,6 +137,8 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   final _nameCompanyController = TextEditingController();
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
+  final _latitudeManagerController = TextEditingController();
+  final _longitudeManagerController = TextEditingController();
   final _foundationDateController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -78,7 +154,6 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   final _nameManagerController = TextEditingController();
   final _positionManagerController = TextEditingController();
   final _phoneManagerController = TextEditingController();
-  final _addressManagerController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -115,9 +190,6 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
         age: _ageController.text,
         genre: _selectedGenre ?? '',
       );
-
-      print(
-          'Datos de asociación: ${association.latitude}'); 
 
       try {
         print('Intentando registrar voluntario: ${association.email}');
@@ -223,13 +295,11 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-                      
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
                       if (_latitude != null && _longitude != null)
                         Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 10.0),
-
                       _buildLabel('Fecha  de fundación'),
                       const SizedBox(height: 5.0),
                       _buildTextField(
@@ -392,13 +462,12 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-                    
                       const SizedBox(height: 20.0),
                       _buildAddressButtonManager(),
                       if (_latitude != null && _longitude != null)
-                        Text('Latitud: $_latitude, Longitud: $_longitude'),
+                        Text(
+                            'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
                       const SizedBox(height: 10.0),
-
                       const Text(
                         'Crea tu cuenta',
                         style: const TextStyle(
@@ -609,36 +678,4 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       ),
     );
   }
-
-  // Widget _buildAddressButton() {
-  //   return SizedBox(
-  //     width: double.infinity,
-  //     child: ElevatedButton(
-  //       onPressed: () {
-  //         Navigator.push(
-  //           context,
-  //           MaterialPageRoute(builder: (context) => SelectLocationPage()),
-  //         );
-  //       },
-  //       style: ButtonStyle(
-  //         backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
-  //         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-  //           RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(10.0),
-  //           ),
-  //         ),
-  //         padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-  //           EdgeInsets.symmetric(vertical: 13.0),
-  //         ),
-  //       ),
-  //       child: const Text(
-  //         'Seleccionar Ubicación',
-  //         style: TextStyle(
-  //           fontSize: 15.0,
-  //           color: Colors.white,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }

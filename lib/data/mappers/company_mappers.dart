@@ -14,7 +14,10 @@ CompanyModel companyToCompanyModel(Company company) {
     cellphone_manager : company.cellphone_manager,
     address_manager : company.address_manager,
     genre : company.genre,
-    address : company.address,
+    latitude : company.latitude,
+    longitude : company.longitude,
+    latitude_manager : company.latitude_manager,
+    longitude_manager : company.longitude_manager,
     context : company.context,
     description : company.description,
     cellphone : company.cellphone,
@@ -26,10 +29,13 @@ CompanyModel companyToCompanyModel(Company company) {
 Company companyModelToCompany(CompanyModel model) {
   return Company(
     name: model.name,
-    address: model.address,
+
     foundation_date: model.foundation_date,
     position: model.position,
-
+    latitude: model.latitude,
+    longitude: model.longitude,
+    latitude_manager: model.latitude_manager,
+    longitude_manager: model.longitude_manager,
     context: model.context,
     description: model.description,
     cellphone: model.cellphone,

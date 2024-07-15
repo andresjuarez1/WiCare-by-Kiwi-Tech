@@ -5,7 +5,6 @@ import 'package:locura1/data/mappers/association_mappers.dart';
 import 'package:locura1/data/mappers/company_mappers.dart';
 import 'package:locura1/domain/entities/volunteer.dart';
 import 'package:locura1/domain/entities/association.dart';
-
 import '../../domain/entities/associationProfile.dart';
 import '../../domain/entities/company.dart';
 import '../../domain/entities/companyProfile.dart';
@@ -14,7 +13,6 @@ import '../../domain/entities/users.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../datasources/remote/user_remote_data_source.dart';
 import '../mappers/volunteer_mappers.dart';
-import '../models/volunteerProfile_model.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource remoteDataSource;

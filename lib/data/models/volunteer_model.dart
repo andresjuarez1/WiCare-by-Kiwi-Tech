@@ -1,11 +1,12 @@
-// lib/data/models/volunteer_model.dart
 class VolunteerModel {
   final String name;
   final String age;
   final String curp;
   final String cellphone;
   final String postal;
-  final String address;
+  // final String address;
+  final String latitude;
+  final String longitude;
   final String occupation;
   final String genre;
   final String email;
@@ -17,7 +18,9 @@ class VolunteerModel {
     required this.curp,
     required this.cellphone,
     required this.postal,
-    required this.address,
+    // required this.address,
+    required this.latitude,
+    required this.longitude,
     required this.occupation,
     required this.genre,
     required this.email,
@@ -31,7 +34,9 @@ class VolunteerModel {
       curp: json['curp'],
       cellphone: json['cellphone'],
       postal: json['postal'],
-      address: json['address'],
+      // address: json['address'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
       occupation: json['occupation'],
       genre: json['genre'],
       email: json['email'],
@@ -46,7 +51,8 @@ class VolunteerModel {
       'curp': curp,
       'cellphone': cellphone,
       'postal': postal,
-      'address': address,
+      'latitude': latitude,
+      'longitude': longitude,
       'occupation': occupation,
       'genre': genre,
       'email': email,
