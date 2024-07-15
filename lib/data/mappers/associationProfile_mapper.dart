@@ -9,6 +9,7 @@ ProfileAssociationModel profileToProfileModel(AssociationProfile profile) {
     name: profile.name,
     cellphone: profile.cellphone,
     location: profile.location,
+    
     description: profile.description,
     email: profile.email,
     profilePicture: profile.profilePicture,

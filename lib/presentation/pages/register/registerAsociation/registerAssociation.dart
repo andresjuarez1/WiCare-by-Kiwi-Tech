@@ -5,6 +5,8 @@ import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
 import '../../../../domain/entities/association.dart';
 import '../../login/login_page.dart';
+import '../map/select_location_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterAssociationPage extends StatefulWidget {
   @override
@@ -13,15 +15,58 @@ class RegisterAssociationPage extends StatefulWidget {
 }
 
 class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
+  double? _latitude;
+  double? _longitude;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedLocation();
+  }
+
+  Future<void> _loadSavedLocation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _latitude = prefs.getDouble('latitude');
+      _longitude = prefs.getDouble('longitude');
+      _latitudeController.text = _latitude?.toString() ?? '';
+      _longitudeController.text = _longitude?.toString() ?? '';
+    });
+    print('Ubicación cargada: Latitud: $_latitude, Longitud: $_longitude');
+  }
+
+  void _navigateToSelectLocationPage() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SelectLocationPage()),
+    );
+    if (result != null && result is bool && result) {
+      _loadSavedLocation();
+    }
+  }
+
+  Widget _buildAddressButton() {
+    return ElevatedButton(
+      onPressed: _navigateToSelectLocationPage,
+      child: const Text('Seleccionar Ubicación en el Mapa'),
+    );
+  }
+
+  Widget _buildAddressButtonManager() {
+    return ElevatedButton(
+      onPressed: _navigateToSelectLocationPage,
+      child: const Text('Seleccionar Ubicación en el Mapa'),
+    );
+  }
+
   final _formKey = GlobalKey<FormState>();
   final _nameCompanyController = TextEditingController();
-  final _addressCompanyController = TextEditingController();
+  final _latitudeController = TextEditingController();
+  final _longitudeController = TextEditingController();
   final _foundationDateController = TextEditingController();
-
   final _descriptionController = TextEditingController();
   final _phoneController = TextEditingController();
   final _rfcController = TextEditingController();
-
   final _socialReasons = [
     'Casa hogar',
     'Asilo de ancianos',
@@ -29,7 +74,6 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
     'Protección del medio ambiente',
     'Salud'
   ];
-
   String? _selectSocialReasons;
   final _nameManagerController = TextEditingController();
   final _positionManagerController = TextEditingController();
@@ -46,7 +90,6 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
     'Prefiero no decir': 'Prefiero no decir',
   };
   String? _selectedGenre;
-
   bool _termsAccepted = false;
 
   void _registerVolunteer() async {
@@ -55,7 +98,8 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       print('Formulario válido');
       final association = Association(
         name: _nameCompanyController.text,
-        address: _addressCompanyController.text,
+        latitude: _latitudeController.text,
+        longitude: _longitudeController.text,
         foundation_date: _foundationDateController.text,
         social_reason: _selectSocialReasons ?? '',
         description: _descriptionController.text,
@@ -64,12 +108,16 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
         name_manager: _nameManagerController.text,
         position: _positionManagerController.text,
         cellphone_manager: _phoneManagerController.text,
-        address_manager: _addressManagerController.text,
+        latitude_manager: _latitudeController.text,
+        longitude_manager: _longitudeController.text,
         email: _emailController.text,
         password: _passwordController.text,
         age: _ageController.text,
         genre: _selectedGenre ?? '',
       );
+
+      print(
+          'Datos de asociación: ${association.latitude}'); 
 
       try {
         print('Intentando registrar voluntario: ${association.email}');
@@ -89,7 +137,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
         _showErrorDialog(error.toString());
       }
     } else {
-      print('Error al registrar usuario: no entra avalidar el form ');
+      print('Error al registrar usuario: no entra a validar el form');
     }
   }
 
@@ -175,20 +223,13 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
+                      
+                      const SizedBox(height: 20.0),
+                      _buildAddressButton(),
+                      if (_latitude != null && _longitude != null)
+                        Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 10.0),
-                      _buildLabel('Domicilio'),
-                      const SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _addressCompanyController,
-                        label: 'Ingresa el domicilio de la asociación',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el domicilio de la asociación';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 10.0),
+
                       _buildLabel('Fecha  de fundación'),
                       const SizedBox(height: 5.0),
                       _buildTextField(
@@ -199,7 +240,8 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa la fecha de fundación de la empresa';
                           }
-                          bool isValidFormat = RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value);
+                          bool isValidFormat =
+                              RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value);
                           if (!isValidFormat) {
                             return 'El formato de la fecha debe ser AAAA-MM-DD';
                           }
@@ -210,7 +252,8 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                             return 'Por favor, ingresa una fecha válida';
                           }
                           DateTime currentDate = DateTime.now();
-                          DateTime today = DateTime(currentDate.year, currentDate.month, currentDate.day);
+                          DateTime today = DateTime(currentDate.year,
+                              currentDate.month, currentDate.day);
                           if (foundationDate.isAfter(today)) {
                             return 'La fecha de fundación no puede ser una fecha futura';
                           }
@@ -261,7 +304,8 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu RFC';
-                          } else if (!RegExp(r'^[A-ZÑ&]{3}\d{6}[A-Z\d]{3}$').hasMatch(value)) {
+                          } else if (!RegExp(r'^[A-ZÑ&]{3}\d{6}[A-Z\d]{3}$')
+                              .hasMatch(value)) {
                             return 'El RFC debe tener 12 caracteres con el formato correcto';
                           }
                           return null;
@@ -348,20 +392,13 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Domicilio'),
-                      const SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _addressManagerController,
-                        label: 'Ingresa el domicilio del encargado',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el domicilio';
-                          }
-                          return null;
-                        },
-                      ),
+                    
                       const SizedBox(height: 20.0),
+                      _buildAddressButtonManager(),
+                      if (_latitude != null && _longitude != null)
+                        Text('Latitud: $_latitude, Longitud: $_longitude'),
+                      const SizedBox(height: 10.0),
+
                       const Text(
                         'Crea tu cuenta',
                         style: const TextStyle(
@@ -381,7 +418,9 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu correo electrónico';
                           }
-                          bool isValidEmail = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value);
+                          bool isValidEmail =
+                              RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                  .hasMatch(value);
                           if (!isValidEmail) {
                             return 'Ingresa un correo electrónico válido';
                           }
@@ -402,7 +441,9 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           if (value.length < 8) {
                             return 'La contraseña debe tener al menos 8 caracteres';
                           }
-                          bool isValidPassword = RegExp(r'^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$').hasMatch(value);
+                          bool isValidPassword = RegExp(
+                                  r'^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$')
+                              .hasMatch(value);
                           if (!isValidPassword) {
                             return 'La contraseña debe contener al menos:\n Una letra en mayúscula\n Un dígito \n Un carácter especial';
                           }
@@ -568,4 +609,36 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       ),
     );
   }
+
+  // Widget _buildAddressButton() {
+  //   return SizedBox(
+  //     width: double.infinity,
+  //     child: ElevatedButton(
+  //       onPressed: () {
+  //         Navigator.push(
+  //           context,
+  //           MaterialPageRoute(builder: (context) => SelectLocationPage()),
+  //         );
+  //       },
+  //       style: ButtonStyle(
+  //         backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
+  //         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+  //           RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(10.0),
+  //           ),
+  //         ),
+  //         padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+  //           EdgeInsets.symmetric(vertical: 13.0),
+  //         ),
+  //       ),
+  //       child: const Text(
+  //         'Seleccionar Ubicación',
+  //         style: TextStyle(
+  //           fontSize: 15.0,
+  //           color: Colors.white,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

@@ -1,4 +1,3 @@
-// lib/data/models/association_model.dart
 class CompanyModel {
   final String name;
   final String foundation_date;

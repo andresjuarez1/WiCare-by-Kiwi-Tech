@@ -35,10 +35,12 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setDouble('latitude', _selectedLocation!.latitude);
       await prefs.setDouble('longitude', _selectedLocation!.longitude);
+      print(
+          'Ubicación guardada: Latitud: ${_selectedLocation!.latitude}, Longitud: ${_selectedLocation!.longitude}');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Ubicación guardada.')),
       );
-      Navigator.pop(context, true); 
+      Navigator.pop(context, true);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Por favor, selecciona una ubicación.')),

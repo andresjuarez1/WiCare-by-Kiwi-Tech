@@ -1,4 +1,3 @@
-// lib/data/models/association_model.dart
 class AssociationModel {
   final String name;
   final String foundation_date;
@@ -8,32 +7,32 @@ class AssociationModel {
   final String age;
   final String name_manager;
   final String cellphone_manager;
-  final String address_manager;
+  final String latitude_manager;
+  final String longitude_manager;
+
   final String genre;
-  final String address;
+  final String latitude;
+  final String longitude;
   final String social_reason;
   final String description;
   final String RFC;
   final String cellphone;
-
-
 
   AssociationModel({
     required this.name,
     required this.foundation_date,
     required this.email,
     required this.password,
-
     required this.position,
     required this.age,
     required this.name_manager,
     required this.cellphone_manager,
-
-    required this.address_manager,
+    required this.latitude_manager,
+    required this.longitude_manager,
     required this.genre,
-    required this.address,
+    required this.latitude,
+    required this.longitude,
     required this.social_reason,
-    
     required this.description,
     required this.RFC,
     required this.cellphone,
@@ -49,9 +48,11 @@ class AssociationModel {
       age: json['age'],
       name_manager: json['name_manager'],
       cellphone_manager: json['cellphone_manager'],
-      address_manager: json['address_manager'],
+      latitude_manager: json['latitude_manager'],
+      longitude_manager: json['longitude_manager'],
       genre: json['genre'],
-      address: json['address'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
       social_reason: json['social_reason'],
       description: json['description'],
       RFC: json['RFC'],
@@ -69,9 +70,11 @@ class AssociationModel {
       'age': age,
       'name_manager': name_manager,
       'cellphone_manager': cellphone_manager,
-      'address_manager': address_manager,
+      'latitude_manager': latitude_manager,
+      'longitude_manager': longitude_manager,
       'genre': genre,
-      'address': address,
+      'latitude': latitude,
+      'longitude': longitude,
       'social_reason': social_reason,
       'description': description,
       'RFC': RFC,
