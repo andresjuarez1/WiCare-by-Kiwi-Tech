@@ -102,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     radius: 50.0,
                     backgroundImage: userProfile.profilePicture != null
                         ? NetworkImage(userProfile.profilePicture!)
-                        : AssetImage('assets/default_profile.png'),
+                        : AssetImage('assets/default_profile.png') as ImageProvider,
                   ),
                   const SizedBox(height: 10),
                   Text(

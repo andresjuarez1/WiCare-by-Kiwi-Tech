@@ -1,4 +1,6 @@
 // lib/data/repositories/user_repository_impl.dart
+import 'dart:io';
+
 import 'package:locura1/data/mappers/association_mappers.dart';
 import 'package:locura1/data/mappers/company_mappers.dart';
 import 'package:locura1/domain/entities/volunteer.dart';
@@ -53,5 +55,9 @@ class UserRepositoryImpl implements UserRepository {
   Future<CompanyProfile> getCompanyProfile(int userId, String token) async {
     final profileData = await remoteDataSource.getProfileCompany(userId, token);
     return CompanyProfile.fromJson(profileData);
+  }
+  @override
+  Future<void> updateProfilePicture(int userId, File profilePicture, String token) async {
+    await remoteDataSource.updateProfilePicture(userId, profilePicture, token);
   }
 }

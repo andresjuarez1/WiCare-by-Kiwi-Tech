@@ -75,8 +75,8 @@ class EventRemoteDataSource {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print('Eventos');
-        print(data);
+        //print('Eventos');
+        //print(data);
       } else {
         print('Error: ${response.statusCode}');
         print('Mensaje de error: ${response.body}');
@@ -96,7 +96,7 @@ class EventRemoteDataSource {
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
-        print('Eventos recibidos: $data');
+        //print('Eventos recibidos: $data');
 
         // Convierte la respuesta JSON a una lista de MiniEventModel.
         final events = data.map((event) => MiniEventModel.fromJson(event)).toList();

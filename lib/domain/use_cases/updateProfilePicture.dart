@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import '../../data/datasources/remote/user_remote_data_source.dart';
+import '../repositories/user_repository.dart';
 
 class UpdateProfilePictureUseCase {
-  final UserRemoteDataSource remoteDataSource;
+  final UserRepository _userRepository;
 
-  UpdateProfilePictureUseCase(this.remoteDataSource);
+  UpdateProfilePictureUseCase(this._userRepository);
 
-  Future<void> updateProfilePicture(int userId, File imageFile) async {
-    await remoteDataSource.updateProfilePicture(userId, imageFile);
+  Future<void> execute(int userId, File profilePicture, String token) async {
+    await _userRepository.updateProfilePicture(userId, profilePicture, token);
   }
 }

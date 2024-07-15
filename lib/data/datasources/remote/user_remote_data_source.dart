@@ -190,33 +190,22 @@ class UserRemoteDataSource {
       throw Exception('Error in request: $e');
     }
   }
-  Future<void> updateProfilePicture(int userId, File imageFile) async {
-    try {
-      final Uri uri = Uri.parse('http://192.81.209.151:9000/user/upload/$userId');
-      final request = http.MultipartRequest('PUT', uri);
+  Future<void> updateProfilePicture(int userId, File image, String token) async {
+    final request = http.MultipartRequest('PUT', Uri.parse('http://192.81.209.151:9000/user/upload/$userId'));
 
-      // Adjunta el archivo de imagen como FormData
-      request.files.add(
-        http.MultipartFile(
-          'file',
-          imageFile.readAsBytes().asStream(),
-          imageFile.lengthSync(),
-          filename: imageFile.path.split('/').last,
-          contentType: MediaType('image', 'jpeg'), // Ajusta según el tipo de archivo
-        ),
-      );
+    request.headers['Authorization'] = 'Bearer $token'; // Agrega el token a los encabezados
+    print('estoy en el user remote');
+    request.files.add(await http.MultipartFile.fromPath(
+      'profilePicture',
+      image.path,
+      contentType: MediaType('image', 'jpeg'),
+    ));
+    request.fields['userId'] = userId.toString();
 
-      // Realiza la solicitud
-      final streamedResponse = await request.send();
+    final response = await request.send();
 
-      // Maneja la respuesta
-      if (streamedResponse.statusCode == 200) {
-        print('Imagen de perfil actualizada con éxito');
-      } else {
-        throw Exception('Error al actualizar la imagen de perfil: ${streamedResponse.reasonPhrase}');
-      }
-    } catch (e) {
-      throw Exception('Error en la solicitud: $e');
+    if (response.statusCode != 200) {
+      throw Exception('Error al actualizar la imagen de perfil: ${response.reasonPhrase}');
     }
   }
 }
