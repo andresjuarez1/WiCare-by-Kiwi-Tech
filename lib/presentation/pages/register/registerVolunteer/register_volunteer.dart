@@ -254,7 +254,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
                       // if (_latitude != null && _longitude != null)
-                        // Text('Latitud: $_latitude, Longitud: $_longitude'),
+                      // Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 20.0),
 
                       _buildLabel('CURP'),
@@ -445,15 +445,23 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         labelStyle: const TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
         contentPadding:
@@ -481,15 +489,23 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -513,15 +529,23 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),

@@ -15,7 +15,7 @@ class RegisterAssociationPage extends StatefulWidget {
       _RegisterAssociationPageState();
 
   _RegisterAssociationPageState createStateManager() =>
-      _RegisterAssociationPageState();  
+      _RegisterAssociationPageState();
 }
 
 class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
@@ -69,7 +69,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-            EdgeInsets.symmetric(vertical: 13.0),
+            const EdgeInsets.symmetric(vertical: 13.0),
           ),
         ),
         child: Text(
@@ -120,7 +120,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-            EdgeInsets.symmetric(vertical: 13.0),
+            const EdgeInsets.symmetric(vertical: 13.0),
           ),
         ),
         child: Text(
@@ -624,20 +624,32 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
+        labelStyle: const TextStyle(
+          fontSize: 15.0,
+          color: Color(0xFFBCBCBC),
+        ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
-        labelStyle: const TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+      ),
+      style: const TextStyle(
+        color: Colors.black,
       ),
       validator: validator,
     );
@@ -659,15 +671,23 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -691,15 +711,23 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
