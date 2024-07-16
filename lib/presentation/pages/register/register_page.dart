@@ -19,7 +19,7 @@ class RegistrationPage extends StatelessWidget {
     );
   }
 
-  void _onButton2Pressed(BuildContext context) {
+  void _onButton2Pressed(BuildContext context) {   
       Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => RegisterCompanyPage()),
