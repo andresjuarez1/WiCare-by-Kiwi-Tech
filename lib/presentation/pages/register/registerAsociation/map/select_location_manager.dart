@@ -88,7 +88,7 @@ class _SelectLocationPageState extends State<SelectLocationPageManager> {
       Navigator.pop(context, true);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, selecciona una ubicación.')),
+        const SnackBar(content: Text('Por favor, selecciona la ubicación.')),
       );
     }
   }
