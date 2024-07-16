@@ -60,7 +60,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -111,7 +111,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -174,6 +174,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
       print('Formulario válido');
       final company = Company(
         name: _nameCompanyController.text,
+        // address: _addressCompanyController.text,
         latitude: _latitudeController.text,
         longitude: _longitudeController.text,
         latitude_manager: _latitudeManagerController.text,
@@ -299,12 +300,23 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           return null;
                         },
                       ),
+<<<<<<< HEAD
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
-                      // if (_latitude != null && _longitude != null)
-                      // Text('Latitud: $_latitude, Longitud: $_longitude'),
+                      if (_latitude != null && _longitude != null)
+                        Text('Latitud: $_latitude, Longitud: $_longitude'),
+                      const SizedBox(height: 20.0),
+=======
 
                       const SizedBox(height: 20.0),
+                      _buildAddressButton(),
+                      if (_latitude != null && _longitude != null)
+                      Text('Latitud: $_latitude, Longitud: $_longitude'),
+                      const SizedBox(height: 20.0),
+
+>>>>>>> 4b5ab86 (i think i did)
+                      _buildLabel('Fecha  de fundación'),
+                      const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _foundationDateController,
                         label: 'Ingresa la fecha de fundación (AAAA-MM-DD)',
@@ -313,6 +325,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa la fecha de fundación de la empresa';
                           }
+                          // Expresión regular para validar el formato de fecha AAAA-MM-DD
                           bool isValidFormat =
                               RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value);
                           if (!isValidFormat) {
@@ -327,6 +340,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           DateTime currentDate = DateTime.now();
                           DateTime today = DateTime(currentDate.year,
                               currentDate.month, currentDate.day);
+                          // Verificar que la fecha ingresada no sea futura
                           if (foundationDate.isAfter(today)) {
                             return 'La fecha de fundación no puede ser una fecha futura';
                           }
@@ -450,12 +464,21 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           return null;
                         },
                       ),
+<<<<<<< HEAD
                       const SizedBox(height: 20.0),
                       _buildAddressButtonManager(),
-                      // if (_latitude != null && _longitude != null)
-                      // Text('Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
+                      if (_latitude != null && _longitude != null)
+                        Text(
+                            'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
+=======
 
+>>>>>>> 4b5ab86 (i think i did)
                       const SizedBox(height: 20.0),
+                      _buildAddressButtonManager(),
+                      if (_latitude != null && _longitude != null)
+                        Text('Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
+                      const SizedBox(height: 20.0),
+
                       const Text(
                         'Crea tu cuenta',
                         style: const TextStyle(
@@ -603,15 +626,23 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         labelStyle: const TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
         contentPadding:
@@ -637,15 +668,23 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -669,15 +708,23 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
