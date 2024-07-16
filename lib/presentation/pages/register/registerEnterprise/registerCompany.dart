@@ -300,13 +300,6 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           return null;
                         },
                       ),
-<<<<<<< HEAD
-                      const SizedBox(height: 20.0),
-                      _buildAddressButton(),
-                      if (_latitude != null && _longitude != null)
-                        Text('Latitud: $_latitude, Longitud: $_longitude'),
-                      const SizedBox(height: 20.0),
-=======
 
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
@@ -314,7 +307,6 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                       Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 20.0),
 
->>>>>>> 4b5ab86 (i think i did)
                       _buildLabel('Fecha  de fundación'),
                       const SizedBox(height: 5.0),
                       _buildTextField(
@@ -464,15 +456,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           return null;
                         },
                       ),
-<<<<<<< HEAD
-                      const SizedBox(height: 20.0),
-                      _buildAddressButtonManager(),
-                      if (_latitude != null && _longitude != null)
-                        Text(
-                            'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
-=======
 
->>>>>>> 4b5ab86 (i think i did)
                       const SizedBox(height: 20.0),
                       _buildAddressButtonManager(),
                       if (_latitude != null && _longitude != null)

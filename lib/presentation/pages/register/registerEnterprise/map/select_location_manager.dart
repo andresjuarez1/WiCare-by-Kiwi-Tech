@@ -43,7 +43,7 @@ class _SelectLocationPageState extends State<SelectLocationPageManager> {
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
       return Future.error(
-          'Permiso de ubicación denegado, abra la configuración de la aplicación para habilitar la ubicación.');
+          'Permiso de ubicación denegado permanentemente, abra la configuración de la aplicación para habilitar la ubicación.');
     }
 
     if (permission == LocationPermission.denied) {
