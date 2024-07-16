@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../postEvent/post_event.dart';
 
-class Navbar extends StatelessWidget implements PreferredSizeWidget {
+class Navbar extends StatefulWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
+
+  @override
+  _NavbarState createState() => _NavbarState();
+}
+
+class _NavbarState extends State<Navbar> {
+  String userName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('userName') ?? 'Usuario';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +47,9 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
           ),
-          const Text(
-            'Hola, ...',
-            style: TextStyle(
+          Text(
+            'Hola, $userName',
+            style: const TextStyle(
               fontFamily: 'PoppinsRegular',
               color: Color(0xFF5CA666),
               fontSize: 20,

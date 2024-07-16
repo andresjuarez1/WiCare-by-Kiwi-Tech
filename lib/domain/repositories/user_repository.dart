@@ -1,4 +1,3 @@
-// lib/domain/repositories/user_repository.dart
 import 'dart:io';
 
 import 'package:locura1/domain/entities/company.dart';

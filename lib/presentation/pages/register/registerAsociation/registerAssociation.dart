@@ -15,7 +15,7 @@ class RegisterAssociationPage extends StatefulWidget {
       _RegisterAssociationPageState();
 
   _RegisterAssociationPageState createStateManager() =>
-      _RegisterAssociationPageState();  
+      _RegisterAssociationPageState();
 }
 
 class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
@@ -64,7 +64,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(30.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -115,7 +115,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(30.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -257,6 +257,12 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   title: const Text('Registro de Asociación',
+      //       style: TextStyle(color: Color(0xFF2E8139))),
+      // ),
       body: Stack(
         children: [
           Padding(
@@ -275,16 +281,32 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                       ),
                       const SizedBox(height: 25.0),
                       const Text(
-                        '¡Bienvenido, asociacion!',
+                        '¡Bienvenido, empresa!',
                         style: TextStyle(
                           fontSize: 18.0,
                           color: Color(0xFF2E8139),
+                          fontFamily: 'PoppinsRegular',
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      // Image.asset(
+                      //   'assets/wicare-logo-inicio.png',
+                      //   width: 180,
+                      // ),
+                      // const SizedBox(height: 25.0),
+                      // const Text(
+                      //   'Porfavor completa todo los campos correctamente para configurar tu cuenta correctamente',
+                      //   style: TextStyle(
+                      //     fontSize: 12.5,
+                      //     color: Color.fromARGB(255, 141, 141, 141),
+                      //     fontFamily: 'PoppinsRegular',
+                      //     fontWeight: FontWeight.w200,
+                      //   ),
+                      //   textAlign: TextAlign.center,
+                      // ),
                       const SizedBox(height: 20.0),
-                      _buildLabel('Nombre de la Asociación'),
-                      const SizedBox(height: 5.0),
+                      // _buildLabel('Nombre de la Asociación'),
+                      // const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _nameCompanyController,
                         label: 'Ingresa el nombre de la asociación',
@@ -295,16 +317,18 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
+
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
-                      if (_latitude != null && _longitude != null)
-                        Text('Latitud: $_latitude, Longitud: $_longitude'),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Fecha  de fundación'),
-                      const SizedBox(height: 5.0),
+                      // if (_latitude != null && _longitude != null)
+                      //   Text('Latitud: $_latitude, Longitud: $_longitude'),
+
+                      const SizedBox(height: 20.0),
+                      // _buildLabel('Fecha  de fundación'),
+                      // const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _foundationDateController,
-                        label: 'Ingresa la fecha de fundación (AAAA-MM-DD)',
+                        label: 'Fecha de fundación (AAAA-MM-DD)',
                         keyboardType: TextInputType.datetime,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -330,9 +354,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Descripción General'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _descriptionController,
                         label: 'Ingresa una descripción general',
@@ -349,9 +371,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Teléfono de la asociación'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _phoneController,
                         label: 'Ingresa el teléfono de la asociación',
@@ -365,9 +385,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('RFC'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _rfcController,
                         label: 'Ingresa tu RFC',
@@ -385,7 +403,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                       _buildLabel('Razón Social'),
                       const SizedBox(height: 5.0),
                       _buildSocialReasonDropdown(),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 30.0),
                       const Text(
                         'Datos del Encargado',
                         style: TextStyle(
@@ -394,9 +412,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Nombre'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _nameManagerController,
                         label: 'Ingresa el nombre del encargado',
@@ -409,9 +425,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Edad'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _ageController,
                         label: 'Ingresa tu edad',
@@ -434,8 +448,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                       _buildLabel('Género'),
                       const SizedBox(height: 5.0),
                       _buildGenderDropdown(),
-                      _buildLabel('Puesto'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _positionManagerController,
                         label: 'Ingresa el puesto del encargado',
@@ -446,9 +459,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Teléfono'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _phoneManagerController,
                         label: 'Ingresa el teléfono del encargado',
@@ -462,12 +473,14 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
+
                       const SizedBox(height: 20.0),
                       _buildAddressButtonManager(),
-                      if (_latitude != null && _longitude != null)
-                        Text(
-                            'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
-                      const SizedBox(height: 10.0),
+                      // if (_latitude != null && _longitude != null)
+                      //   Text(
+                      //       'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
+
+                      const SizedBox(height: 30.0),
                       const Text(
                         'Crea tu cuenta',
                         style: const TextStyle(
@@ -476,9 +489,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Correo Electrónico'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _emailController,
                         label: 'Ingresa tu correo electrónico',
@@ -496,9 +507,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Contraseña'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _passwordController,
                         label: 'Ingresa tu contraseña',
@@ -519,9 +528,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Confirmar Contraseña'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _confirmPasswordController,
                         label: 'Confirma tu contraseña',
@@ -563,7 +570,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                             shape:
                                 WidgetStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
                             padding:
@@ -621,7 +628,15 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
         ),
         labelStyle: const TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
         contentPadding:
@@ -647,7 +662,15 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -671,7 +694,15 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),

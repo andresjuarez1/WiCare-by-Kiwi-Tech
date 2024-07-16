@@ -57,7 +57,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(30.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -81,7 +81,6 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
   final _curpController = TextEditingController();
   final _cellphoneController = TextEditingController();
   final _postalController = TextEditingController();
-  // final _addressController = TextEditingController();
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
   final _emailController = TextEditingController();
@@ -188,9 +187,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Padding(
@@ -202,22 +199,22 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const SizedBox(height: 60.0),
                       Image.asset(
                         'assets/wicare-logo-inicio.png',
                         width: 180,
                       ),
                       const SizedBox(height: 25.0),
                       const Text(
-                        '¡Bienvenido, voluntario!',
+                        '¡Bienvenido, empresa!',
                         style: TextStyle(
-                          fontSize: 22.0,
+                          fontSize: 18.0,
                           color: Color(0xFF2E8139),
+                          fontFamily: 'PoppinsRegular',
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 30.0),
-                      _buildLabel('Nombre completo'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _nameController,
                         label: 'Ingresa tu nombre completo',
@@ -230,9 +227,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Edad'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _ageController,
                         label: 'Ingresa tu edad',
@@ -255,11 +250,9 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
                       // if (_latitude != null && _longitude != null)
-                        // Text('Latitud: $_latitude, Longitud: $_longitude'),
+                      // Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 20.0),
 
-                      _buildLabel('CURP'),
-                      const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _curpController,
                         label: 'Ingresa tu CURP',
@@ -272,9 +265,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Teléfono'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _cellphoneController,
                         label: 'Ingresa tu teléfono',
@@ -288,9 +279,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Código Postal'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _postalController,
                         label: 'Ingresa tu código postal',
@@ -310,9 +299,8 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                       _buildLabel('Género'),
                       const SizedBox(height: 5.0),
                       _buildGenderDropdown(),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Correo Electrónico'),
-                      const SizedBox(height: 5.0),
+
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _emailController,
                         label: 'Ingresa tu correo electrónico',
@@ -330,9 +318,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Contraseña'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _passwordController,
                         label: 'Ingresa tu contraseña',
@@ -353,9 +339,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Confirmar Contraseña'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _confirmPasswordController,
                         label: 'Confirma tu contraseña',
@@ -397,7 +381,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                             shape:
                                 WidgetStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
                             padding:
@@ -457,6 +441,14 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
+        ),
         labelStyle: const TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -483,7 +475,15 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -507,7 +507,15 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),

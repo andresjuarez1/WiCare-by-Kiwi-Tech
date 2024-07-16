@@ -1,5 +1,3 @@
-// lib/domain/entities/volunteer_profile.dart
-
 class AssociationProfile {
   final String name;
   final String cellphone;
@@ -24,10 +22,11 @@ class AssociationProfile {
       location: Location.fromJson(json['location']),
       description: json['description'],
       email: json['email'],
-        profilePicture: json['profilePicture'],
+      profilePicture: json['profilePicture'],
     );
   }
 }
+
 class Location {
   final double latitude;
   final double longitude;
