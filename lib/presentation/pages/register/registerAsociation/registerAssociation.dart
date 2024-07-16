@@ -15,7 +15,7 @@ class RegisterAssociationPage extends StatefulWidget {
       _RegisterAssociationPageState();
 
   _RegisterAssociationPageState createStateManager() =>
-      _RegisterAssociationPageState();
+      _RegisterAssociationPageState();  
 }
 
 class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
@@ -28,6 +28,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   void initState() {
     super.initState();
     _loadSavedLocation();
+    _loadSavedLocationManager();
     _loadSavedLocationManager();
   }
 
@@ -64,7 +65,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -115,7 +116,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -317,15 +318,13 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
-                      // if (_latitude != null && _longitude != null)
-                      //   Text('Latitud: $_latitude, Longitud: $_longitude'),
-
-                      const SizedBox(height: 20.0),
-                      // _buildLabel('Fecha  de fundación'),
-                      // const SizedBox(height: 5.0),
+                      if (_latitude != null && _longitude != null)
+                        Text('Latitud: $_latitude, Longitud: $_longitude'),
+                      const SizedBox(height: 10.0),
+                      _buildLabel('Fecha  de fundación'),
+                      const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _foundationDateController,
                         label: 'Fecha de fundación (AAAA-MM-DD)',
@@ -473,14 +472,12 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 20.0),
                       _buildAddressButtonManager(),
-                      // if (_latitude != null && _longitude != null)
-                      //   Text(
-                      //       'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
-
-                      const SizedBox(height: 30.0),
+                      if (_latitude != null && _longitude != null)
+                        Text(
+                            'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
+                      const SizedBox(height: 10.0),
                       const Text(
                         'Crea tu cuenta',
                         style: const TextStyle(

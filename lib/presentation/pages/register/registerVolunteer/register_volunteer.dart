@@ -7,6 +7,8 @@ import '../../../../domain/use_cases/register_volunteer_user.dart';
 import '../../login/login_page.dart';
 import 'map/select_location_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'map/select_location_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterVolunteerPage extends StatefulWidget {
   @override
@@ -57,7 +59,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -81,6 +83,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
   final _curpController = TextEditingController();
   final _cellphoneController = TextEditingController();
   final _postalController = TextEditingController();
+  // final _addressController = TextEditingController();
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
   final _emailController = TextEditingController();
@@ -187,7 +190,9 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: Stack(
         children: [
           Padding(
@@ -199,16 +204,15 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 60.0),
                       Image.asset(
                         'assets/wicare-logo-inicio.png',
                         width: 180,
                       ),
                       const SizedBox(height: 25.0),
                       const Text(
-                        '¡Bienvenido, empresa!',
+                        '¡Bienvenido, voluntario!',
                         style: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 22.0,
                           color: Color(0xFF2E8139),
                           fontFamily: 'PoppinsRegular',
                           fontWeight: FontWeight.bold,
@@ -250,9 +254,11 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
                       // if (_latitude != null && _longitude != null)
-                      // Text('Latitud: $_latitude, Longitud: $_longitude'),
+                        // Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 20.0),
 
+                      _buildLabel('CURP'),
+                      const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _curpController,
                         label: 'Ingresa tu CURP',
