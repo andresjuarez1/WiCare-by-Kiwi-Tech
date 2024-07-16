@@ -456,6 +456,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           return null;
                         },
                       ),
+
                       const SizedBox(height: 20.0),
                       _buildAddressButtonManager(),
                       if (_latitude != null && _longitude != null)

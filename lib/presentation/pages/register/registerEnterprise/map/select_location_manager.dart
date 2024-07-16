@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:geolocator/geolocator.dart';
 
 class SelectLocationPageManager extends StatefulWidget {
   @override
@@ -12,49 +11,6 @@ class _SelectLocationPageState extends State<SelectLocationPageManager> {
   LatLng _initialLocation = const LatLng(16.754272, -93.128144);
   LatLng? _selectedLocation;
   final Set<Marker> _markers = {};
-  GoogleMapController? _mapController;
-
-  @override
-  void initState() {
-    super.initState();
-    _setInitialLocation();
-  }
-
-  Future<void> _setInitialLocation() async {
-    try {
-      Position position = await determinePosition();
-      setState(() {
-        _initialLocation = LatLng(position.latitude, position.longitude);
-      });
-      _mapController?.animateCamera(CameraUpdate.newLatLng(_initialLocation));
-    } catch (e) {
-      print('Error obteniendo la ubicación: $e');
-    }
-  }
-
-  Future<Position> determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Servicio de ubicación desactivado.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Permiso de ubicación denegado, abra la configuración de la aplicación para habilitar la ubicación.');
-    }
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Permiso de ubicación denegado.');
-      }
-    }
-    return await Geolocator.getCurrentPosition();
-  }
 
   void _onMapTap(LatLng location) {
     setState(() {
