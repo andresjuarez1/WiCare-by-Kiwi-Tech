@@ -254,7 +254,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
                       // if (_latitude != null && _longitude != null)
-                        // Text('Latitud: $_latitude, Longitud: $_longitude'),
+                      // Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 20.0),
 
                       _buildLabel('CURP'),

@@ -300,13 +300,11 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
                       if (_latitude != null && _longitude != null)
-                      Text('Latitud: $_latitude, Longitud: $_longitude'),
+                        Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 20.0),
-
                       _buildLabel('Fecha  de fundación'),
                       const SizedBox(height: 5.0),
                       _buildTextField(
@@ -456,13 +454,12 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 20.0),
                       _buildAddressButtonManager(),
                       if (_latitude != null && _longitude != null)
-                        Text('Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
+                        Text(
+                            'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
                       const SizedBox(height: 20.0),
-
                       const Text(
                         'Crea tu cuenta',
                         style: const TextStyle(

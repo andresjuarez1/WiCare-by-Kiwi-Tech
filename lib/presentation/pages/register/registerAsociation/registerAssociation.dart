@@ -15,7 +15,7 @@ class RegisterAssociationPage extends StatefulWidget {
       _RegisterAssociationPageState();
 
   _RegisterAssociationPageState createStateManager() =>
-      _RegisterAssociationPageState();  
+      _RegisterAssociationPageState();
 }
 
 class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
