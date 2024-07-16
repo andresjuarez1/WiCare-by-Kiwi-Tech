@@ -27,7 +27,7 @@ class _SelectLocationPageState extends State<SelectLocationPageManager> {
       });
       _mapController?.animateCamera(CameraUpdate.newLatLng(_initialLocation));
     } catch (e) {
-      print('Error obteniendo la ubicación: $e');
+      print('Error obteniendo ubicación: $e');
     }
   }
 
