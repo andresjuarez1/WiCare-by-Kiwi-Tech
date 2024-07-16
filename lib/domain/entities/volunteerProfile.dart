@@ -1,11 +1,10 @@
-// lib/domain/entities/volunteer_profile.dart
-
 class VolunteerProfile {
   final String name;
   final String cellphone;
   final String occupation;
   final String genre;
   final String email;
+  final String? profilePicture;
 
   VolunteerProfile({
     required this.name,
@@ -13,6 +12,7 @@ class VolunteerProfile {
     required this.occupation,
     required this.genre,
     required this.email,
+    this.profilePicture
   });
 
   factory VolunteerProfile.fromJson(Map<String, dynamic> json) {
@@ -22,6 +22,7 @@ class VolunteerProfile {
       occupation: json['occupation'],
       genre: json['genre'],
       email: json['email'],
+      profilePicture: json['profilePicture'],
     );
   }
 }

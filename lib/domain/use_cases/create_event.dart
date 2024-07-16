@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:locura1/domain/entities/event.dart';
 import 'package:locura1/domain/repositories/event_repository.dart';
 
@@ -6,7 +8,7 @@ class CreateEventUseCase {
 
   CreateEventUseCase(this.repository);
 
-  Future<void> execute(Event event) {
-    return repository.createEvent(event);
+  Future<void> execute(Event event, File image) {
+    return repository.createEvent(event, image);
   }
 }

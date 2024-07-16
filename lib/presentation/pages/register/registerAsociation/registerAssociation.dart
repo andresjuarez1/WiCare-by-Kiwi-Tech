@@ -5,23 +5,145 @@ import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
 import '../../../../domain/entities/association.dart';
 import '../../login/login_page.dart';
+import './map/select_location_page.dart';
+import './map/select_location_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterAssociationPage extends StatefulWidget {
   @override
   _RegisterAssociationPageState createState() =>
       _RegisterAssociationPageState();
+
+  _RegisterAssociationPageState createStateManager() =>
+      _RegisterAssociationPageState();  
 }
 
 class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
+  double? _latitude;
+  double? _longitude;
+  double? _latitudeManager;
+  double? _longitudeManager;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedLocation();
+    _loadSavedLocationManager();
+    _loadSavedLocationManager();
+  }
+
+  Future<void> _loadSavedLocation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _latitude = prefs.getDouble('latitude');
+      _longitude = prefs.getDouble('longitude');
+      _latitudeController.text = _latitude?.toString() ?? '';
+      _longitudeController.text = _longitude?.toString() ?? '';
+    });
+  }
+
+  void _navigateToSelectLocationPage() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SelectLocationPage()),
+    );
+    if (result != null && result is bool && result) {
+      _loadSavedLocation();
+    }
+  }
+
+  Widget _buildAddressButton() {
+    return _buildStyledButton('Seleccionar Ubicación en el Mapa');
+  }
+
+  Widget _buildStyledButton(String text) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _navigateToSelectLocationPage,
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+            EdgeInsets.symmetric(vertical: 13.0),
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 15.0,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _loadSavedLocationManager() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _latitudeManager = prefs.getDouble('latitude_manager');
+      _longitudeManager = prefs.getDouble('longitude_manager');
+      _latitudeManagerController.text = _latitudeManager?.toString() ?? '';
+      _longitudeManagerController.text = _longitudeManager?.toString() ?? '';
+    });
+  }
+
+  void _navigateToSelectLocationPageManager() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SelectLocationPageManager()),
+    );
+    if (result != null && result is bool && result) {
+      _loadSavedLocationManager();
+    }
+  }
+
+  Widget _buildAddressButtonManager() {
+    return _buildStyledButtonManager('Seleccionar Ubicación en el Mapa');
+  }
+
+  Widget _buildStyledButtonManager(String text) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _navigateToSelectLocationPageManager,
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+            EdgeInsets.symmetric(vertical: 13.0),
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 15.0,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
   final _formKey = GlobalKey<FormState>();
   final _nameCompanyController = TextEditingController();
-  final _addressCompanyController = TextEditingController();
+  final _latitudeController = TextEditingController();
+  final _longitudeController = TextEditingController();
+  final _latitudeManagerController = TextEditingController();
+  final _longitudeManagerController = TextEditingController();
   final _foundationDateController = TextEditingController();
-
   final _descriptionController = TextEditingController();
   final _phoneController = TextEditingController();
   final _rfcController = TextEditingController();
-
   final _socialReasons = [
     'Casa hogar',
     'Asilo de ancianos',
@@ -29,12 +151,10 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
     'Protección del medio ambiente',
     'Salud'
   ];
-
   String? _selectSocialReasons;
   final _nameManagerController = TextEditingController();
   final _positionManagerController = TextEditingController();
   final _phoneManagerController = TextEditingController();
-  final _addressManagerController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -46,7 +166,6 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
     'Prefiero no decir': 'Prefiero no decir',
   };
   String? _selectedGenre;
-
   bool _termsAccepted = false;
 
   void _registerVolunteer() async {
@@ -55,7 +174,8 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       print('Formulario válido');
       final association = Association(
         name: _nameCompanyController.text,
-        address: _addressCompanyController.text,
+        latitude: _latitudeController.text,
+        longitude: _longitudeController.text,
         foundation_date: _foundationDateController.text,
         social_reason: _selectSocialReasons ?? '',
         description: _descriptionController.text,
@@ -64,7 +184,8 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
         name_manager: _nameManagerController.text,
         position: _positionManagerController.text,
         cellphone_manager: _phoneManagerController.text,
-        address_manager: _addressManagerController.text,
+        latitude_manager: _latitudeController.text,
+        longitude_manager: _longitudeController.text,
         email: _emailController.text,
         password: _passwordController.text,
         age: _ageController.text,
@@ -89,7 +210,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
         _showErrorDialog(error.toString());
       }
     } else {
-      print('Error al registrar usuario: no entra avalidar el form ');
+      print('Error al registrar usuario: no entra a validar el form');
     }
   }
 
@@ -137,6 +258,12 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   title: const Text('Registro de Asociación',
+      //       style: TextStyle(color: Color(0xFF2E8139))),
+      // ),
       body: Stack(
         children: [
           Padding(
@@ -155,16 +282,32 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                       ),
                       const SizedBox(height: 25.0),
                       const Text(
-                        '¡Bienvenido, asociacion!',
+                        '¡Bienvenido, empresa!',
                         style: TextStyle(
                           fontSize: 18.0,
                           color: Color(0xFF2E8139),
+                          fontFamily: 'PoppinsRegular',
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      // Image.asset(
+                      //   'assets/wicare-logo-inicio.png',
+                      //   width: 180,
+                      // ),
+                      // const SizedBox(height: 25.0),
+                      // const Text(
+                      //   'Porfavor completa todo los campos correctamente para configurar tu cuenta correctamente',
+                      //   style: TextStyle(
+                      //     fontSize: 12.5,
+                      //     color: Color.fromARGB(255, 141, 141, 141),
+                      //     fontFamily: 'PoppinsRegular',
+                      //     fontWeight: FontWeight.w200,
+                      //   ),
+                      //   textAlign: TextAlign.center,
+                      // ),
                       const SizedBox(height: 20.0),
-                      _buildLabel('Nombre de la Asociación'),
-                      const SizedBox(height: 5.0),
+                      // _buildLabel('Nombre de la Asociación'),
+                      // const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _nameCompanyController,
                         label: 'Ingresa el nombre de la asociación',
@@ -175,35 +318,42 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Domicilio'),
-                      const SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _addressCompanyController,
-                        label: 'Ingresa el domicilio de la asociación',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el domicilio de la asociación';
-                          }
-                          return null;
-                        },
-                      ),
+                      const SizedBox(height: 20.0),
+                      _buildAddressButton(),
+                      if (_latitude != null && _longitude != null)
+                        Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 10.0),
                       _buildLabel('Fecha  de fundación'),
                       const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _foundationDateController,
-                        label: 'Ingresa la fecha de fundación (AAAA-MM-DD)',
+                        label: 'Fecha de fundación (AAAA-MM-DD)',
+                        keyboardType: TextInputType.datetime,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa la fecha de fundación de la asociación';
+                            return 'Por favor, ingresa la fecha de fundación de la empresa';
+                          }
+                          bool isValidFormat =
+                              RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value);
+                          if (!isValidFormat) {
+                            return 'El formato de la fecha debe ser AAAA-MM-DD';
+                          }
+                          DateTime? foundationDate;
+                          try {
+                            foundationDate = DateTime.parse(value);
+                          } catch (e) {
+                            return 'Por favor, ingresa una fecha válida';
+                          }
+                          DateTime currentDate = DateTime.now();
+                          DateTime today = DateTime(currentDate.year,
+                              currentDate.month, currentDate.day);
+                          if (foundationDate.isAfter(today)) {
+                            return 'La fecha de fundación no puede ser una fecha futura';
                           }
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Descripción General'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _descriptionController,
                         label: 'Ingresa una descripción general',
@@ -211,32 +361,39 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa una descripción general';
                           }
+                          int length = value.length;
+                          if (length < 40) {
+                            return 'La descripción debe tener al menos 40 caracteres';
+                          } else if (length > 100) {
+                            return 'La descripción no debe tener más de 100 caracteres';
+                          }
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Teléfono de la asociación'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _phoneController,
                         label: 'Ingresa el teléfono de la asociación',
                         keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el teléfono de la asociación';
+                            return 'Por favor, ingresa tu teléfono';
+                          } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                            return 'El número telefónico debe tener 10 dígitos';
                           }
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('RFC'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _rfcController,
-                        label: 'Ingresa el RFC de la asociación',
+                        label: 'Ingresa tu RFC',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el RFC de la asociación';
+                            return 'Por favor, ingresa tu RFC';
+                          } else if (!RegExp(r'^[A-ZÑ&]{3}\d{6}[A-Z\d]{3}$')
+                              .hasMatch(value)) {
+                            return 'El RFC debe tener 12 caracteres con el formato correcto';
                           }
                           return null;
                         },
@@ -245,7 +402,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                       _buildLabel('Razón Social'),
                       const SizedBox(height: 5.0),
                       _buildSocialReasonDropdown(),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 30.0),
                       const Text(
                         'Datos del Encargado',
                         style: TextStyle(
@@ -254,22 +411,20 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Nombre'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _nameManagerController,
                         label: 'Ingresa el nombre del encargado',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el nombre';
+                            return 'Por favor, ingresa tu nombre completo';
+                          } else if (RegExp(r'[0-9]').hasMatch(value)) {
+                            return 'El nombre no debe contener números';
                           }
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Edad'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _ageController,
                         label: 'Ingresa tu edad',
@@ -277,10 +432,13 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu edad';
-                          } else if (int.tryParse(value) == null) {
+                          }
+                          int? age = int.tryParse(value);
+                          if (age == null) {
                             return 'Por favor, ingresa un número válido';
-                          } else if (value.length > 3) {
-                            return 'La edad no debe tener más de 3 dígitos';
+                          }
+                          if (age <= 20 || age >= 70) {
+                            return 'La edad debe estar entre 20 y 70 años';
                           }
                           return null;
                         },
@@ -289,8 +447,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                       _buildLabel('Género'),
                       const SizedBox(height: 5.0),
                       _buildGenderDropdown(),
-                      _buildLabel('Puesto'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _positionManagerController,
                         label: 'Ingresa el puesto del encargado',
@@ -301,34 +458,26 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Teléfono'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _phoneManagerController,
                         label: 'Ingresa el teléfono del encargado',
                         keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el teléfono';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Domicilio'),
-                      const SizedBox(height: 5.0),
-                      _buildTextField(
-                        controller: _addressManagerController,
-                        label: 'Ingresa el domicilio del encargado',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa el domicilio';
+                            return 'Por favor, ingresa tu teléfono';
+                          } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                            return 'El número telefónico debe tener 10 dígitos';
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 20.0),
+                      _buildAddressButtonManager(),
+                      if (_latitude != null && _longitude != null)
+                        Text(
+                            'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
+                      const SizedBox(height: 10.0),
                       const Text(
                         'Crea tu cuenta',
                         style: const TextStyle(
@@ -337,9 +486,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Correo Electrónico'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _emailController,
                         label: 'Ingresa tu correo electrónico',
@@ -348,12 +495,16 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu correo electrónico';
                           }
+                          bool isValidEmail =
+                              RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                  .hasMatch(value);
+                          if (!isValidEmail) {
+                            return 'Ingresa un correo electrónico válido';
+                          }
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Contraseña'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _passwordController,
                         label: 'Ingresa tu contraseña',
@@ -362,12 +513,19 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu contraseña';
                           }
+                          if (value.length < 8) {
+                            return 'La contraseña debe tener al menos 8 caracteres';
+                          }
+                          bool isValidPassword = RegExp(
+                                  r'^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$')
+                              .hasMatch(value);
+                          if (!isValidPassword) {
+                            return 'La contraseña debe contener al menos:\n Una letra en mayúscula\n Un dígito \n Un carácter especial';
+                          }
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Confirmar Contraseña'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _confirmPasswordController,
                         label: 'Confirma tu contraseña',
@@ -409,7 +567,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                             shape:
                                 WidgetStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
                             padding:
@@ -467,7 +625,15 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
         ),
         labelStyle: const TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
         contentPadding:
@@ -493,7 +659,15 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -517,7 +691,15 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(color: Colors.green),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),

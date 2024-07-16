@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FooterComponent extends StatelessWidget {
-  final VoidCallback onDonateConfirmed;
-
-  const FooterComponent({Key? key, required this.onDonateConfirmed})
-      : super(key: key);
+  const FooterComponent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +10,7 @@ class FooterComponent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Column(
         children: [
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -25,7 +23,7 @@ class FooterComponent extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               const Expanded(
                 child: Text(
                   'WiCare es una app hecha por “KiwiTech” para la comunidad. Ayúdanos a seguir innovando y uniendo a las personas a través de la tecnología',
@@ -39,58 +37,10 @@ class FooterComponent extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text(
-                      'Donatiwi',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'PoppinsRegular',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    content: const Text(
-                      'Kiwitech es una empresa orgullosamente chiapaneca que trabaja para innovar día con día',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: 'PoppinsRegular',
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStateProperty.all<Color>(Color(0xFFBB3737)),
-                          foregroundColor:
-                              WidgetStateProperty.all<Color>(Colors.white),
-                        ),
-                        child: Text('Cancelar'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          onDonateConfirmed();
-                        },
-                        style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
-                          foregroundColor:
-                              WidgetStateProperty.all<Color>(Colors.white),
-                        ),
-                        child: Text('Donatiwi'),
-                      ),
-                    ],
-                  );
-                },
-              );
+              _launchURL('https://buymeacoffee.com/wicare');
             },
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
@@ -104,9 +54,21 @@ class FooterComponent extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
         ],
       ),
     );
+  }
+
+  void _launchURL(String url) async {
+    try {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print('Error launching URL: $e');
+    }
   }
 }

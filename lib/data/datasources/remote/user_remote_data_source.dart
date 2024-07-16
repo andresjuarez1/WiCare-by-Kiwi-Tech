@@ -1,9 +1,8 @@
-// lib/data/datasources/remote/user_remote_data_source.dart
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:locura1/data/models/association_model.dart';
-import 'package:locura1/data/models/volunteerProfile_model.dart';
 import 'dart:convert';
-
+import 'package:http_parser/http_parser.dart';
 import '../../models/company_model.dart';
 import '../../models/user_model.dart';
 import '../../models/volunteer_model.dart';
@@ -18,7 +17,6 @@ class UserRemoteDataSource {
       Uri.parse('http://192.81.209.151:9000/user'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
-
     );
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
@@ -29,17 +27,18 @@ class UserRemoteDataSource {
       final String token = data['token'];
 
       // Guardado del token en SharedPreferences
-      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
       await sharedPreferences.setString('token', token);
       print('Token guardado en SharedPreferences: $token');
 
       // Devolución del modelo de usuario con los datos obtenidos
       return UserModel.fromJson(data);
-
     } else {
       throw Exception('Failed to login');
     }
   }
+
   Future<void> registerVolunteer(VolunteerModel volunteer) async {
     final response = await client.post(
       Uri.parse('http://192.81.209.151:9000/user/volunteer'),
@@ -51,6 +50,7 @@ class UserRemoteDataSource {
       throw Exception('Failed to register volunteer');
     }
   }
+
   Future<void> registerAssociation(AssociationModel association) async {
     final response = await client.post(
       Uri.parse('http://192.81.209.151:9000/user/association'),
@@ -64,6 +64,7 @@ class UserRemoteDataSource {
       throw Exception('Failed to register association in user_remote');
     }
   }
+
   Future<void> registerCompany(CompanyModel company) async {
     final response = await client.post(
       Uri.parse('http://192.81.209.151:9000/user/company'),
@@ -77,6 +78,7 @@ class UserRemoteDataSource {
       throw Exception('Failed to register company in user_remote');
     }
   }
+
   Future<void> getProfileVolunteer2(int userId, String token) async {
     final String url = 'http://192.81.209.151:9000/user/volunteer/$userId';
     try {
@@ -100,7 +102,9 @@ class UserRemoteDataSource {
       print('Error en la solicitud: $e');
     }
   }
-  Future<Map<String, dynamic>> getProfileVolunteer(int userId, String token) async {
+
+  Future<Map<String, dynamic>> getProfileVolunteer(
+      int userId, String token) async {
     final String url = 'http://192.81.209.151:9000/user/volunteer/$userId';
 
     try {
@@ -121,6 +125,7 @@ class UserRemoteDataSource {
       throw Exception('Error in request: $e');
     }
   }
+
   Future<void> getProfileAssociation2(int userId, String token) async {
     final String url = 'http://192.81.209.151:9000/user/association/$userId';
 
@@ -145,10 +150,12 @@ class UserRemoteDataSource {
       print('Error en la solicitud: $e');
     }
   }
-  Future<Map<String, dynamic>> getProfileAssociation(int userId, String token) async {
+
+  Future<Map<String, dynamic>> getProfileAssociation(
+      int userId, String token) async {
     print(userId);
     final String url = 'http://192.81.209.151:9000/user/association/$userId';
-    print('estpy aqui');
+    //print('estpy aqui');
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -157,7 +164,7 @@ class UserRemoteDataSource {
           'Authorization': 'Bearer $token',
         },
       );
-        print(response.body);
+      //print(response.body);
       if (response.statusCode == 200) {
         return jsonDecode(response.body)['data'];
       } else {
@@ -167,7 +174,9 @@ class UserRemoteDataSource {
       throw Exception('Error in request: $e');
     }
   }
-  Future<Map<String, dynamic>> getProfileCompany(int userId, String token) async {
+
+  Future<Map<String, dynamic>> getProfileCompany(
+      int userId, String token) async {
     //print(userId);
     final String url = 'http://192.81.209.151:9000/user/company/$userId';
     try {
@@ -186,6 +195,29 @@ class UserRemoteDataSource {
       }
     } catch (e) {
       throw Exception('Error in request: $e');
+    }
+  }
+
+  Future<void> updateProfilePicture(
+      int userId, File image, String token) async {
+    final request = http.MultipartRequest(
+        'PUT', Uri.parse('http://192.81.209.151:9000/user/upload/$userId'));
+
+    request.headers['Authorization'] =
+        'Bearer $token'; // Agrega el token a los encabezados
+    print('estoy en el user remote');
+    request.files.add(await http.MultipartFile.fromPath(
+      'profilePicture',
+      image.path,
+      contentType: MediaType('image', 'jpeg'),
+    ));
+    request.fields['userId'] = userId.toString();
+
+    final response = await request.send();
+
+    if (response.statusCode != 200) {
+      throw Exception(
+          'Error al actualizar la imagen de perfil: ${response.reasonPhrase}');
     }
   }
 }

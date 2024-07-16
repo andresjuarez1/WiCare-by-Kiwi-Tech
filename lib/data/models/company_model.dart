@@ -1,4 +1,3 @@
-// lib/data/models/association_model.dart
 class CompanyModel {
   final String name;
   final String foundation_date;
@@ -10,30 +9,31 @@ class CompanyModel {
   final String cellphone_manager;
   final String address_manager;
   final String genre;
-  final String address;
+  final String latitude;
+  final String longitude;
+  final String latitude_manager;
+  final String longitude_manager;
   final String context;
   final String description;
   final String RFC;
   final String cellphone;
-
-
 
   CompanyModel({
     required this.name,
     required this.foundation_date,
     required this.email,
     required this.password,
-
     required this.position,
     required this.age,
     required this.name_manager,
     required this.cellphone_manager,
-
     required this.address_manager,
     required this.genre,
-    required this.address,
+    required this.latitude,
+    required this.longitude,
+    required this.latitude_manager,
+    required this.longitude_manager,
     required this.context,
-    
     required this.description,
     required this.RFC,
     required this.cellphone,
@@ -51,7 +51,10 @@ class CompanyModel {
       cellphone_manager: json['cellphone_manager'],
       address_manager: json['address_manager'],
       genre: json['genre'],
-      address: json['address'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      latitude_manager: json['latitude_manager'],
+      longitude_manager: json['longitude_manager'],
       context: json['context'],
       description: json['description'],
       RFC: json['RFC'],
@@ -71,7 +74,10 @@ class CompanyModel {
       'cellphone_manager': cellphone_manager,
       'address_manager': address_manager,
       'genre': genre,
-      'address': address,
+      'latitude': latitude,
+      'longitude': longitude,
+      'latitude_manager': latitude_manager,
+      'longitude_manager': longitude_manager,
       'context': context,
       'description': description,
       'RFC': RFC,

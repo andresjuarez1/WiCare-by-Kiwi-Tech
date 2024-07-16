@@ -20,7 +20,7 @@ class AttendedEventsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 18.0),
+        const SizedBox(height: 18.0),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
@@ -52,9 +52,9 @@ class AttendedEventsList extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 10.0),
+        const SizedBox(height: 10.0),
         ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: attendedEvents.length,
           itemBuilder: (BuildContext context, int index) {
@@ -74,20 +74,20 @@ class AttendedEventsList extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(width: 10.0),
+                  const SizedBox(width: 10.0),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           event['title']!,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16.0,
                             fontFamily: 'PoppinsRegular',
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         Text(
                           event['location']!,
                           style: TextStyle(
@@ -95,7 +95,7 @@ class AttendedEventsList extends StatelessWidget {
                             color: Colors.grey[700],
                           ),
                         ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         Text(
                           event['description']!,
                           style: TextStyle(

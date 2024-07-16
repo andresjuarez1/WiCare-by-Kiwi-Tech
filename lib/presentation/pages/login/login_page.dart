@@ -4,7 +4,6 @@ import '../volunteer/landing/landingVolunteer.dart';
 import '../company/landing/company_landing.dart';
 import '../asociation/landing/asociation_landing.dart';
 import '../../../../domain/use_cases/login_user.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -61,6 +60,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: Center(
@@ -81,10 +81,10 @@ class LoginPage extends StatelessWidget {
                       Text(
                         'Correo electrónico',
                         style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF2E8139),
-                        ),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF2E8139),
+                            fontFamily: 'PoppinsRegular'),
                         textAlign: TextAlign.left,
                       ),
                     ],
@@ -95,7 +95,15 @@ class LoginPage extends StatelessWidget {
                     decoration: InputDecoration(
                       labelText: 'Ingresa tu correo electrónico',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(color: Colors.green),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(color: Colors.green),
                       ),
                       labelStyle: const TextStyle(
                         fontSize: 15.0,
@@ -107,9 +115,9 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     enableInteractiveSelection: false,
-                    autocorrect: false, // Desactiva la autocorrección
-                    enableSuggestions: false,// Desactiva las sugerencias
-                    autofillHints: null, // Evita el autocompletado
+                    autocorrect: false,
+                    enableSuggestions: false,
+                    autofillHints: null,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, ingresa tu correo electrónico';
@@ -123,10 +131,10 @@ class LoginPage extends StatelessWidget {
                       Text(
                         'Contraseña',
                         style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF2E8139),
-                        ),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF2E8139),
+                            fontFamily: 'PoppinsRegular'),
                         textAlign: TextAlign.left,
                       ),
                     ],
@@ -138,7 +146,15 @@ class LoginPage extends StatelessWidget {
                     decoration: InputDecoration(
                       labelText: 'Ingresa tu contraseña',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(color: Colors.green),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(color: Colors.green),
                       ),
                       labelStyle: const TextStyle(
                         fontSize: 15.0,
@@ -166,7 +182,7 @@ class LoginPage extends StatelessWidget {
                             WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
                         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
                         padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -186,10 +202,10 @@ class LoginPage extends StatelessWidget {
                   GestureDetector(
                     onTap: () => _navigateToRegistrationPage(context),
                     child: Container(
-                      margin: const EdgeInsets.only(left: 20.0),
+                      margin: const EdgeInsets.only(left: 0.0),
                       child: const Text(
                         '¿No estás registrado? Regístrate',
-                        style: TextStyle(fontSize: 14.0, color: Colors.blue),
+                        style: TextStyle(fontSize: 14.0, color: Colors.blue, fontFamily: 'PoppinsRegular'),
                       ),
                     ),
                   ),

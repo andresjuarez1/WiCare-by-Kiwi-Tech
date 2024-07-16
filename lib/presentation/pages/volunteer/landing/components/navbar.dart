@@ -9,7 +9,7 @@ import '../../userProfile/user_profile.dart';
 
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   _NavbarState createState() => _NavbarState();
@@ -22,7 +22,7 @@ class _NavbarState extends State<Navbar> {
   @override
   void initState() {
     super.initState();
-    _userProfileFuture = Future.value(null); // Inicializa con un Future que devuelve null
+    _userProfileFuture = Future.value(null);
     _initializeProfile();
   }
 
@@ -53,11 +53,11 @@ class _NavbarState extends State<Navbar> {
           return IconButton(
             icon: Container(
               decoration: BoxDecoration(
-                color: Color(0xFF5CA666),
+                color: const Color(0xFF5CA666),
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              padding: EdgeInsets.all(8.0),
-              child: Icon(Icons.menu, color: Colors.white),
+              padding: const EdgeInsets.all(8.0),
+              child: const Icon(Icons.menu, color: Colors.white),
             ),
             onPressed: () {
               Scaffold.of(context).openDrawer();
@@ -69,7 +69,7 @@ class _NavbarState extends State<Navbar> {
         future: _userProfileFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text(
+            return const Text(
               'Hola, ...',
               style: TextStyle(
                   color: Color(0xFF5CA666),
@@ -78,7 +78,7 @@ class _NavbarState extends State<Navbar> {
                   fontFamily: 'PoppinsRegular'),
             );
           } else if (snapshot.hasError) {
-            return Text(
+            return const Text(
               'Hola, error',
               style: TextStyle(
                   color: Color(0xFF5CA666),
@@ -87,7 +87,7 @@ class _NavbarState extends State<Navbar> {
                   fontFamily: 'PoppinsRegular'),
             );
           } else if (!snapshot.hasData || snapshot.data == null) {
-            return Text(
+            return const Text(
               'Hola, usuario',
               style: TextStyle(
                   color: Color(0xFF5CA666),
@@ -100,7 +100,7 @@ class _NavbarState extends State<Navbar> {
           final userProfile = snapshot.data!;
           return Text(
             'Hola, ${userProfile.name}',
-            style: TextStyle(
+            style: const TextStyle(
                 color: Color(0xFF5CA666),
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
@@ -122,11 +122,25 @@ class _NavbarState extends State<Navbar> {
                     MaterialPageRoute(builder: (context) => ProfilePage()),
                   );
                 },
-                child: Image.asset(
-                  'assets/perfil_volunteer.jpg',
-                  width: 35.0,
-                  height: 35.0,
-                  fit: BoxFit.cover,
+                child: FutureBuilder<VolunteerProfile?>(
+                  future: _userProfileFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return const Icon(Icons.account_circle_outlined);
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return const Icon(Icons.account_circle_outlined);
+                    }
+
+                    final userProfile = snapshot.data!;
+                    return CircleAvatar(
+                      backgroundImage: userProfile.profilePicture != null
+                          ? NetworkImage(userProfile.profilePicture!)
+                          : AssetImage('assets/default_profile.png'),
+                      radius: 15,
+                    );
+                  },
                 ),
               ),
             ),

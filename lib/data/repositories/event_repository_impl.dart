@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../domain/entities/event.dart';
 import '../../domain/repositories/event_repository.dart';
 import '../datasources/remote/event_remote_data_source.dart';
@@ -10,9 +12,9 @@ class EventRepositoryImpl implements EventRepository {
   EventRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<void> createEvent(Event event) async {
+  Future<void> createEvent(Event event, File imageFile) async {
     final eventModel = eventToEventModel(event);
-    await remoteDataSource.createEvent(eventModel);
+    await remoteDataSource.createEvent(eventModel, imageFile);
   }
 
 }
