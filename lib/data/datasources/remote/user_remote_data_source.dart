@@ -204,7 +204,7 @@ class UserRemoteDataSource {
         'PUT', Uri.parse('http://192.81.209.151:9000/user/upload/$userId'));
 
     request.headers['Authorization'] =
-        'Bearer $token'; // Agrega el token a los encabezados
+        'Bearer $token';
     print('estoy en el user remote');
     request.files.add(await http.MultipartFile.fromPath(
       'profilePicture',

@@ -1,4 +1,3 @@
-// lib/data/models/volunteer_model.dart
 class ProfileCompanyModel {
   final String name;
   final String cellphone;
@@ -34,3 +33,4 @@ class ProfileCompanyModel {
     };
   }
 }
+  

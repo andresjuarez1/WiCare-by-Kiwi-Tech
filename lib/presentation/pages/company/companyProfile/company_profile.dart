@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
 import 'package:http/http.dart' as http;
+import '../map/google_maps.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late final GetcompanyprofileUseCase _getCompanyProfileUseCase;
   late Future<CompanyProfile> _userProfileFuture;
   bool _isLoading = true;
+  String _profilePictureUrl = '';
 
   @override
   void initState() {
@@ -45,9 +47,11 @@ class _ProfilePageState extends State<ProfilePage> {
       _userProfileFuture = _getCompanyProfileUseCase(userId, token);
     });
 
-    _userProfileFuture.then((_) {
+    _userProfileFuture.then((profile) {
       setState(() {
         _isLoading = false;
+        _profilePictureUrl = profile.profilePicture;
+        print('URL de perfil: $_profilePictureUrl');
       });
     }).catchError((error) {
       setState(() {
@@ -79,7 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
               future: _userProfileFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData) {
@@ -87,15 +91,58 @@ class _ProfilePageState extends State<ProfilePage> {
                 }
 
                 final userProfile = snapshot.data!;
+                _profilePictureUrl = userProfile.profilePicture;
 
                 return SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const CircleAvatar(
-                        radius: 50.0,
-                        backgroundImage: AssetImage('assets/maranatha.jpg'),
-                      ),
+                      _profilePictureUrl.isNotEmpty
+                          ? ClipOval(
+                              child: Image.network(
+                                _profilePictureUrl,
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  } else {
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    );
+                                  }
+                                },
+                                errorBuilder: (BuildContext context,
+                                    Object error, StackTrace? stackTrace) {
+                                  print('Error cargando imagen: $error');
+                                  return Container(
+                                    width: 100,
+                                    height: 100,
+                                    color: Colors.grey,
+                                  );
+                                },
+                              ),
+                            )
+                          : Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey,
+                              ),
+                            ),
                       const SizedBox(height: 10),
                       Text(
                         userProfile.name,
@@ -128,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20.0),
                               child: Text(
-                                userProfile.description ?? '',
+                                userProfile.description,
                                 style: const TextStyle(
                                   fontFamily: 'PoppinsRegular',
                                   fontSize: 14.5,
@@ -156,7 +203,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20.0),
                               child: Text(
-                                userProfile.email ?? '',
+                                userProfile.email,
                                 style: const TextStyle(
                                   fontFamily: 'PoppinsRegular',
                                   fontSize: 14.5,
@@ -184,7 +231,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20.0),
                               child: Text(
-                                userProfile.cellphone ?? '',
+                                userProfile.cellphone,
                                 style: const TextStyle(
                                   fontFamily: 'PoppinsRegular',
                                   fontSize: 14.5,
@@ -212,7 +259,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20.0),
                               child: Text(
-                                userProfile.location ?? '',
+                                '${userProfile.location.latitude}, ${userProfile.location.longitude}',
                                 style: const TextStyle(
                                   fontFamily: 'PoppinsRegular',
                                   fontSize: 14.5,
@@ -220,6 +267,29 @@ class _ProfilePageState extends State<ProfilePage> {
                                 textAlign: TextAlign.justify,
                               ),
                             ),
+                            const SizedBox(height: 20),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 20.0),
+                              child: Text(
+                                'Mapa',
+                                style: TextStyle(
+                                  fontFamily: 'PoppinsRegular',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF5CA666),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: GoogleMapsWidget(
+                                latitude: userProfile.location.latitude,
+                                longitude: userProfile.location.longitude,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
                           ],
                         ),
                       ),

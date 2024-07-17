@@ -378,7 +378,9 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 10.0),
+                      _buildLabel('Giro de la Empresa'),
+                      const SizedBox(height: 5.0),
                       _buildSocialReasonDropdown(),
 
                       const SizedBox(height: 30.0),
@@ -422,8 +424,11 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 10.0),
+                      _buildLabel('Género'),
+                      const SizedBox(height: 5.0),
                       _buildGenderDropdown(),
+                      const SizedBox(height: 10.0),
                       _buildLabel('Puesto'),
                       const SizedBox(height: 5.0),
                       _buildTextField(
