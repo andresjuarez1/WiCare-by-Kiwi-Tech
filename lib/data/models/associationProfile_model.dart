@@ -1,4 +1,3 @@
-// lib/data/models/volunteer_model.dart
 class ProfileAssociationModel {
   final String name;
   final String cellphone;
