@@ -138,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           : Container(
                               width: 100,
                               height: 100,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.grey,
                               ),

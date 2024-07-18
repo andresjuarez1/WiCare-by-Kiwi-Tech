@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:locura1/domain/entities/associationProfile.dart';
 import 'package:locura1/domain/use_cases/getAssociationProfile.dart';
+import 'package:locura1/presentation/pages/asociation/asociationProfile/components/create_bank_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../map/google_maps.dart';
 import '../../../../data/datasources/remote/user_remote_data_source.dart';
@@ -52,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         _isLoading = false;
         _profilePictureUrl = profile.profilePicture;
-        print('url desde la nueva varibale,$_profilePictureUrl');
+        print('url desde la nueva variable,$_profilePictureUrl');
       });
     }).catchError((error) {
       setState(() {
@@ -77,6 +78,17 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Color(0xFF5CA666),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BankDetailsPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -100,45 +112,50 @@ class _ProfilePageState extends State<ProfilePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       _profilePictureUrl.isNotEmpty
-                          ? Image.network(
-                              _profilePictureUrl,
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
-                                  ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                } else {
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
-                                    ),
+                          ? ClipOval(
+                              child: Image.network(
+                                _profilePictureUrl,
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  } else {
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    );
+                                  }
+                                },
+                                errorBuilder: (BuildContext context,
+                                    Object error, StackTrace? stackTrace) {
+                                  print('Error cargando imagen: $error');
+                                  return Container(
+                                    width: 100,
+                                    height: 100,
+                                    color: Colors.grey,
                                   );
-                                }
-                              },
-                              errorBuilder: (BuildContext context, Object error,
-                                  StackTrace? stackTrace) {
-                                print('Error cargando imagen: $error');
-                                return Container(
-                                  width: 100,
-                                  height: 100,
-                                  color: Colors.grey,
-                                );
-                              },
+                                },
+                              ),
                             )
                           : Container(
                               width: 100,
                               height: 100,
-                              color: Colors.grey,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey,
+                              ),
                             ),
                       const SizedBox(height: 10),
                       Text(

@@ -4,7 +4,6 @@ class VolunteerModel {
   final String curp;
   final String cellphone;
   final String postal;
-  // final String address;
   final String latitude;
   final String longitude;
   final String occupation;
@@ -18,7 +17,6 @@ class VolunteerModel {
     required this.curp,
     required this.cellphone,
     required this.postal,
-    // required this.address,
     required this.latitude,
     required this.longitude,
     required this.occupation,
@@ -34,7 +32,6 @@ class VolunteerModel {
       curp: json['curp'],
       cellphone: json['cellphone'],
       postal: json['postal'],
-      // address: json['address'],
       latitude: json['latitude'],
       longitude: json['longitude'],
       occupation: json['occupation'],
