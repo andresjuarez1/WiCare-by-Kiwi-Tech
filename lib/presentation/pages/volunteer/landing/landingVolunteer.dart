@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../data/datasources/remote/event_remote_data_source.dart';
 import '../../../../domain/entities/miniEvent.dart';
+import '../../../../x/prueba_textos.dart';
 import 'components/navbar.dart';
 import 'components/custom_drawer.dart';
 import 'components/search_events.dart';
@@ -17,6 +18,7 @@ class VolunteerPage extends StatefulWidget {
 }
 
 class _VolunteerPageState extends State<VolunteerPage> {
+
   List<MiniEvent> eventsList = [];
   List<Map<String, String>> attendedEvents = [
     {
@@ -86,18 +88,27 @@ class _VolunteerPageState extends State<VolunteerPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 20),
+             SizedBox(height: 20),
             SearchEvents(
               onChanged: (value) {},
             ),
-            const SizedBox(height: 30),
+             SizedBox(height: 30),
             NewEventsCarousel(
               eventsList: eventsList,
               navigateToEvent: _navigateToNewEvent,
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PruebaDeTextosPage()),
+                );
+              },
+              child: Text('Ir a Prueba de Textos'),
+            ),
             FooterComponent(),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
           ],
         ),
       ),

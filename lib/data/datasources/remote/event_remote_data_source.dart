@@ -95,14 +95,21 @@ class EventRemoteDataSource {
       });
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        //print('Eventos recibidos: $data');
+        final Map<String, dynamic> responseBody = json.decode(response.body);
 
-        // Convierte la respuesta JSON a una lista de MiniEventModel.
-        final events = data.map((event) => MiniEventModel.fromJson(event)).toList();
+        if (responseBody.containsKey('data')) {
+          final List<dynamic> data = responseBody['data'];
+          // Imprime los eventos recibidos
+          print('Eventos recibidos: $data');
 
-        // Convierte la lista de MiniEventModel a una lista de MiniEvent usando el mapper.
-        return events.map((eventModel) => miniEventModelToMiniEvent(eventModel)).toList();
+          // Convierte la respuesta JSON a una lista de MiniEventModel.
+          final events = data.map((event) => MiniEventModel.fromJson(event)).toList();
+
+          // Convierte la lista de MiniEventModel a una lista de MiniEvent usando el mapper.
+          return events.map((eventModel) => miniEventModelToMiniEvent(eventModel)).toList();
+        } else {
+          throw Exception('La respuesta no contiene la clave "data"');
+        }
       } else {
         print('Error al obtener los eventos: ${response.statusCode}');
         print('Mensaje de error: ${response.body}');
@@ -113,4 +120,5 @@ class EventRemoteDataSource {
       throw Exception('Failed to get events: $e');
     }
   }
+
 }
