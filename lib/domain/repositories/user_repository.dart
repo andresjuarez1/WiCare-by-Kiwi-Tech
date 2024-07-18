@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:locura1/domain/entities/company.dart';
-import 'package:locura1/domain/entities/postBankDetails.dart';
+import 'package:locura1/domain/entities/bankDetails.dart';
 import '../entities/association.dart';
 import '../entities/associationProfile.dart';
 import '../entities/companyProfile.dart';
@@ -18,5 +18,6 @@ abstract class UserRepository {
   Future<AssociationProfile> getAssociationProfile(int userId, String token);
   Future<CompanyProfile> getCompanyProfile(int userId, String token);
   Future<void> updateProfilePicture(int userId, File imageFile, String token);  
-  Future<void> postBankDetails(int userId, BankDetails bankDetails, String token); 
+  Future<void> postBankDetails(int userId, BankDetails bankDetails, String token);
+  Future<BankDetails> getBankDetails(int userId, String token); 
 }

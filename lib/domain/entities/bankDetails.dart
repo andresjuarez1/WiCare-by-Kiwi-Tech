@@ -16,4 +16,9 @@ class BankDetails {
       'bank': bank,
     };
   }
+
+  factory BankDetails.fromJson(Map<String, dynamic> json) {
+    return BankDetails(
+        name: json['name'], number: json['number'], bank: json['bank']);
+  }
 }

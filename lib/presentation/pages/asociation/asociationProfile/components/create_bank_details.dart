@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:locura1/data/datasources/remote/user_remote_data_source.dart';
 import 'package:locura1/data/repositories/user_repository_impl.dart';
-import 'package:locura1/domain/entities/postBankDetails.dart';
+import 'package:locura1/domain/entities/bankDetails.dart';
 import 'package:locura1/domain/use_cases/post_bank_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -49,8 +49,8 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
 
     try {
       await _postBankDetailsUseCase.execute(userId, bankDetails, token);
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Detalles bancarios enviados exitosamente')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Detalles bancarios enviados exitosamente')));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error al enviar detalles bancarios: $e')));
@@ -91,7 +91,8 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
           borderSide: const BorderSide(color: Colors.green),
         ),
         labelStyle: const TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
-        contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
       ),
       enableSuggestions: false,
       autocorrect: false,
@@ -105,7 +106,8 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF2E8139)),
+          backgroundColor:
+              WidgetStateProperty.all<Color>(const Color(0xFF2E8139)),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
@@ -148,6 +150,19 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
+              const SizedBox(height: 150.0),
+              const Center(
+                child: Text(
+                  'Ingrese los detalles de su cuenta bancaria para recibir pagos',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Color.fromARGB(255, 119, 119, 119),
+                    fontWeight: FontWeight.w100,
+                    fontFamily: 'PoppinsRegular'
+                  ),
+                ),
+              ),
               const SizedBox(height: 20.0),
               _buildStyledTextField(
                 controller: _bankNameController,

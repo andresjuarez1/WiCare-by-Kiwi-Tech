@@ -39,12 +39,12 @@ class LoginPage extends StatelessWidget {
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Usuario desconocido')),
+            const SnackBar(content: Text('Usuario desconocido')),
           );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: Credenciales incorrectas')),
+          const SnackBar(content: Text('Error: Credenciales incorrectas')),
         );
       }
     }
@@ -62,7 +62,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Center(
           child: SingleChildScrollView(
             child: Form(
@@ -75,7 +75,7 @@ class LoginPage extends StatelessWidget {
                     'assets/wicare-logo-inicio.png',
                     width: 180.0,
                   ),
-                  SizedBox(height: 40.0),
+                  const SizedBox(height: 40.0),
                   const Row(
                     children: [
                       Text(
@@ -89,7 +89,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
@@ -125,7 +125,7 @@ class LoginPage extends StatelessWidget {
                       return null;
                     },
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   const Row(
                     children: [
                       Text(
@@ -139,7 +139,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   TextFormField(
                     controller: _passwordController,
                     obscureText: true,
@@ -172,21 +172,21 @@ class LoginPage extends StatelessWidget {
                       return null;
                     },
                   ),
-                  SizedBox(height: 40.0),
+                  const SizedBox(height: 40.0),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () => _submitForm(context),
                       style: ButtonStyle(
                         backgroundColor:
-                            WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
+                            WidgetStateProperty.all<Color>(const Color(0xFF2E8139)),
                         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
                         padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-                          EdgeInsets.symmetric(vertical: 13.0),
+                          const EdgeInsets.symmetric(vertical: 13.0),
                         ),
                       ),
                       child: const Text(
@@ -198,7 +198,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   GestureDetector(
                     onTap: () => _navigateToRegistrationPage(context),
                     child: Container(

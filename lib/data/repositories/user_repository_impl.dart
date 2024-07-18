@@ -11,7 +11,7 @@ import '../../domain/entities/users.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../datasources/remote/user_remote_data_source.dart';
 import '../mappers/volunteer_mappers.dart';
-import '../../domain/entities/postBankDetails.dart';
+import '../../domain/entities/bankDetails.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource remoteDataSource;
@@ -73,5 +73,11 @@ class UserRepositoryImpl implements UserRepository {
   Future<void> postBankDetails(
       int userId, BankDetails bankDetails, String token) async {
     await remoteDataSource.postBankDetails(userId, bankDetails.toJson(), token);
+  }
+
+  @override
+  Future<BankDetails> getBankDetails(int userId, String token) async {
+    final bankDetails = await remoteDataSource.getBankDetails(userId, token);
+    return BankDetails.fromJson(bankDetails);
   }
 }

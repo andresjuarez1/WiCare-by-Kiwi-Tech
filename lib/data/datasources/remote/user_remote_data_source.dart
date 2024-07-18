@@ -229,4 +229,26 @@ class UserRemoteDataSource {
       throw Exception('Failed to post bank details');
     }
   }
+
+  Future<Map<String, dynamic>> getBankDetails(
+      int userId, String token) async {
+    final String url = 'http://192.81.209.151:9000/user/association/$userId/bank';
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body)['data'];
+      } else {
+        throw Exception('Failed to get association bank details');
+      }
+    } catch (e) {
+      throw Exception('Error in request: $e');
+    }
+  }
 }

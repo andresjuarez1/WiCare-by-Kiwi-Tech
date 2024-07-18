@@ -1,4 +1,4 @@
-import '../entities/postBankDetails.dart';
+import '../entities/bankDetails.dart';
 import '../repositories/user_repository.dart';
 
 class PostBankDetailsUseCase {
