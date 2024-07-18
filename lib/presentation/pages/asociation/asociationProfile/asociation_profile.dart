@@ -209,7 +209,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         },
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
-                              Color.fromARGB(255, 83, 175, 95)),
+                              const Color.fromARGB(255, 83, 175, 95)),
                           shape:
                               WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
