@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:locura1/domain/entities/associationProfile.dart';
+import 'package:locura1/domain/entities/bankDetails.dart';
 import 'package:locura1/domain/use_cases/getAssociationProfile.dart';
+import 'package:locura1/domain/use_cases/getBankDetailsUseCase.dart';
+import 'package:locura1/presentation/pages/asociation/asociationProfile/components/create_bank_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../map/google_maps.dart';
 import '../../../../data/datasources/remote/user_remote_data_source.dart';
@@ -15,6 +18,9 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late final GetassociationprofileUseCase _getAssociationProfileUseCase;
   late Future<AssociationProfile> _userProfileFuture;
+  late final GetBankDetailsUseCase _getBankDetailsUseCase;
+  late Future<BankDetails> _bankDetailsFuture;
+
   bool _isLoading = true;
   String _profilePictureUrl = '';
 
@@ -33,6 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final userRepository = UserRepositoryImpl(userRemoteDataSource);
     _getAssociationProfileUseCase =
         GetassociationprofileUseCase(userRepository);
+    _getBankDetailsUseCase = GetBankDetailsUseCase(userRepository);
 
     if (userId == null || token == null) {
       print('Error: No se encontró userId o token en SharedPreferences');
@@ -46,13 +53,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
     setState(() {
       _userProfileFuture = _getAssociationProfileUseCase(userId, token);
+      _bankDetailsFuture = _getBankDetailsUseCase(userId, token);
     });
 
     _userProfileFuture.then((profile) {
       setState(() {
         _isLoading = false;
         _profilePictureUrl = profile.profilePicture;
-        print('url desde la nueva varibale,$_profilePictureUrl');
+        print('url desde la nueva variable,$_profilePictureUrl');
       });
     }).catchError((error) {
       setState(() {
@@ -77,11 +85,22 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Color(0xFF5CA666),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BankDetailsPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : FutureBuilder<AssociationProfile>(
-              future: _userProfileFuture,
+          : FutureBuilder<List<dynamic>>(
+              future: Future.wait([_userProfileFuture, _bankDetailsFuture]),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -91,7 +110,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   return const Center(child: Text('No hay datos'));
                 }
 
-                final userProfile = snapshot.data!;
+                final userProfile = snapshot.data![0] as AssociationProfile;
+                final bankDetails = snapshot.data![1] as BankDetails;
                 print('URL de perfil: ${userProfile.profilePicture}');
                 _profilePictureUrl = userProfile.profilePicture;
 
@@ -100,47 +120,52 @@ class _ProfilePageState extends State<ProfilePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       _profilePictureUrl.isNotEmpty
-                          ? Image.network(
-                              _profilePictureUrl,
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
-                                  ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                } else {
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
-                                    ),
+                          ? ClipOval(
+                              child: Image.network(
+                                _profilePictureUrl,
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  } else {
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    );
+                                  }
+                                },
+                                errorBuilder: (BuildContext context,
+                                    Object error, StackTrace? stackTrace) {
+                                  print('Error cargando imagen: $error');
+                                  return Container(
+                                    width: 100,
+                                    height: 100,
+                                    color: Colors.grey,
                                   );
-                                }
-                              },
-                              errorBuilder: (BuildContext context, Object error,
-                                  StackTrace? stackTrace) {
-                                print('Error cargando imagen: $error');
-                                return Container(
-                                  width: 100,
-                                  height: 100,
-                                  color: Colors.grey,
-                                );
-                              },
+                                },
+                              ),
                             )
                           : Container(
                               width: 100,
                               height: 100,
-                              color: Colors.grey,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey,
+                              ),
                             ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
                       Text(
                         userProfile.name,
                         style: const TextStyle(
@@ -149,7 +174,61 @@ class _ProfilePageState extends State<ProfilePage> {
                           color: Color(0xFF5CA666),
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Datos Bancarios'),
+                                content: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                        'Nombre del banco: ${bankDetails.bank}'),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                        'Número de cuenta: ${bankDetails.number}'),
+                                    const SizedBox(height: 10),
+                                    Text('Nombre del propietario: ${bankDetails.name}'),
+                                  ],
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Cerrar'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                              Color.fromARGB(255, 83, 175, 95)),
+                          shape:
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
+                          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+                            const EdgeInsets.symmetric(vertical: 13.0, horizontal: 30.0),
+                          ),
+                        ),
+                        child: const Text(
+                          'Ver Datos Bancarios',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Column(

@@ -6,14 +6,13 @@ class VolunteerProfile {
   final String email;
   final String? profilePicture;
 
-  VolunteerProfile({
-    required this.name,
-    required this.cellphone,
-    required this.occupation,
-    required this.genre,
-    required this.email,
-    this.profilePicture
-  });
+  VolunteerProfile(
+      {required this.name,
+      required this.cellphone,
+      required this.occupation,
+      required this.genre,
+      required this.email,
+      this.profilePicture});
 
   factory VolunteerProfile.fromJson(Map<String, dynamic> json) {
     return VolunteerProfile(

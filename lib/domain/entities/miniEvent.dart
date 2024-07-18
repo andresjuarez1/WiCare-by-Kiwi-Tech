@@ -1,4 +1,3 @@
-// domain/entities/mini_event.dart
 class MiniEvent {
   final String name;
   final String associationName;

@@ -23,16 +23,13 @@ class UserRemoteDataSource {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body)['data'];
 
-      // Extracción del token de la respuesta
       final String token = data['token'];
 
-      // Guardado del token en SharedPreferences
       final SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       await sharedPreferences.setString('token', token);
       print('Token guardado en SharedPreferences: $token');
 
-      // Devolución del modelo de usuario con los datos obtenidos
       return UserModel.fromJson(data);
     } else {
       throw Exception('Failed to login');
@@ -155,7 +152,6 @@ class UserRemoteDataSource {
       int userId, String token) async {
     print(userId);
     final String url = 'http://192.81.209.151:9000/user/association/$userId';
-    //print('estpy aqui');
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -164,7 +160,6 @@ class UserRemoteDataSource {
           'Authorization': 'Bearer $token',
         },
       );
-      //print(response.body);
       if (response.statusCode == 200) {
         return jsonDecode(response.body)['data'];
       } else {
@@ -177,7 +172,6 @@ class UserRemoteDataSource {
 
   Future<Map<String, dynamic>> getProfileCompany(
       int userId, String token) async {
-    //print(userId);
     final String url = 'http://192.81.209.151:9000/user/company/$userId';
     try {
       final response = await http.get(
@@ -203,8 +197,7 @@ class UserRemoteDataSource {
     final request = http.MultipartRequest(
         'PUT', Uri.parse('http://192.81.209.151:9000/user/upload/$userId'));
 
-    request.headers['Authorization'] =
-        'Bearer $token';
+    request.headers['Authorization'] = 'Bearer $token';
     print('estoy en el user remote');
     request.files.add(await http.MultipartFile.fromPath(
       'profilePicture',
@@ -218,6 +211,44 @@ class UserRemoteDataSource {
     if (response.statusCode != 200) {
       throw Exception(
           'Error al actualizar la imagen de perfil: ${response.reasonPhrase}');
+    }
+  }
+
+  Future<void> postBankDetails(
+      int userId, Map<String, dynamic> bankDetails, String token) async {
+    final response = await client.post(
+      Uri.parse('http://192.81.209.151:9000/user/association/$userId/bank'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(bankDetails),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to post bank details');
+    }
+  }
+
+  Future<Map<String, dynamic>> getBankDetails(
+      int userId, String token) async {
+    final String url = 'http://192.81.209.151:9000/user/association/$userId/bank';
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body)['data'];
+      } else {
+        throw Exception('Failed to get association bank details');
+      }
+    } catch (e) {
+      throw Exception('Error in request: $e');
     }
   }
 }
