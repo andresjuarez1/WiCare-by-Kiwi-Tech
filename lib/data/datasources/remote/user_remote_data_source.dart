@@ -7,14 +7,16 @@ import '../../models/company_model.dart';
 import '../../models/user_model.dart';
 import '../../models/volunteer_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class UserRemoteDataSource {
   final http.Client client;
 
   UserRemoteDataSource(this.client);
+
   Future<UserModel> login(String email, String password) async {
     final response = await client.post(
-      Uri.parse('http://192.81.209.151:9000/user'),
+      Uri.parse('${dotenv.env['APIURL']}/user'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
     );
@@ -38,7 +40,7 @@ class UserRemoteDataSource {
 
   Future<void> registerVolunteer(VolunteerModel volunteer) async {
     final response = await client.post(
-      Uri.parse('http://192.81.209.151:9000/user/volunteer'),
+      Uri.parse('${dotenv.env['APIURL']}/user/volunteer'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(volunteer.toJson()),
     );
@@ -50,7 +52,7 @@ class UserRemoteDataSource {
 
   Future<void> registerAssociation(AssociationModel association) async {
     final response = await client.post(
-      Uri.parse('http://192.81.209.151:9000/user/association'),
+      Uri.parse('${dotenv.env['APIURL']}/user/association'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(association.toJson()),
     );
@@ -64,7 +66,7 @@ class UserRemoteDataSource {
 
   Future<void> registerCompany(CompanyModel company) async {
     final response = await client.post(
-      Uri.parse('http://192.81.209.151:9000/user/company'),
+      Uri.parse('${dotenv.env['APIURL']}/user/company'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(company.toJson()),
     );
@@ -77,7 +79,7 @@ class UserRemoteDataSource {
   }
 
   Future<void> getProfileVolunteer2(int userId, String token) async {
-    final String url = 'http://192.81.209.151:9000/user/volunteer/$userId';
+    final String url = '${dotenv.env['APIURL']}/user/volunteer/$userId';
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -102,7 +104,7 @@ class UserRemoteDataSource {
 
   Future<Map<String, dynamic>> getProfileVolunteer(
       int userId, String token) async {
-    final String url = 'http://192.81.209.151:9000/user/volunteer/$userId';
+    final String url = '${dotenv.env['APIURL']}/user/volunteer/$userId';
 
     try {
       final response = await http.get(
@@ -124,7 +126,8 @@ class UserRemoteDataSource {
   }
 
   Future<void> getProfileAssociation2(int userId, String token) async {
-    final String url = 'http://192.81.209.151:9000/user/association/$userId';
+    final String url =
+        '${dotenv.env['APIURL']}/user/association/$userId';
 
     try {
       final response = await http.get(
@@ -151,7 +154,8 @@ class UserRemoteDataSource {
   Future<Map<String, dynamic>> getProfileAssociation(
       int userId, String token) async {
     print(userId);
-    final String url = 'http://192.81.209.151:9000/user/association/$userId';
+    final String url =
+        '${dotenv.env['APIURL']}/user/association/$userId';
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -172,7 +176,7 @@ class UserRemoteDataSource {
 
   Future<Map<String, dynamic>> getProfileCompany(
       int userId, String token) async {
-    final String url = 'http://192.81.209.151:9000/user/company/$userId';
+    final String url = '${dotenv.env['APIURL']}/user/company/$userId';
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -194,8 +198,8 @@ class UserRemoteDataSource {
 
   Future<void> updateProfilePicture(
       int userId, File image, String token) async {
-    final request = http.MultipartRequest(
-        'PUT', Uri.parse('http://192.81.209.151:9000/user/upload/$userId'));
+    final request = http.MultipartRequest('PUT',
+        Uri.parse('${dotenv.env['APIURL']}/user/upload/$userId'));
 
     request.headers['Authorization'] = 'Bearer $token';
     print('estoy en el user remote');
@@ -217,7 +221,8 @@ class UserRemoteDataSource {
   Future<void> postBankDetails(
       int userId, Map<String, dynamic> bankDetails, String token) async {
     final response = await client.post(
-      Uri.parse('http://192.81.209.151:9000/user/association/$userId/bank'),
+      Uri.parse(
+          '${dotenv.env['APIURL']}/user/association/$userId/bank'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -232,7 +237,8 @@ class UserRemoteDataSource {
 
   Future<Map<String, dynamic>> getBankDetails(
       int userId, String token) async {
-    final String url = 'http://192.81.209.151:9000/user/association/$userId/bank';
+    final String url =
+        '${dotenv.env['APIURL']}/user/association/$userId/bank';
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -252,3 +258,4 @@ class UserRemoteDataSource {
     }
   }
 }
+
