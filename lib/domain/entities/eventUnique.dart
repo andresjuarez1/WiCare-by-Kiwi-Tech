@@ -1,3 +1,55 @@
+class Association {
+  final int id;
+  final String email;
+  final String role;
+  final String name;
+  final String description;
+  final String cellphone;
+  final double latitude;
+  final double longitude;
+  final String profilePicture;
+
+  Association({
+    required this.id,
+    required this.email,
+    required this.role,
+    required this.name,
+    required this.description,
+    required this.cellphone,
+    required this.latitude,
+    required this.longitude,
+    required this.profilePicture,
+  });
+
+  factory Association.fromJson(Map<String, dynamic> json) {
+    return Association(
+      id: json['id'],
+      email: json['email'],
+      role: json['role'],
+      name: json['name'],
+      description: json['description'],
+      cellphone: json['cellphone'],
+      latitude: (json['location']['latitude'] as num).toDouble(),
+      longitude: (json['location']['longitude'] as num).toDouble(),
+      profilePicture: json['profilePicture'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'email': email,
+      'role': role,
+      'name': name,
+      'description': description,
+      'cellphone': cellphone,
+      'latitude': latitude,
+      'longitude': longitude,
+      'profilePicture': profilePicture,
+    };
+  }
+}
+
 class EventUnique {
   final int id;
   final String name;
@@ -10,6 +62,7 @@ class EventUnique {
   final String cathegory;
   final String picture;
   final int association_id;
+  final Association? association;
 
   EventUnique({
     required this.id,
@@ -23,10 +76,10 @@ class EventUnique {
     required this.cathegory,
     this.picture = '',
     this.association_id = 0,
+    this.association,
   });
 
   factory EventUnique.fromJson(Map<String, dynamic> json) {
-    print('Received JSON: $json'); // Agrega esta línea para depuración
     return EventUnique(
       id: json['id'],
       name: json['name'],
@@ -41,6 +94,9 @@ class EventUnique {
       cathegory: json['cathegory'],
       picture: json['picture'],
       association_id: json['association_id'],
+      association: json['association'] != null
+          ? Association.fromJson(json['association'])
+          : null,
     );
   }
 
@@ -57,6 +113,7 @@ class EventUnique {
       'cathegory': cathegory,
       'picture': picture,
       'association_id': association_id,
+      'association': association?.toJson(),
     };
   }
 }
