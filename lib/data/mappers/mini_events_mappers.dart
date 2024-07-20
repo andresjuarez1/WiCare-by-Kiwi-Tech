@@ -6,6 +6,7 @@ MiniEvent miniEventModelToMiniEvent(MiniEventModel model) {
     name: model.name,
     description: model.description,
     hour_start: model.hour_start,
+    id: model.id,
   );
 }
 
@@ -14,5 +15,6 @@ MiniEventModel miniEventToMiniEventModel(MiniEvent entity) {
     name: entity.name,
     description: entity.description,
     hour_start: entity.hour_start,
+    id: entity.id,
   );
 }

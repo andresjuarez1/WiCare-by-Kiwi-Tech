@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../data/datasources/remote/event_remote_data_source.dart';
 import '../../../../domain/entities/miniEvent.dart';
@@ -9,7 +10,6 @@ import 'components/search_events.dart';
 import 'components/donation_part.dart';
 import 'components/new_carousel.dart';
 import '../newEvent/event.dart';
-import '../events/event.dart';
 import 'package:http/http.dart' as http;
 
 class VolunteerPage extends StatefulWidget {
@@ -56,20 +56,11 @@ class _VolunteerPageState extends State<VolunteerPage> {
     }
   }
 
-  void _navigateToEvent(BuildContext context, String title) {
+  void _navigateToNewEvent(BuildContext context, EventUnique event) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventPage(eventTitle: title),
-      ),
-    );
-  }
-
-  void _navigateToNewEvent(BuildContext context, String title) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => NewEventPage(eventTitle: title),
+        builder: (context) => NewEventPage(event: event),
       ),
     );
   }

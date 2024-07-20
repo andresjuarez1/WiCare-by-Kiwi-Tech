@@ -1,16 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 import '../../../../../domain/entities/miniEvent.dart';
 import '../../newMoreEvents/new_more_events.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../data/datasources/remote/event_remote_data_source.dart';
+import 'package:http/http.dart' as http;
 
 class NewEventsCarousel extends StatelessWidget {
   final List<MiniEvent> eventsList;
-  final Function(BuildContext, String) navigateToEvent;
+  final Function(BuildContext, EventUnique) navigateToEvent;
 
   NewEventsCarousel({
     required this.eventsList,
     required this.navigateToEvent,
   });
+
+  Future<void> _handleEventTap(BuildContext context, int eventId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
+    if (token != null) {
+      final EventRemoteDataSource eventRemoteDataSource =
+          EventRemoteDataSource(http.Client(), token);
+      final EventUnique event = await eventRemoteDataSource.getEventById(eventId);
+
+      navigateToEvent(context, event);
+    } else {
+      throw Exception('Token not found in SharedPreferences');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +82,7 @@ class NewEventsCarousel extends StatelessWidget {
               builder: (BuildContext context) {
                 return InkWell(
                   onTap: () {
-                    navigateToEvent(context, event.name);
+                    _handleEventTap(context, event.id);
                   },
                   child: Stack(
                     children: [

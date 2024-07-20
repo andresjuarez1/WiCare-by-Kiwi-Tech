@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 import '../../../domain/entities/miniEvent.dart';
 import '../../mappers/mini_events_mappers.dart';
 import '../../models/event_model.dart';
@@ -93,17 +94,42 @@ class EventRemoteDataSource {
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body)['data'] as List;
-        return data.map((eventJson) {
-          final miniEventModel = MiniEventModel.fromJson(eventJson);
-          return miniEventModelToMiniEvent(miniEventModel);
-        }).toList();
+        final data = jsonDecode(response.body);
+        if (data.containsKey('data')) {
+          final List eventsData = data['data'];
+          return eventsData.map((eventJson) {
+            final miniEventModel = MiniEventModel.fromJson(eventJson);
+            return miniEventModelToMiniEvent(miniEventModel);
+          }).toList();
+        } else {
+          throw Exception('Invalid response format: No "data" key found.');
+        }
       } else {
-        throw Exception(
-            'Failed to get association events: ${response.statusCode} - ${response.body}');
+        print('Error: ${response.statusCode}');
+        print('Mensaje de error: ${response.body}');
+        throw Exception('Failed to load mini events');
       }
     } catch (e) {
-      throw Exception('Error in request: $e');
+      print('Error en la solicitud: $e');
+      throw Exception('Error en la solicitud: $e');
+    }
+  }
+
+  Future<EventUnique> getEventById(int id) async {
+    final url = Uri.parse('${dotenv.env['APIURL']}/event/$id');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    final response = await client.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body)['data'];
+      return EventUnique.fromJson(data);
+    } else {
+      throw Exception('Failed to load event');
     }
   }
 }

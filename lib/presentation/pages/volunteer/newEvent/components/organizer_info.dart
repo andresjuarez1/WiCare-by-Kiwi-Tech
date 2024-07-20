@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 
 class OrganizerInfo extends StatelessWidget {
+  final EventUnique event;
+
+  OrganizerInfo({required this.event});
+
   @override
   Widget build(BuildContext context) {
     return const Padding(

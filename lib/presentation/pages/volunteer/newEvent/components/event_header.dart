@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 
 class EventHeader extends StatelessWidget {
-  final String eventTitle;
+  final EventUnique event;
 
-  EventHeader({required this.eventTitle});
+  EventHeader({required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class EventHeader extends StatelessWidget {
               ),
               SizedBox(height: screenHeight * 0.015),
               Text(
-                eventTitle,
+                event.name,
                 style: TextStyle(
                   fontFamily: 'PoppinsRegular',
                   fontSize: screenHeight * 0.050,
