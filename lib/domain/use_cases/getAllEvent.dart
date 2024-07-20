@@ -1,11 +1,15 @@
-// import 'package:locura1/domain/repositories/event_repository.dart';
+import 'package:locura1/domain/repositories/event_repository.dart';
 
-// class GetAllEventUseCase {
-//   final EventRepository repository;
+import '../entities/associationProfile.dart';
+import '../entities/miniEvent.dart';
+import '../repositories/user_repository.dart';
 
-//   GetAllEventUseCase(this.repository);
+class GetAllEventUseCase {
+  final EventRepository repository;
 
-//   Future<Minievent> call( String token) async {
-//     return repository.getAllEvents(token as Minievent);
-//   }
-// }
+  GetAllEventUseCase(this.repository);
+
+  Future<Minievent> call( String token) async {
+    return repository.getAllEvents(token as Minievent);
+  }
+}
