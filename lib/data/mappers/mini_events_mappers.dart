@@ -1,18 +1,18 @@
-// mappers/mini_event_mapper.dart
 import '../../domain/entities/miniEvent.dart';
-
 import '../models/mini_event_model.dart';
 
 MiniEvent miniEventModelToMiniEvent(MiniEventModel model) {
   return MiniEvent(
     name: model.name,
-    associationName: model.associationName,
+    description: model.description,
+    hour_start: model.hour_start,
   );
 }
 
 MiniEventModel miniEventToMiniEventModel(MiniEvent entity) {
   return MiniEventModel(
     name: entity.name,
-    associationName: entity.associationName,
+    description: entity.description,
+    hour_start: entity.hour_start,
   );
 }

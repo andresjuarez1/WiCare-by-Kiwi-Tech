@@ -75,7 +75,7 @@ class NewEventsCarousel extends StatelessWidget {
                           color: Colors.grey.shade300,
                           child: Center(
                             child: Text(
-                              event.name,
+                              event.hour_start,
                               style: const TextStyle(
                                 fontSize: 24,
                                 color: Colors.black54,
@@ -111,7 +111,7 @@ class NewEventsCarousel extends StatelessWidget {
                         child: Container(
                           width: MediaQuery.of(context).size.width - 40,
                           child: Text(
-                            event.associationName,
+                            event.description,
                             style: const TextStyle(
                               color: Colors.white,
                               fontFamily: 'PoppinsRegular',

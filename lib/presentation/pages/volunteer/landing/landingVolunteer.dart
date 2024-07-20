@@ -18,7 +18,6 @@ class VolunteerPage extends StatefulWidget {
 }
 
 class _VolunteerPageState extends State<VolunteerPage> {
-
   List<MiniEvent> eventsList = [];
   List<Map<String, String>> attendedEvents = [
     {
@@ -88,11 +87,11 @@ class _VolunteerPageState extends State<VolunteerPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-             SizedBox(height: 20),
+            SizedBox(height: 20),
             SearchEvents(
               onChanged: (value) {},
             ),
-             SizedBox(height: 30),
+            SizedBox(height: 30),
             NewEventsCarousel(
               eventsList: eventsList,
               navigateToEvent: _navigateToNewEvent,

@@ -82,39 +82,28 @@ class EventRemoteDataSource {
   }
 
   Future<List<MiniEvent>> getAllMiniEvents() async {
-    final url = Uri.parse('${dotenv.env['APIURL']}/event');
-
+    final String url = '${dotenv.env['APIURL']}/event';
     try {
-      final response = await client.get(url, headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      });
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseBody = json.decode(response.body);
-
-        if (responseBody.containsKey('data') && responseBody['data'] is List) {
-          final List<dynamic> data = responseBody['data'];
-          print('Eventos recibidos: $data');
-
-          final events =
-              data.map((event) => MiniEventModel.fromJson(event)).toList();
-
-          return events
-              .map((eventModel) => miniEventModelToMiniEvent(eventModel))
-              .toList();
-        } else {
-          throw Exception(
-              'La respuesta no contiene una lista en la clave "data"');
-        }
+        final data = jsonDecode(response.body)['data'] as List;
+        return data.map((eventJson) {
+          final miniEventModel = MiniEventModel.fromJson(eventJson);
+          return miniEventModelToMiniEvent(miniEventModel);
+        }).toList();
       } else {
-        print('Error al obtener los eventos: ${response.statusCode}');
-        print('Mensaje de error: ${response.body}');
-        throw Exception('Failed to get events: ${response.statusCode}');
+        throw Exception(
+            'Failed to get association events: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
-      print('Error en la solicitud: $e');
-      throw Exception('Failed to get events: $e');
+      throw Exception('Error in request: $e');
     }
   }
 }
