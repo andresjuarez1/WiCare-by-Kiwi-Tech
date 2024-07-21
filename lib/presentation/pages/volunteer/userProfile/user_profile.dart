@@ -19,10 +19,10 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _initializeProfile();
+    _userProfileFuture = _initializeProfile();
   }
 
-  Future<void> _initializeProfile() async {
+  Future<VolunteerProfile> _initializeProfile() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     final int? userId = prefs.getInt('userId');
@@ -33,12 +33,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if (userId == null || token == null) {
       print('Error: No se encontró userId o token en SharedPreferences');
-      return;
+      return Future.error('No se encontró userId o token en SharedPreferences');
     }
 
-    setState(() {
-      _userProfileFuture = _getVolunteerProfileUseCase(userId, token);
-    });
+    return _getVolunteerProfileUseCase(userId, token);
   }
 
   @override
@@ -83,14 +81,6 @@ class _ProfilePageState extends State<ProfilePage> {
             }
 
             final userProfile = snapshot.data!;
-
-            print('Datos del perfil:');
-            print('Nombre: ${userProfile.name}');
-            print('Correo electrónico: ${userProfile.email}');
-            print('Teléfono: ${userProfile.cellphone}');
-            print('Género: ${_getGenderText(userProfile.genre)}');
-            print('Ocupación: ${userProfile.occupation}');
-            print('URL de la imagen de perfil: ${userProfile.profilePicture}');
 
             return SingleChildScrollView(
               child: Column(

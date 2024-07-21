@@ -93,13 +93,11 @@ class UpcomingEventsCarousel extends StatelessWidget {
                           height: 200.0,
                           color: Colors.grey.shade300,
                           child: Center(
-                            child: Text(
-                              event.hour_start,
-                              style: const TextStyle(
-                                fontSize: 24,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: Image.network(
+                              event.picture,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
                             ),
                           ),
                         ),
