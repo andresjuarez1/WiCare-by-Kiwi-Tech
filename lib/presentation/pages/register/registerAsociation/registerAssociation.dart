@@ -17,7 +17,7 @@ class RegisterAssociationPage extends StatefulWidget {
       _RegisterAssociationPageState();
 
   _RegisterAssociationPageState createStateManager() =>
-      _RegisterAssociationPageState();
+      _RegisterAssociationPageState();  
 }
 
 class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
@@ -30,6 +30,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   void initState() {
     super.initState();
     _loadSavedLocation();
+    _loadSavedLocationManager();
     _loadSavedLocationManager();
   }
 
@@ -66,11 +67,11 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-            EdgeInsets.symmetric(vertical: 13.0),
+            const EdgeInsets.symmetric(vertical: 13.0),
           ),
         ),
         child: Text(
@@ -117,11 +118,11 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-            EdgeInsets.symmetric(vertical: 13.0),
+            const EdgeInsets.symmetric(vertical: 13.0),
           ),
         ),
         child: Text(
@@ -348,11 +349,16 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
+
                       const SizedBox(height: 20.0),
 
+                      if (_latitude != null && _longitude != null)
+                        Text('Latitud: $_latitude, Longitud: $_longitude'),
+                      const SizedBox(height: 10.0),
+                      _buildLabel('Fecha  de fundación'),
+                      const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _foundationDateController,
                         label: 'Fecha de fundación (AAAA-MM-DD)',
@@ -500,14 +506,12 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 20.0),
                       _buildAddressButtonManager(),
-                      // if (_latitude != null && _longitude != null)
-                      //   Text(
-                      //       'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
-
-                      const SizedBox(height: 30.0),
+                      if (_latitude != null && _longitude != null)
+                        Text(
+                            'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
+                      const SizedBox(height: 10.0),
                       const Text(
                         'Crea tu cuenta',
                         style: const TextStyle(
@@ -654,20 +658,32 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
+        labelStyle: const TextStyle(
+          fontSize: 15.0,
+          color: Color(0xFFBCBCBC),
+        ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
-        labelStyle: const TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+      ),
+      style: const TextStyle(
+        color: Colors.black,
       ),
       validator: validator,
     );
@@ -689,15 +705,23 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -721,15 +745,23 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),

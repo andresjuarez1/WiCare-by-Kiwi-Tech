@@ -93,7 +93,7 @@ class _SelectLocationPageState extends State<SelectLocationPageManager> {
     }
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
