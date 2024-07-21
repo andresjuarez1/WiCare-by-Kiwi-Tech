@@ -8,7 +8,8 @@ import '../../login/login_page.dart';
 import './map/select_location_page.dart';
 import './map/select_location_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:convert';
 class RegisterCompanyPage extends StatefulWidget {
   @override
   _RegisterCompanyPageState createState() => _RegisterCompanyPageState();
@@ -168,10 +169,51 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
 
   bool _termsAccepted = false;
 
+  Future<bool> _detectarGroserias(String texto) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${dotenv.env['APIURL']}/analyzer/groserias'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'texto': texto,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        if (data['contiene_groserias']) {
+          // Aquí puedes mostrar un mensaje al usuario
+          print('La descripción contiene groserías.');
+          return true;
+        } else {
+          print('Texto corregido: ${data['texto_corregido']}\nNo contiene groserías.');
+          return false;
+        }
+      } else {
+        // Manejar error de solicitud
+        print('Error al detectar groserías');
+        return false;
+      }
+    } catch (e) {
+      print('Error al realizar la solicitud: $e');
+      return false;
+    }
+  }
+
   void _registerVolunteer() async {
     print('Botón "Crear Cuenta" presionado');
     if (_formKey.currentState?.validate() ?? false) {
       print('Formulario válido');
+
+      final description = _descriptionController.text;
+      bool hasProfanity = await _detectarGroserias(description);
+
+      if (hasProfanity) {
+        _showErrorDialog('La descripción contiene palabras ofensivas. Por favor, corrige el texto.');
+        return;
+      }
       final company = Company(
         name: _nameCompanyController.text,
         latitude: _latitudeController.text,
