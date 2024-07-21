@@ -13,7 +13,6 @@ class LoginUser {
     );
 
     if (response.statusCode == 200) {
-      print('estoy aqui');
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
@@ -28,6 +27,7 @@ class LoginUser {
           await SharedPreferences.getInstance();
       await sharedPreferences.setString('token', token);
       await sharedPreferences.setInt('userId', userId);
+      print('id guardado en SharedPreferences: $userId');
 
       final data = responseData['data'];
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ConfirmationDialog extends StatelessWidget {
   final Function onConfirm;
 
-  ConfirmationDialog({required this.onConfirm});
+  ConfirmationDialog({required this.onConfirm, required Future<void> Function() subscribe});
 
   @override
   Widget build(BuildContext context) {

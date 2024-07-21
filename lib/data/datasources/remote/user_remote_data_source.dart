@@ -27,10 +27,12 @@ class UserRemoteDataSource {
       final data = jsonDecode(response.body)['data'];
 
       final String token = data['token'];
+      final int userId = data['data']['id'];
 
       final SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       await sharedPreferences.setString('token', token);
+      await sharedPreferences.setInt('userId', userId);
       print('Token guardado en SharedPreferences: $token');
 
       return UserModel.fromJson(data);
@@ -270,7 +272,7 @@ class UserRemoteDataSource {
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token', 
+          'Authorization': 'Bearer $token',
         },
       );
 
@@ -289,10 +291,29 @@ class UserRemoteDataSource {
       throw Exception('Error in request: $e');
     }
   }
-  
-  Future<void> subscribeToEvent(int eventId, int volunteerId, String token) async {
+
+  Future<int?> getVolunteerId() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    return sharedPreferences.getInt('userId');
+  }
+
+  Future<void> subscribeToEvent(int eventId) async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    final String? token = sharedPreferences.getString('token');
+    final int? volunteerId = sharedPreferences.getInt('userId');
+
+    if (token == null) {
+      throw Exception('Token no encontrado');
+    }
+
+    if (volunteerId == null) {
+      throw Exception('ID del voluntario no encontrado');
+    }
+
     final response = await client.post(
-      Uri.parse('${dotenv.env['APIURL']}/event/$eventId/volunteer'),
+      Uri.parse('${dotenv.env['APIURL']}/event/$eventId/volunteers'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -301,7 +322,10 @@ class UserRemoteDataSource {
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to subscribe to event');
+      throw Exception(
+          'Error al suscribirse al evento: ${response.reasonPhrase}');
     }
+
+    print('Suscripción al evento exitosa');
   }
 }

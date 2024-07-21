@@ -5,8 +5,9 @@ import '../dialogs/donative_dialog.dart';
 
 class ActionButtons extends StatelessWidget {
   final EventUnique event;
+  final Future<void> Function(int) onSubscribe; 
 
-  ActionButtons({required this.event});
+  ActionButtons({required this.event, required this.onSubscribe});
   
   @override
   Widget build(BuildContext context) {
@@ -19,8 +20,13 @@ class ActionButtons extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return ConfirmationDialog(
-                  onConfirm: () {
-                    print("Ayuda enviada");
+                  onConfirm: () async {
+                    try {
+                      await onSubscribe(event.id); 
+                      print("Suscripción exitosa");
+                    } catch (e) {
+                      print("Error al suscribirse: $e");
+                    }
                   },
                 );
               },
@@ -47,7 +53,7 @@ class ActionButtons extends StatelessWidget {
           },
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all<Color>(Color(0xFF2E8139)),
-            minimumSize: WidgetStateProperty.all<Size>(const Size(70, 45)),
+            minimumSize: WidgetStateProperty.all<Size>(Size(70, 45)),
           ),
           child: const Text(
             'Donar',
