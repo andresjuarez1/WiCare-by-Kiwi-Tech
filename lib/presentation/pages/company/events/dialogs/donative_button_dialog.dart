@@ -27,13 +27,13 @@ class DonationDialog extends StatelessWidget {
         color: Colors.black,
         fontFamily: 'PoppinsRegular',
       ),
-      title: const Text("Datos Bancarios"),
+      title: const Text("Datos bancarios"),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 10),
-          Text('Nombre del propietario: ${event.association!.bank!.name}'),
+          Text('Propietario: ${event.association!.bank!.name}'),
           const SizedBox(height: 10),
           Text('Número de cuenta: ${event.association!.bank!.number}'),
           const SizedBox(height: 10),
