@@ -8,8 +8,7 @@ class CustomDrawer extends StatelessWidget {
     return Drawer(
       child: Container(
         color: Color(0xFFFFFFFF),
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
             SizedBox(height: 70.0),
             Container(
@@ -24,17 +23,23 @@ class CustomDrawer extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20.0),
-            ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Perfil'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                );
-              },
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.account_circle),
+                    title: Text('Perfil'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfilePage()),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 450.0),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text('Cerrar sesión'),

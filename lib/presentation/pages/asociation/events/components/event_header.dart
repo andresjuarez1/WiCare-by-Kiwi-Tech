@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 
 class EventHeader extends StatelessWidget {
-  final String eventTitle;
+  final EventUnique event;
 
-  EventHeader({required this.eventTitle});
+  EventHeader({required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +14,10 @@ class EventHeader extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.asset(
-          'assets/madres.jpg',
+        Image.network(
+          event.picture,
           fit: BoxFit.cover,
-        //opacar la imagen
-          color: Colors.black.withOpacity(0.4),
+          color: Colors.black.withOpacity(0.5),
           colorBlendMode: BlendMode.darken,
         ),
         Positioned(
@@ -41,7 +41,7 @@ class EventHeader extends StatelessWidget {
               ),
               SizedBox(height: screenHeight * 0.015),
               Text(
-                eventTitle,
+                event.name,
                 style: TextStyle(
                   fontFamily: 'PoppinsRegular',
                   fontSize: screenHeight * 0.050,
@@ -50,9 +50,20 @@ class EventHeader extends StatelessWidget {
                 ),
                 textAlign: TextAlign.left,
               ),
-              SizedBox(height: screenHeight * 0.015),
+              SizedBox(height: screenHeight * 0.005),
               Text(
-                'Domingo 12 de mayo - 6:00 pm',
+                event.association!.name,
+                style: TextStyle(
+                  fontFamily: 'PoppinsRegular',
+                  fontSize: screenHeight * 0.020,
+                  fontWeight: FontWeight.w100,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              SizedBox(height: screenHeight * 0.009),
+              Text(
+                event.date,
                 style: TextStyle(
                   fontFamily: 'PoppinsRegular',
                   fontSize: screenHeight * 0.025,
