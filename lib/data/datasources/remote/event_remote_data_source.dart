@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../domain/entities/event.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:locura1/domain/entities/eventUnique.dart';
@@ -33,13 +34,14 @@ class EventRemoteDataSource {
     }
   }
 
-
   Future<void> createEvent(Event event, File image) async {
-    final uri = Uri.parse('${dotenv.env['APIURL']}/event'); // Cambia la URL según tu API
+    final uri = Uri.parse(
+        '${dotenv.env['APIURL']}/event'); // Cambia la URL según tu API
     print('estoy en el user remote');
     // Crear una solicitud MultipartRequest
     final request = http.MultipartRequest('POST', uri)
-      ..headers['Authorization'] = 'Bearer $token' // Agregar el token al encabezado
+      ..headers['Authorization'] =
+          'Bearer $token' // Agregar el token al encabezado
       ..fields['name'] = event.name
       ..fields['description'] = event.description
       ..fields['hour_start'] = event.hour_start
@@ -65,7 +67,8 @@ class EventRemoteDataSource {
     // Enviar la solicitud y obtener la respuesta
     final response = await request.send();
     // Verificar el estado de la respuesta
-    if (response.statusCode != 200) { // Cambia el código de estado según lo que espera tu API
+    if (response.statusCode != 200) {
+      // Cambia el código de estado según lo que espera tu API
       throw Exception('Error al crear el evento: ${response.reasonPhrase}');
     }
   }
@@ -169,5 +172,43 @@ class EventRemoteDataSource {
     }
   }
 
-  
+  Future<List<EventUnique>> getEventsByAssociation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final int? userId = prefs.getInt('userId');
+
+    if (userId == null) {
+      throw Exception('User ID not found in SharedPreferences');
+    }
+
+    final url =
+        Uri.parse('${dotenv.env['APIURL']}/user/association/$userId/events');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      final response = await client.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data.containsKey('data')) {
+          final List eventsData = data['data'];
+          return eventsData.map((eventJson) {
+            return EventUnique.fromJson(eventJson);
+          }).toList();
+        } else {
+          throw Exception('Invalid response format: No "data" key found.');
+        }
+      } else {
+        print('Error: ${response.statusCode}');
+        print('Mensaje de error: ${response.body}');
+        throw Exception('Failed to load events by association');
+      }
+    } catch (e) {
+      print('Error en la solicitud: $e');
+      throw Exception('Error en la solicitud: $e');
+    }
+  }
 }

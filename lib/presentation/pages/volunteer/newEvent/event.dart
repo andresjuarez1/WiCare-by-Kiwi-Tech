@@ -25,6 +25,7 @@ class NewEventPage extends StatelessWidget {
         slivers: [
           SliverAppBar(
             expandedHeight: MediaQuery.of(context).size.height * 1,
+            pinned: true,
             iconTheme: const IconThemeData(color: Colors.white),
             flexibleSpace: FlexibleSpaceBar(
               background: EventHeader(event: event),

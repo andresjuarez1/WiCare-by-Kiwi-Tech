@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/presentation/pages/asociation/landing/components/events_asociation.dart';
 import 'components/navbar_asociation.dart';
-import 'components/active_events.dart';
 import 'components/volunteers_carousel.dart';
 import 'components/past_events.dart';
 import 'components/donation_part.dart';
-import '../events/event_active.dart';
 import '../volunteers/volunteers_details.dart';
 import '../pastEvent/past_event.dart';
 import '../pastEventsPage/past_events_page.dart';
@@ -48,15 +47,6 @@ class AssociationLandingPage extends StatelessWidget {
       'description': 'Asilo corazón'
     }
   ];
-
-  void _navigateToEvent(BuildContext context, String title) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EventPageActive(eventTitle: title),
-      ),
-    );
-  }
 
   void _navigateToVolunteers(BuildContext context, String title) {
     Navigator.push(
@@ -113,10 +103,8 @@ class AssociationLandingPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ActiveEvents(
-                activeEvents: eventActiveImg,
-                navigateToEvent: _navigateToEvent,
-              ),
+              SizedBox(height: 20),
+              ActiveEventsCarousel(),
               SizedBox(height: 10),
               VolunteersCarousel(
                 imgList: imgList,

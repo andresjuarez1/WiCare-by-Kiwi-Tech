@@ -1,7 +1,6 @@
 import '../../domain/entities/volunteerProfile.dart';
 import '../models/volunteerProfile_model.dart';
 
-// Convierte un objeto Profile a ProfileModel
 ProfileVolunteerModel profileToProfileModel(VolunteerProfile profile) {
   return ProfileVolunteerModel(
     name: profile.name,
@@ -14,7 +13,6 @@ ProfileVolunteerModel profileToProfileModel(VolunteerProfile profile) {
   );
 }
 
-// Convierte un objeto ProfileModel a Profile
 VolunteerProfile profileModelToProfile(ProfileVolunteerModel profileModel) {
   return VolunteerProfile(
     name: profileModel.name,
