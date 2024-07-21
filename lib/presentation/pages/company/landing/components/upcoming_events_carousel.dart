@@ -91,13 +91,18 @@ class UpcomingEventsCarousel extends StatelessWidget {
                         child: Container(
                           width: 1000,
                           height: 200.0,
-                          color: Colors.grey.shade300,
                           child: Center(
-                            child: Image.network(
-                              event.picture,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
+                            child: ColorFiltered(
+                              colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.5),
+                                BlendMode.darken,
+                              ),
+                              child: Image.network(
+                                event.picture,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
                             ),
                           ),
                         ),
