@@ -109,7 +109,7 @@ class _VolunteerPageState extends State<VolunteerPage> {
               navigateToEvent: _navigateToNewEvent,
             ),
             SizedBox(height: 30),
-
+//hello
             FooterComponent(),
             SizedBox(height: 10),
           ],
