@@ -9,7 +9,6 @@ EventModel eventToEventModel(Event event) {
     hour_end: event.hour_end, // Puedes dejarlo vacío o ajustarlo según necesites
     date: event.date,
     cathegory: event.cathegory,
-    location: event.location,
     picture: event.picture, // Nuevo campo añadido para la imagen
   );
 }
@@ -22,7 +21,6 @@ Event eventModelToEvent(EventModel model) {
     hour_end: model.hour_end,// Asumiendo que 'hour_start' en EventModel corresponde a 'hour' en Event
     date: model.date,
     cathegory: model.cathegory,
-    location: model.location,
     picture: model.picture, // Nuevo campo añadido para la imagen
   );
 }

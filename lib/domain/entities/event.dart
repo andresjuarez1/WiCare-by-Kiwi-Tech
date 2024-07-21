@@ -6,7 +6,6 @@ class Event {
   final String hour_end;
   final String date;
   final String cathegory;
-  final String location;
   final String picture;
 
   Event({
@@ -16,7 +15,6 @@ class Event {
     required this.hour_end,
     required this.date,
     required this.cathegory,
-    required this.location,
     this.picture = '',
   });
 }

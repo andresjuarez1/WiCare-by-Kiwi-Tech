@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,17 +7,14 @@ import '../../../../data/datasources/remote/event_remote_data_source.dart';
 import '../../../../data/repositories/event_repository_impl.dart';
 import '../../../../domain/entities/event.dart';
 import '../../../../domain/use_cases/create_event.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class PostEvent extends StatefulWidget {
   @override
   _PostEventState createState() => _PostEventState();
 }
 
-
-
 class _PostEventState extends State<PostEvent> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>(); // Llave para el formulario
   final _eventNameController = TextEditingController();
   final _location = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -35,12 +31,6 @@ class _PostEventState extends State<PostEvent> {
   TimeOfDay? _selectedStartTime;
   TimeOfDay? _selectedEndTime;
   File? _image;
-  bool _isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   Future<void> _pickImage() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -57,34 +47,33 @@ class _PostEventState extends State<PostEvent> {
   }
 
   void _createEvent() async {
+    print('Botón "Crear evento" presionado');
     if (_formKey.currentState?.validate() ?? false) {
+      print('Formulario válido');
+
+      // Validar que se haya seleccionado hora de inicio y fin
       if (_selectedStartTime == null || _selectedEndTime == null) {
         print('Por favor selecciona una hora de inicio y una hora de fin');
         return;
       }
 
+      // Validar que se haya seleccionado una imagen
       if (_image == null) {
         print('No se ha seleccionado una imagen');
         return;
       }
 
+      // Construir el objeto Event con todos los campos necesarios, incluyendo la imagen
       final event = Event(
         name: _eventNameController.text,
         description: _descriptionController.text,
         hour_start: '${_selectedStartTime!.hour}:${_selectedStartTime!.minute}',
         hour_end: '${_selectedEndTime!.hour}:${_selectedEndTime!.minute}',
-        date: '${_selectedDate.toIso8601String().split('T').first}', // Formato yyyy-MM-dd
+        date: _selectedDate.toString().substring(0, 10),
         cathegory: _selectedCategories ?? '',
-        picture: '',
+        location: _location.text,
+        picture: '', // Aquí deberías asignar el valor de la imagen, por ejemplo, la URL o el nombre del archivo si se sube al servidor
       );
-      // Imprimir los campos en la consola
-      print('Nombre del evento: ${_eventNameController.text}');
-      print('Descripción: ${_descriptionController.text}');
-      print('Hora de inicio: ${_selectedStartTime!.format(context)}');
-      print('Hora de fin: ${_selectedEndTime!.format(context)}');
-      print('Fecha: ${_selectedDate.toIso8601String().split('T').first}');
-      print('Categoría: ${_selectedCategories ?? ''}');
-      print('Imagen seleccionada: ${_image!.path}');
 
       try {
         final String? token = await _getToken();
@@ -92,10 +81,6 @@ class _PostEventState extends State<PostEvent> {
           print('Token no disponible');
           return;
         }
-
-        setState(() {
-          _isLoading = true;
-        });
 
         // Crear una instancia del repositorio y el caso de uso
         final remoteDataSource = EventRemoteDataSource(http.Client(), token);
@@ -107,10 +92,6 @@ class _PostEventState extends State<PostEvent> {
         print('Evento creado exitosamente');
       } catch (error) {
         print('Error al crear evento: $error');
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
       }
     } else {
       print('Formulario inválido');
@@ -185,7 +166,7 @@ class _PostEventState extends State<PostEvent> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Form(
-            key: _formKey,
+            key: _formKey, // Asignar la llave al formulario
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -274,19 +255,27 @@ class _PostEventState extends State<PostEvent> {
                         ),
                       ),
                       controller: TextEditingController(
-                        text: '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                        text: _selectedDate.toString().substring(0, 10),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Por favor selecciona una fecha';
                         }
-                        // Aquí puedes validar la fecha si es necesario, pero sin convertirla
+                        DateTime inputDate;
+                        try {
+                          inputDate = DateTime.parse(value);
+                        } catch (e) {
+                          return 'Formato de fecha inválido';
+                        }
+                        DateTime currentDate = DateTime.now();
+                        if (inputDate.isBefore(currentDate)) {
+                          return 'La fecha no puede ser anterior a la fecha actual';
+                        }
                         return null;
                       },
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 25),
                 GestureDetector(
                   onTap: () => _selectTime(context, true),
@@ -295,10 +284,9 @@ class _PostEventState extends State<PostEvent> {
                       decoration: InputDecoration(
                         labelText: 'Hora de inicio',
                         labelStyle: const TextStyle(
-                          fontFamily: 'PoppinsRegular',
-                          fontSize: 15.0,
-                          color: Colors.black,
-                        ),
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 15.0,
+                            color: Colors.black),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: const BorderSide(color: Color(0xFF5CA666)),
@@ -334,10 +322,9 @@ class _PostEventState extends State<PostEvent> {
                       decoration: InputDecoration(
                         labelText: 'Hora de fin',
                         labelStyle: const TextStyle(
-                          fontFamily: 'PoppinsRegular',
-                          fontSize: 15.0,
-                          color: Colors.black,
-                        ),
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 15.0,
+                            color: Colors.black),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: const BorderSide(color: Color(0xFF5CA666)),
@@ -360,6 +347,17 @@ class _PostEventState extends State<PostEvent> {
                         if (value == null || value.isEmpty) {
                           return 'Por favor selecciona una hora de fin';
                         }
+                        if (_selectedStartTime != null &&
+                            _selectedEndTime != null) {
+                          if (_selectedEndTime!.hour <
+                              _selectedStartTime!.hour ||
+                              (_selectedEndTime!.hour ==
+                                  _selectedStartTime!.hour &&
+                                  _selectedEndTime!.minute <
+                                      _selectedStartTime!.minute)) {
+                            return 'La hora de fin no puede ser anterior a la hora de inicio';
+                          }
+                        }
                         return null;
                       },
                     ),
@@ -368,12 +366,12 @@ class _PostEventState extends State<PostEvent> {
                 const SizedBox(height: 25),
                 DropdownButtonFormField<String>(
                   value: _selectedCategories,
-                  items: _categories
-                      .map((category) => DropdownMenuItem(
-                    value: category,
-                    child: Text(category),
-                  ))
-                      .toList(),
+                  items: _categories.map((category) {
+                    return DropdownMenuItem<String>(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
                   onChanged: (value) {
                     setState(() {
                       _selectedCategories = value;
@@ -382,10 +380,9 @@ class _PostEventState extends State<PostEvent> {
                   decoration: InputDecoration(
                     labelText: 'Categoría',
                     labelStyle: const TextStyle(
-                      fontFamily: 'PoppinsRegular',
-                      fontSize: 15.0,
-                      color: Colors.black,
-                    ),
+                        fontFamily: 'PoppinsRegular',
+                        fontSize: 15.0,
+                        color: Colors.black),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: const BorderSide(color: Color(0xFF5CA666)),
@@ -407,53 +404,95 @@ class _PostEventState extends State<PostEvent> {
                   },
                 ),
                 const SizedBox(height: 25),
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: Container(
-                    width: double.infinity,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xFF5CA666)),
+                TextFormField(
+                  controller: _location,
+                  decoration: InputDecoration(
+                    labelText: 'Ubicación',
+                    labelStyle: const TextStyle(
+                        fontFamily: 'PoppinsRegular',
+                        fontSize: 15.0,
+                        color: Colors.black),
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(color: Color(0xFF5CA666)),
                     ),
-                    child: _image != null
-                        ? Image.file(
-                      _image!,
-                      fit: BoxFit.cover,
-                    )
-                        : Center(
-                      child: Text(
-                        'Selecciona una imagen',
-                        style: TextStyle(
-                          fontFamily: 'PoppinsRegular',
-                          fontSize: 15.0,
-                          color: Colors.black,
-                        ),
-                      ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 12.0,
+                      horizontal: 16.0,
                     ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor ingresa la ubicación';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 25),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: _createEvent,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF5CA666),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Imagen del evento',
+                      style: TextStyle(
+                        fontFamily: 'PoppinsRegular',
+                        fontSize: 15.0,
+                        color: Colors.black,
+                      ),
                     ),
-                    child: _isLoading
-                        ? const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    )
-                        : const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'Crear evento',
-                        style: TextStyle(
-                          fontFamily: 'PoppinsRegular',
-                          fontSize: 15.0,
-                          color: Colors.white,
+                    const SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: _pickImage,
+                      child: Container(
+                        width: double.infinity,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFF5CA666)),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: _image != null
+                            ? Image.file(
+                          _image!,
+                          fit: BoxFit.cover,
+                        )
+                            : const Center(
+                          child: Text(
+                            'Selecciona una imagen',
+                            style: TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 15.0,
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                       ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 25),
+                ElevatedButton(
+                  onPressed: _createEvent,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF5CA666),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16.0,
+                      horizontal: 24.0,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: const Text(
+                    'Crear evento',
+                    style: TextStyle(
+                      fontFamily: 'PoppinsRegular',
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
                     ),
                   ),
                 ),

@@ -5,7 +5,6 @@ class EventModel {
   final String hour_end;// Hora en formato HH:mm
   final String date; // Fecha en formato yyyy-MM-dd
   final String cathegory; // Categoría del evento
-  final String location;
   final String picture;
 
   EventModel({
@@ -15,7 +14,6 @@ class EventModel {
     required this.hour_end,
     required this.date,
     required this.cathegory,
-    required this.location,
     this.picture = '',
   });
 
@@ -28,7 +26,6 @@ class EventModel {
       'hour_end': hour_end,
       'date': date,
       'cathegory': cathegory,
-      'location': location,
       'picture': picture,
     };
   }

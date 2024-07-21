@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import '../../../domain/entities/event.dart';
 import '../../../domain/entities/miniEvent.dart';
 import '../../mappers/mini_events_mappers.dart';
 import '../../models/event_model.dart';
 import '../../models/mini_event_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EventRemoteDataSource {
   final http.Client client;
@@ -14,7 +16,7 @@ class EventRemoteDataSource {
 
   Future<void> createEvent2(EventModel event) async {
     // Define la URL del endpoint.
-    final url = Uri.parse('http://192.81.209.151:9000/event');
+    final url = Uri.parse('${dotenv.env['APIURL']}/event');
 
     // Define los headers, incluyendo el token de autorización.
     final headers = {
@@ -29,40 +31,44 @@ class EventRemoteDataSource {
       throw Exception('Failed to create event in source');
     }
   }
-  Future<void> createEvent(EventModel event, File imageFile) async {
-    final url = Uri.parse('http://192.81.209.151:9000/event');
 
-    // Define los headers, incluyendo el token de autorización.
-    final headers = {
-      'Authorization': 'Bearer $token', // Agrega el token en el encabezado de autorización.
-    };
-
-    // Crear un MultipartRequest
-    var request = http.MultipartRequest('POST', url)
-      ..headers.addAll(headers)
+  Future<void> createEvent(Event event, File image) async {
+    final uri = Uri.parse('${dotenv.env['APIURL']}/event'); // Cambia la URL según tu API
+    print('estoy en el user remote');
+    // Crear una solicitud MultipartRequest
+    final request = http.MultipartRequest('POST', uri)
+      ..headers['Authorization'] = 'Bearer $token' // Agregar el token al encabezado
       ..fields['name'] = event.name
       ..fields['description'] = event.description
       ..fields['hour_start'] = event.hour_start
       ..fields['hour_end'] = event.hour_end
       ..fields['date'] = event.date
-      ..fields['cathegory'] = event.cathegory
-      ..fields['location'] = event.location;
-
+      ..fields['cathegory'] = event.cathegory;
     // Adjuntar la imagen al request si existe
-    if (imageFile != null) {
-      request.files.add(await http.MultipartFile.fromPath('picture', imageFile.path));
+    if (image != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        'picture', // Asegúrate de que este nombre coincida con el que espera tu API
+        image.path,
+      ));
+    }
+    print('--- Enviando solicitud ---');
+    print('URL: $uri');
+    print('Headers: ${request.headers}');
+    print('Fields: ${request.fields}');
+    if (image != null) {
+      print('Imagen: ${image.path}');
     }
 
-    // Enviar el request y obtener la respuesta
-    var response = await request.send();
-
+    // Enviar la solicitud y obtener la respuesta
+    final response = await request.send();
     // Verificar el estado de la respuesta
-    if (response.statusCode != 201) { // Asegúrate de que el estado de respuesta esperado sea 201.
-      throw Exception('Failed to create event in source');
+    if (response.statusCode != 200) { // Cambia el código de estado según lo que espera tu API
+      throw Exception('Error al crear el evento: ${response.reasonPhrase}');
     }
   }
+
   Future<void> getAllEvents(token ) async {
-    final String url = 'http://192.81.209.151:9000/event';
+    final String url = '${dotenv.env['APIURL']}/event';
 
     try {
       final response = await http.get(
@@ -86,7 +92,7 @@ class EventRemoteDataSource {
     }
   }
   Future<List<MiniEvent>> getAllMiniEvents() async {
-    final url = Uri.parse('http://192.81.209.151:9000/event');
+    final url = Uri.parse('${dotenv.env['APIURL']}/event');
 
     try {
       final response = await client.get(url, headers: {

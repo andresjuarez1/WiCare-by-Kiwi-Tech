@@ -6,6 +6,6 @@ import 'package:locura1/domain/entities/event.dart';
 import '../entities/miniEvent.dart';
 
 abstract class EventRepository {
-  Future<void> createEvent(Event event, File imageFile);
+  Future<void> createEvent(Event event, File image);
   //Future<Minievent> getAllEvents(Minievent event);
   }
