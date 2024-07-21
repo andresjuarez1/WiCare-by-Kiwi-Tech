@@ -12,9 +12,8 @@ class EventRepositoryImpl implements EventRepository {
   EventRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<void> createEvent(Event event, File imageFile) async {
-    final eventModel = eventToEventModel(event);
-    await remoteDataSource.createEvent(eventModel, imageFile);
+  Future<void> createEvent(Event event, File image) async {
+    await remoteDataSource.createEvent(event, image);
   }
 
 }

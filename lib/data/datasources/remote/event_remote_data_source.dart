@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import '../../../domain/entities/event.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:locura1/domain/entities/eventUnique.dart';
 import '../../../domain/entities/miniEvent.dart';
 import '../../mappers/mini_events_mappers.dart';
 import '../../models/event_model.dart';
 import '../../models/mini_event_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http_parser/http_parser.dart';
 
 class EventRemoteDataSource {
   final http.Client client;
@@ -30,32 +33,40 @@ class EventRemoteDataSource {
     }
   }
 
-  Future<void> createEvent(EventModel event, File imageFile) async {
-    final url = Uri.parse('${dotenv.env['APIURL']}/event');
 
-    final headers = {
-      'Authorization': 'Bearer $token',
-    };
-
-    var request = http.MultipartRequest('POST', url)
-      ..headers.addAll(headers)
+  Future<void> createEvent(Event event, File image) async {
+    final uri = Uri.parse('${dotenv.env['APIURL']}/event'); // Cambia la URL según tu API
+    print('estoy en el user remote');
+    // Crear una solicitud MultipartRequest
+    final request = http.MultipartRequest('POST', uri)
+      ..headers['Authorization'] = 'Bearer $token' // Agregar el token al encabezado
       ..fields['name'] = event.name
       ..fields['description'] = event.description
       ..fields['hour_start'] = event.hour_start
       ..fields['hour_end'] = event.hour_end
       ..fields['date'] = event.date
-      ..fields['cathegory'] = event.cathegory
-      ..fields['location'] = event.location;
-
-    if (imageFile != null) {
-      request.files
-          .add(await http.MultipartFile.fromPath('picture', imageFile.path));
+      ..fields['cathegory'] = event.cathegory;
+    // Adjuntar la imagen al request si existe
+    if (image != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        'picture',
+        image.path,
+        contentType: MediaType('image', 'jpeg'),
+      ));
+    }
+    print('--- Enviando solicitud ---');
+    print('URL: $uri');
+    print('Headers: ${request.headers}');
+    print('Fields: ${request.fields}');
+    if (image != null) {
+      print('Imagen: ${image.path}');
     }
 
-    var response = await request.send();
-
-    if (response.statusCode != 201) {
-      throw Exception('Failed to create event in source');
+    // Enviar la solicitud y obtener la respuesta
+    final response = await request.send();
+    // Verificar el estado de la respuesta
+    if (response.statusCode != 200) { // Cambia el código de estado según lo que espera tu API
+      throw Exception('Error al crear el evento: ${response.reasonPhrase}');
     }
   }
 

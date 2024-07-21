@@ -14,8 +14,8 @@ class EventHeader extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.asset(
-          'assets/dia-niños.jpg',
+        Image.network(
+          event.picture,
           fit: BoxFit.cover,
           color: Colors.black.withOpacity(0.5),
           colorBlendMode: BlendMode.darken,

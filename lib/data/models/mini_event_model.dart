@@ -3,12 +3,14 @@ class MiniEventModel {
   final String description;
   final String hour_start;
   final int id;
+  final String picture;
 
   MiniEventModel({
     required this.name,
     required this.description,
     required this.hour_start,
     required this.id,
+    required this.picture
   });
 
   factory MiniEventModel.fromJson(Map<String, dynamic> json) {
@@ -17,6 +19,7 @@ class MiniEventModel {
       description: json['description'],
       hour_start: json['hour_start'],
       id: json['id'],
+      picture: json['picture']
     );
   }
 
@@ -26,6 +29,7 @@ class MiniEventModel {
       'description': description,
       'hour_start': hour_start,
       'id': id,
+      'picture': picture,
     };
   }
 }

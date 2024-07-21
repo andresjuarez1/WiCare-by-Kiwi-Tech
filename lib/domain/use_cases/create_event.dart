@@ -8,7 +8,7 @@ class CreateEventUseCase {
 
   CreateEventUseCase(this.repository);
 
-  Future<void> execute(Event event, File image) {
-    return repository.createEvent(event, image);
+  Future<void> execute(Event event, File image) async {
+    await repository.createEvent(event, image);
   }
 }

@@ -5,7 +5,6 @@ class EventModel {
   final String hour_end;
   final String date;
   final String cathegory;
-  final String location;
   final String picture;
 
   EventModel({
@@ -15,7 +14,6 @@ class EventModel {
     required this.hour_end,
     required this.date,
     required this.cathegory,
-    required this.location,
     this.picture = '',
   });
 
@@ -28,7 +26,7 @@ class EventModel {
       'hour_end': hour_end,
       'date': date,
       'cathegory': cathegory,
-      'location': location,
+
       'picture': picture,
     };
   }
@@ -42,7 +40,7 @@ class EventModel {
       hour_end: json['hour_end'],
       date: json['date'],
       cathegory: json['cathegory'],
-      location: json['location'],
+
       picture: json['picture'] ?? '',
     );
   }
