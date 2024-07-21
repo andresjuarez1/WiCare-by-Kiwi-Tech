@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/data/models/event_model.dart';
 import 'package:locura1/domain/entities/eventUnique.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../data/datasources/remote/event_remote_data_source.dart';
@@ -19,6 +20,7 @@ class VolunteerPage extends StatefulWidget {
 
 class _VolunteerPageState extends State<VolunteerPage> {
   List<MiniEvent> eventsList = [];
+  List<EventModel> eventCategory = [];
   List<Map<String, String>> attendedEvents = [
     {
       'image': 'assets/basura.jpg',
@@ -36,6 +38,7 @@ class _VolunteerPageState extends State<VolunteerPage> {
   void initState() {
     super.initState();
     _getProfile();
+    _getCategory();
   }
 
   Future<void> _getProfile() async {
@@ -50,6 +53,24 @@ class _VolunteerPageState extends State<VolunteerPage> {
 
       setState(() {
         eventsList = events;
+      });
+    } else {
+      throw Exception('Token o userId no encontrados en SharedPreferences');
+    }
+  }
+
+  Future<void> _getCategory() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
+    if (token != null) {
+      final EventRemoteDataSource eventRemoteDataSource =
+          EventRemoteDataSource(http.Client(), token);
+      final List<EventModel> category =
+          await eventRemoteDataSource.getEventsByCategory(token);
+
+      setState(() {
+        eventCategory = category;
       });
     } else {
       throw Exception('Token o userId no encontrados en SharedPreferences');
@@ -73,7 +94,7 @@ class _VolunteerPageState extends State<VolunteerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Navbar(),
-      drawer: CustomDrawer(attendedEvents: attendedEvents),
+      drawer: CustomDrawer(attendedEvents: attendedEvents, category: eventCategory),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(

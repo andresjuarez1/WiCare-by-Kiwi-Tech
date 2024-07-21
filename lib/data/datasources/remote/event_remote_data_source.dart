@@ -133,5 +133,28 @@ class EventRemoteDataSource {
     }
   }
 
-  
+  Future<List<EventModel>> getEventsByCategory(String category) async {
+    final url = Uri.parse('${dotenv.env['APIURL']}/event/cathegory/$category');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    final response = await client.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data.containsKey('data')) {
+        final List eventsData = data['data'];
+        return eventsData.map((eventJson) {
+          return EventModel.fromJson(eventJson);
+        }).toList();
+      } else {
+        throw Exception('Invalid response format: No "data" key found.');
+      }
+    } else {
+      throw Exception('Failed to load events by category');
+    }
+  }
 }

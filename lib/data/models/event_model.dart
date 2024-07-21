@@ -2,9 +2,9 @@ class EventModel {
   final String name;
   final String description;
   final String hour_start;
-  final String hour_end;// Hora en formato HH:mm
-  final String date; // Fecha en formato yyyy-MM-dd
-  final String cathegory; // Categoría del evento
+  final String hour_end;
+  final String date;
+  final String cathegory;
   final String location;
   final String picture;
 
@@ -19,7 +19,7 @@ class EventModel {
     this.picture = '',
   });
 
-  // Método para convertir el evento a un mapa (JSON) que se puede enviar a la API
+  // Método toJson para convertir la instancia a un mapa JSON
   Map<String, dynamic> toJson() {
     return {
       'name': name,
@@ -31,5 +31,19 @@ class EventModel {
       'location': location,
       'picture': picture,
     };
+  }
+
+  // Método fromJson para crear una instancia a partir de un mapa JSON
+  factory EventModel.fromJson(Map<String, dynamic> json) {
+    return EventModel(
+      name: json['name'],
+      description: json['description'],
+      hour_start: json['hour_start'],
+      hour_end: json['hour_end'],
+      date: json['date'],
+      cathegory: json['cathegory'],
+      location: json['location'],
+      picture: json['picture'] ?? '',
+    );
   }
 }
