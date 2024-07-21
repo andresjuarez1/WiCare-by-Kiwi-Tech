@@ -15,8 +15,6 @@ class PostEvent extends StatefulWidget {
   _PostEventState createState() => _PostEventState();
 }
 
-
-
 class _PostEventState extends State<PostEvent> {
   final _formKey = GlobalKey<FormState>();
   final _eventNameController = TextEditingController();
@@ -56,15 +54,54 @@ class _PostEventState extends State<PostEvent> {
     return prefs.getString('token');
   }
 
-  void _createEvent() async {
+  Future<bool> _detectarGroserias(String texto) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${dotenv.env['APIURL']}/analyzer/groserias'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'texto': texto,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        if (data['contiene_groserias']) {
+          // Aquí puedes mostrar un mensaje al usuario
+          print('La descripción contiene groserías.');
+          return true;
+        } else {
+          print('Texto corregido: ${data['texto_corregido']}\nNo contiene groserías.');
+          return false;
+        }
+      } else {
+        // Manejar error de solicitud
+        print('Error al detectar groserías');
+        return false;
+      }
+    } catch (e) {
+      print('Error al realizar la solicitud: $e');
+      return false;
+    }
+  }
+
+  Future<void> _createEvent() async {
     if (_formKey.currentState?.validate() ?? false) {
       if (_selectedStartTime == null || _selectedEndTime == null) {
-        print('Por favor selecciona una hora de inicio y una hora de fin');
+        _showErrorMessage('Por favor selecciona una hora de inicio y una hora de fin');
         return;
       }
 
       if (_image == null) {
-        print('No se ha seleccionado una imagen');
+        _showErrorMessage('No se ha seleccionado una imagen');
+        return;
+      }
+
+      final contieneGroserias = await _detectarGroserias(_descriptionController.text);
+      if (contieneGroserias) {
+        _showErrorMessage('La descripción contiene groserías. No se puede crear el evento.');
         return;
       }
 
@@ -77,19 +114,11 @@ class _PostEventState extends State<PostEvent> {
         cathegory: _selectedCategories ?? '',
         picture: '',
       );
-      // Imprimir los campos en la consola
-      print('Nombre del evento: ${_eventNameController.text}');
-      print('Descripción: ${_descriptionController.text}');
-      print('Hora de inicio: ${_selectedStartTime!.format(context)}');
-      print('Hora de fin: ${_selectedEndTime!.format(context)}');
-      print('Fecha: ${_selectedDate.toIso8601String().split('T').first}');
-      print('Categoría: ${_selectedCategories ?? ''}');
-      print('Imagen seleccionada: ${_image!.path}');
 
       try {
         final String? token = await _getToken();
         if (token == null) {
-          print('Token no disponible');
+          _showErrorMessage('Token no disponible');
           return;
         }
 
@@ -97,26 +126,35 @@ class _PostEventState extends State<PostEvent> {
           _isLoading = true;
         });
 
-        // Crear una instancia del repositorio y el caso de uso
         final remoteDataSource = EventRemoteDataSource(http.Client(), token);
         final repository = EventRepositoryImpl(remoteDataSource);
         final createEventUseCase = CreateEventUseCase(repository);
 
-        // Ejecutar el caso de uso para crear el evento
         await createEventUseCase.execute(event, _image!);
-        print('Evento creado exitosamente');
+        _showSuccessMessage('Evento creado exitosamente');
       } catch (error) {
-        print('Error al crear evento: $error');
+        _showErrorMessage('Error al crear evento: $error');
       } finally {
         setState(() {
           _isLoading = false;
         });
       }
     } else {
-      print('Formulario inválido');
+      _showErrorMessage('Formulario inválido');
     }
   }
 
+  void _showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  void _showSuccessMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -206,254 +244,184 @@ class _PostEventState extends State<PostEvent> {
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(color: greenColor),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 16.0,
-                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa el nombre del evento';
+                      return 'Por favor ingrese el nombre del evento';
                     }
                     return null;
                   },
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
                 TextFormField(
                   controller: _descriptionController,
+                  maxLines: 4,
                   decoration: InputDecoration(
-                    labelText: 'Descripción',
+                    labelText: 'Descripción del evento',
                     labelStyle: const TextStyle(
                         fontFamily: 'PoppinsRegular',
                         fontSize: 15.0,
                         color: Colors.black),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                      borderSide: BorderSide(color: greenColor),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: const BorderSide(color: Color(0xFF5CA666)),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 16.0,
+                      borderSide: BorderSide(color: greenColor),
                     ),
                   ),
-                  maxLines: 3,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa una descripción';
+                      return 'Por favor ingrese una descripción';
                     }
                     return null;
                   },
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 30),
                 GestureDetector(
                   onTap: () => _selectDate(context),
                   child: AbsorbPointer(
                     child: TextFormField(
+                      controller: TextEditingController(text: _selectedDate.toLocal().toString().split(' ')[0]),
                       decoration: InputDecoration(
                         labelText: 'Fecha',
                         labelStyle: const TextStyle(
-                          fontFamily: 'PoppinsRegular',
-                          fontSize: 15.0,
-                          color: Colors.black,
-                        ),
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 15.0,
+                            color: Colors.black),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                          borderSide: BorderSide(color: greenColor),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                          borderSide: BorderSide(color: greenColor),
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12.0,
-                          horizontal: 16.0,
-                        ),
-                      ),
-                      controller: TextEditingController(
-                        text: '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Por favor selecciona una fecha';
+                          return 'Por favor seleccione una fecha';
                         }
-                        // Aquí puedes validar la fecha si es necesario, pero sin convertirla
                         return null;
                       },
                     ),
                   ),
                 ),
-
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
                 GestureDetector(
                   onTap: () => _selectTime(context, true),
                   child: AbsorbPointer(
                     child: TextFormField(
+                      controller: TextEditingController(text: _selectedStartTime?.format(context) ?? 'Hora de inicio'),
                       decoration: InputDecoration(
                         labelText: 'Hora de inicio',
                         labelStyle: const TextStyle(
-                          fontFamily: 'PoppinsRegular',
-                          fontSize: 15.0,
-                          color: Colors.black,
-                        ),
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 15.0,
+                            color: Colors.black),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                          borderSide: BorderSide(color: greenColor),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                          borderSide: BorderSide(color: greenColor),
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12.0,
-                          horizontal: 16.0,
-                        ),
-                      ),
-                      controller: TextEditingController(
-                        text: _selectedStartTime != null
-                            ? _selectedStartTime!.format(context)
-                            : '',
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Por favor selecciona una hora de inicio';
+                          return 'Por favor seleccione una hora de inicio';
                         }
                         return null;
                       },
                     ),
                   ),
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
                 GestureDetector(
                   onTap: () => _selectTime(context, false),
                   child: AbsorbPointer(
                     child: TextFormField(
+                      controller: TextEditingController(text: _selectedEndTime?.format(context) ?? 'Hora de fin'),
                       decoration: InputDecoration(
                         labelText: 'Hora de fin',
                         labelStyle: const TextStyle(
-                          fontFamily: 'PoppinsRegular',
-                          fontSize: 15.0,
-                          color: Colors.black,
-                        ),
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 15.0,
+                            color: Colors.black),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                          borderSide: BorderSide(color: greenColor),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                          borderSide: BorderSide(color: greenColor),
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12.0,
-                          horizontal: 16.0,
-                        ),
-                      ),
-                      controller: TextEditingController(
-                        text: _selectedEndTime != null
-                            ? _selectedEndTime!.format(context)
-                            : '',
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Por favor selecciona una hora de fin';
+                          return 'Por favor seleccione una hora de fin';
                         }
                         return null;
                       },
                     ),
                   ),
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
                 DropdownButtonFormField<String>(
                   value: _selectedCategories,
-                  items: _categories
-                      .map((category) => DropdownMenuItem(
-                    value: category,
-                    child: Text(category),
-                  ))
-                      .toList(),
-                  onChanged: (value) {
+                  hint: const Text('Categoría'),
+                  onChanged: (String? newValue) {
                     setState(() {
-                      _selectedCategories = value;
+                      _selectedCategories = newValue;
                     });
                   },
+                  items: _categories.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
                   decoration: InputDecoration(
-                    labelText: 'Categoría',
-                    labelStyle: const TextStyle(
-                      fontFamily: 'PoppinsRegular',
-                      fontSize: 15.0,
-                      color: Colors.black,
-                    ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: const BorderSide(color: Color(0xFF5CA666)),
+                      borderSide: BorderSide(color: greenColor),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: const BorderSide(color: Color(0xFF5CA666)),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 16.0,
+                      borderSide: BorderSide(color: greenColor),
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor selecciona una categoría';
-                    }
-                    return null;
-                  },
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
                 GestureDetector(
                   onTap: _pickImage,
                   child: Container(
                     width: double.infinity,
-                    height: 200,
+                    height: 150,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xFF5CA666)),
+                      border: Border.all(color: greenColor),
                       borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.grey[200],
                     ),
-                    child: _image != null
-                        ? Image.file(
-                      _image!,
-                      fit: BoxFit.cover,
-                    )
-                        : Center(
-                      child: Text(
-                        'Selecciona una imagen',
-                        style: TextStyle(
-                          fontFamily: 'PoppinsRegular',
-                          fontSize: 15.0,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
+                    child: _image == null
+                        ? Center(child: Text('Seleccionar imagen'))
+                        : Image.file(_image!, fit: BoxFit.cover),
                   ),
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
                 Center(
                   child: ElevatedButton(
-                    onPressed: _createEvent,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF5CA666),
-                    ),
+                    onPressed: _isLoading ? null : _createEvent,
                     child: _isLoading
-                        ? const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    )
-                        : const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'Crear evento',
-                        style: TextStyle(
-                          fontFamily: 'PoppinsRegular',
-                          fontSize: 15.0,
-                          color: Colors.white,
-                        ),
-                      ),
+                        ? CircularProgressIndicator()
+                        : Text('Crear Evento'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF5CA666),
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                      textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
