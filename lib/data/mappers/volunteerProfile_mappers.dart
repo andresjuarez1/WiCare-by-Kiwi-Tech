@@ -1,4 +1,3 @@
-
 import '../../domain/entities/volunteerProfile.dart';
 import '../models/volunteerProfile_model.dart';
 
@@ -10,7 +9,8 @@ ProfileVolunteerModel profileToProfileModel(VolunteerProfile profile) {
     occupation: profile.occupation,
     genre: profile.genre,
     email: profile.email,
-    profilePicture : profile.profilePicture
+    profilePicture: profile.profilePicture,
+    id: profile.id,
   );
 }
 
@@ -22,6 +22,7 @@ VolunteerProfile profileModelToProfile(ProfileVolunteerModel profileModel) {
     occupation: profileModel.occupation,
     genre: profileModel.genre,
     email: profileModel.email,
-      profilePicture : profileModel.profilePicture,
+    profilePicture: profileModel.profilePicture,
+    id: profileModel.id,
   );
 }

@@ -26,7 +26,8 @@ class _UploadProfilePicturePageState extends State<UploadProfilePicturePage> {
   }
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
@@ -42,7 +43,7 @@ class _UploadProfilePicturePageState extends State<UploadProfilePicturePage> {
 
       if (userId == null || token == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: userId o token no encontrados')),
+          const SnackBar(content: Text('Error: userId o token no encontrados')),
         );
         return;
       }
@@ -50,16 +51,18 @@ class _UploadProfilePicturePageState extends State<UploadProfilePicturePage> {
       try {
         await _updateProfilePictureUseCase.execute(userId, _image!, token);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Imagen de perfil actualizada con éxito')),
+          const SnackBar(
+              content: Text('Imagen de perfil actualizada con éxito')),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al actualizar la imagen de perfil: $e')),
+          SnackBar(
+              content: Text('Error al actualizar la imagen de perfil: $e')),
         );
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No se seleccionó ninguna imagen')),
+        const SnackBar(content: Text('No se seleccionó ninguna imagen')),
       );
     }
   }
@@ -68,7 +71,7 @@ class _UploadProfilePicturePageState extends State<UploadProfilePicturePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Subir Imagen de Perfil'),
+        title: const Text('Subir Imagen de Perfil'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -76,7 +79,7 @@ class _UploadProfilePicturePageState extends State<UploadProfilePicturePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
+              const Text(
                 'Imagen de perfil',
                 style: TextStyle(
                   fontFamily: 'PoppinsRegular',
@@ -84,37 +87,37 @@ class _UploadProfilePicturePageState extends State<UploadProfilePicturePage> {
                   color: Colors.black,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               GestureDetector(
                 onTap: _pickImage,
                 child: Container(
                   width: double.infinity,
                   height: 200,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFF5CA666)),
+                    border: Border.all(color: const Color(0xFF5CA666)),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: _image != null
                       ? Image.file(
-                    _image!,
-                    fit: BoxFit.cover,
-                  )
-                      : Center(
-                    child: Text(
-                      'Selecciona una imagen',
-                      style: TextStyle(
-                        fontFamily: 'PoppinsRegular',
-                        fontSize: 15.0,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
+                          _image!,
+                          fit: BoxFit.cover,
+                        )
+                      : const Center(
+                          child: Text(
+                            'Selecciona una imagen',
+                            style: TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 15.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _updateProfilePicture,
-                child: Text('Subir Imagen'),
+                child: const Text('Subir Imagen'),
               ),
             ],
           ),

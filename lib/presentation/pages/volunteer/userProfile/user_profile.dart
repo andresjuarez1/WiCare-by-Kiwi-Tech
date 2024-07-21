@@ -60,7 +60,6 @@ class _ProfilePageState extends State<ProfilePage> {
           IconButton(
             icon: Icon(Icons.camera_alt),
             onPressed: () {
-              // Navegar a la página de subir imagen
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -85,7 +84,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
             final userProfile = snapshot.data!;
 
-            // Imprimir datos del perfil en la consola
             print('Datos del perfil:');
             print('Nombre: ${userProfile.name}');
             print('Correo electrónico: ${userProfile.email}');
@@ -102,7 +100,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     radius: 50.0,
                     backgroundImage: userProfile.profilePicture != null
                         ? NetworkImage(userProfile.profilePicture!)
-                        : AssetImage('assets/kiwilogo-inicio.png') as ImageProvider,
+                        : AssetImage('assets/kiwilogo-inicio.png')
+                            as ImageProvider,
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -218,6 +217,17 @@ class _ProfilePageState extends State<ProfilePage> {
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
                             userProfile.occupation,
+                            style: const TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 14.5,
+                            ),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Text(
+                            userProfile.id.toString(),
                             style: const TextStyle(
                               fontFamily: 'PoppinsRegular',
                               fontSize: 14.5,

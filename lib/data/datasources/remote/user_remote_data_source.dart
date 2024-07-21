@@ -289,4 +289,19 @@ class UserRemoteDataSource {
       throw Exception('Error in request: $e');
     }
   }
+  
+  Future<void> subscribeToEvent(int eventId, int volunteerId, String token) async {
+    final response = await client.post(
+      Uri.parse('${dotenv.env['APIURL']}/event/$eventId/volunteer'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({'volunteer_id': volunteerId}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to subscribe to event');
+    }
+  }
 }

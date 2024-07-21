@@ -5,6 +5,7 @@ class VolunteerProfile {
   final String genre;
   final String email;
   final String? profilePicture;
+  final int id;
 
   VolunteerProfile(
       {required this.name,
@@ -12,7 +13,9 @@ class VolunteerProfile {
       required this.occupation,
       required this.genre,
       required this.email,
-      this.profilePicture});
+      this.profilePicture,
+      required this.id
+      });
 
   factory VolunteerProfile.fromJson(Map<String, dynamic> json) {
     return VolunteerProfile(
@@ -22,6 +25,7 @@ class VolunteerProfile {
       genre: json['genre'],
       email: json['email'],
       profilePicture: json['profilePicture'],
+      id: json['id']
     );
   }
 }
