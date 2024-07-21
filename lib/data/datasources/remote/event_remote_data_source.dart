@@ -168,4 +168,6 @@ class EventRemoteDataSource {
       throw Exception('Failed to load events by category');
     }
   }
+
+  
 }

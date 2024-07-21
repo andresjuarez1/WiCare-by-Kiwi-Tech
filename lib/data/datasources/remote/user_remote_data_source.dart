@@ -328,4 +328,35 @@ class UserRemoteDataSource {
 
     print('Suscripción al evento exitosa');
   }
+
+  Future<void> donateToAssociation(int associationId) async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    final String? token = sharedPreferences.getString('token');
+    final int? companyId = sharedPreferences.getInt('userId');
+
+    if (token == null) {
+      throw Exception('Token no encontrado');
+    }
+
+    if (companyId == null) {
+      throw Exception('ID de la compañía no encontrado');
+    }
+
+    final response = await client.post(
+      Uri.parse('${dotenv.env['APIURL']}/donation'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token', 
+      },
+      body: jsonEncode(
+          {'company_id': companyId, 'association_id': associationId}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Error al enviar la donación: ${response.reasonPhrase}');
+    }
+
+    print('Donación enviada con éxito');
+  }
 }
