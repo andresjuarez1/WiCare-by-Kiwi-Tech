@@ -7,6 +7,8 @@ import '../../../../domain/use_cases/register_volunteer_user.dart';
 import '../../login/login_page.dart';
 import 'map/select_location_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'map/select_location_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterVolunteerPage extends StatefulWidget {
   @override
@@ -57,7 +59,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -77,10 +79,12 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
 
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
   final _ageController = TextEditingController();
   final _curpController = TextEditingController();
   final _cellphoneController = TextEditingController();
   final _postalController = TextEditingController();
+  // final _addressController = TextEditingController();
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
   final _emailController = TextEditingController();
@@ -110,13 +114,13 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       print('Formulario válido');
       final volunteer = Volunteer(
         name: _nameController.text,
+        description: _descriptionController.text,
         age: _ageController.text,
         curp: _curpController.text,
         cellphone: _cellphoneController.text,
         postal: _postalController.text,
         latitude: _latitudeController.text,
         longitude: _longitudeController.text,
-        // address: _addressController.text,
         occupation: _selectedOccupation ?? '',
         genre: _selectedGenre ?? '',
         email: _emailController.text,
@@ -187,7 +191,9 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: Stack(
         children: [
           Padding(
@@ -199,16 +205,15 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 60.0),
                       Image.asset(
                         'assets/wicare-logo-inicio.png',
                         width: 180,
                       ),
                       const SizedBox(height: 25.0),
                       const Text(
-                        '¡Bienvenido, empresa!',
+                        '¡Bienvenido, voluntario!',
                         style: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 22.0,
                           color: Color(0xFF2E8139),
                           fontFamily: 'PoppinsRegular',
                           fontWeight: FontWeight.bold,
@@ -223,6 +228,23 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                             return 'Por favor, ingresa tu nombre completo';
                           } else if (RegExp(r'[0-9]').hasMatch(value)) {
                             return 'El nombre no debe contener números';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      _buildTextField(
+                        controller: _descriptionController,
+                        label: 'Ingresa una descripción general',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, ingresa una descripción general';
+                          }
+                          int length = value.length;
+                          if (length < 40) {
+                            return 'La descripción debe tener al menos 40 caracteres';
+                          } else if (length > 100) {
+                            return 'La descripción no debe tener más de 100 caracteres';
                           }
                           return null;
                         },
@@ -250,9 +272,11 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
                       // if (_latitude != null && _longitude != null)
-                      // Text('Latitud: $_latitude, Longitud: $_longitude'),
+                        // Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 20.0),
 
+                      _buildLabel('CURP'),
+                      const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _curpController,
                         label: 'Ingresa tu CURP',
@@ -439,15 +463,23 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         labelStyle: const TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
         contentPadding:
@@ -475,15 +507,23 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -507,15 +547,23 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),

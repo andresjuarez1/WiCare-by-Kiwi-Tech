@@ -8,7 +8,8 @@ import '../../login/login_page.dart';
 import './map/select_location_page.dart';
 import './map/select_location_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:convert';
 class RegisterCompanyPage extends StatefulWidget {
   @override
   _RegisterCompanyPageState createState() => _RegisterCompanyPageState();
@@ -60,7 +61,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -111,7 +112,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -168,12 +169,54 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
 
   bool _termsAccepted = false;
 
+  Future<bool> _detectarGroserias(String texto) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${dotenv.env['APIURL']}/analyzer/groserias'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'texto': texto,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        if (data['contiene_groserias']) {
+          // Aquí puedes mostrar un mensaje al usuario
+          print('La descripción contiene groserías.');
+          return true;
+        } else {
+          print('Texto corregido: ${data['texto_corregido']}\nNo contiene groserías.');
+          return false;
+        }
+      } else {
+        // Manejar error de solicitud
+        print('Error al detectar groserías');
+        return false;
+      }
+    } catch (e) {
+      print('Error al realizar la solicitud: $e');
+      return false;
+    }
+  }
+
   void _registerVolunteer() async {
     print('Botón "Crear Cuenta" presionado');
     if (_formKey.currentState?.validate() ?? false) {
       print('Formulario válido');
+
+      final description = _descriptionController.text;
+      bool hasProfanity = await _detectarGroserias(description);
+
+      if (hasProfanity) {
+        _showErrorDialog('La descripción contiene palabras ofensivas. Por favor, corrige el texto.');
+        return;
+      }
       final company = Company(
         name: _nameCompanyController.text,
+        // address: _addressCompanyController.text,
         latitude: _latitudeController.text,
         longitude: _longitudeController.text,
         latitude_manager: _latitudeManagerController.text,
@@ -299,12 +342,15 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 20.0),
-                      _buildAddressButton(),
-                      // if (_latitude != null && _longitude != null)
-                      // Text('Latitud: $_latitude, Longitud: $_longitude'),
 
                       const SizedBox(height: 20.0),
+                      _buildAddressButton(),
+                      if (_latitude != null && _longitude != null)
+                      Text('Latitud: $_latitude, Longitud: $_longitude'),
+                      const SizedBox(height: 20.0),
+
+                      _buildLabel('Fecha  de fundación'),
+                      const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _foundationDateController,
                         label: 'Ingresa la fecha de fundación (AAAA-MM-DD)',
@@ -313,6 +359,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa la fecha de fundación de la empresa';
                           }
+                          // Expresión regular para validar el formato de fecha AAAA-MM-DD
                           bool isValidFormat =
                               RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value);
                           if (!isValidFormat) {
@@ -327,6 +374,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           DateTime currentDate = DateTime.now();
                           DateTime today = DateTime(currentDate.year,
                               currentDate.month, currentDate.day);
+                          // Verificar que la fecha ingresada no sea futura
                           if (foundationDate.isAfter(today)) {
                             return 'La fecha de fundación no puede ser una fecha futura';
                           }
@@ -455,12 +503,13 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 20.0),
-                      _buildAddressButtonManager(),
-                      // if (_latitude != null && _longitude != null)
-                      // Text('Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
 
                       const SizedBox(height: 20.0),
+                      _buildAddressButtonManager(),
+                      if (_latitude != null && _longitude != null)
+                        Text('Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
+                      const SizedBox(height: 20.0),
+
                       const Text(
                         'Crea tu cuenta',
                         style: const TextStyle(
@@ -608,15 +657,23 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         labelStyle: const TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
         contentPadding:
@@ -642,15 +699,23 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -674,15 +739,23 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),

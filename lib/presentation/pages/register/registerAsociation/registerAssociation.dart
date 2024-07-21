@@ -8,6 +8,8 @@ import '../../login/login_page.dart';
 import './map/select_location_page.dart';
 import './map/select_location_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:convert';
 
 class RegisterAssociationPage extends StatefulWidget {
   @override
@@ -15,7 +17,7 @@ class RegisterAssociationPage extends StatefulWidget {
       _RegisterAssociationPageState();
 
   _RegisterAssociationPageState createStateManager() =>
-      _RegisterAssociationPageState();
+      _RegisterAssociationPageState();  
 }
 
 class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
@@ -28,6 +30,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   void initState() {
     super.initState();
     _loadSavedLocation();
+    _loadSavedLocationManager();
     _loadSavedLocationManager();
   }
 
@@ -64,11 +67,11 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-            EdgeInsets.symmetric(vertical: 13.0),
+            const EdgeInsets.symmetric(vertical: 13.0),
           ),
         ),
         child: Text(
@@ -115,11 +118,11 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-            EdgeInsets.symmetric(vertical: 13.0),
+            const EdgeInsets.symmetric(vertical: 13.0),
           ),
         ),
         child: Text(
@@ -167,17 +170,59 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
   String? _selectedGenre;
   bool _termsAccepted = false;
 
+  Future<bool> _detectarGroserias(String texto) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${dotenv.env['APIURL']}/analyzer/groserias'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'texto': texto,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        if (data['contiene_groserias']) {
+          // Aquí puedes mostrar un mensaje al usuario
+          print('La descripción contiene groserías.');
+          return true;
+        } else {
+          print('Texto corregido: ${data['texto_corregido']}\nNo contiene groserías.');
+          return false;
+        }
+      } else {
+        // Manejar error de solicitud
+        print('Error al detectar groserías');
+        return false;
+      }
+    } catch (e) {
+      print('Error al realizar la solicitud: $e');
+      return false;
+    }
+  }
+
   void _registerVolunteer() async {
     print('Botón "Crear Cuenta" presionado');
     if (_formKey.currentState?.validate() ?? false) {
       print('Formulario válido');
+
+      final description = _descriptionController.text;
+      bool hasProfanity = await _detectarGroserias(description);
+
+      if (hasProfanity) {
+        _showErrorDialog('La descripción contiene palabras ofensivas. Por favor, corrige el texto.');
+        return;
+      }
+
       final association = Association(
         name: _nameCompanyController.text,
         latitude: _latitudeController.text,
         longitude: _longitudeController.text,
         foundation_date: _foundationDateController.text,
         social_reason: _selectSocialReasons ?? '',
-        description: _descriptionController.text,
+        description: description,
         cellphone: _phoneController.text,
         RFC: _rfcController.text,
         name_manager: _nameManagerController.text,
@@ -213,6 +258,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
     }
   }
 
+
   void _showSuccessDialog() {
     showDialog(
       context: context,
@@ -239,20 +285,21 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Error'),
+          title: Text('Error'),
           content: Text(message),
           actions: <Widget>[
             TextButton(
-              child: const Text('Aceptar'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: Text('OK'),
             ),
           ],
         );
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -281,7 +328,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                       ),
                       const SizedBox(height: 25.0),
                       const Text(
-                        '¡Bienvenido, empresa!',
+                        '¡Bienvenida, asociación!',
                         style: TextStyle(
                           fontSize: 18.0,
                           color: Color(0xFF2E8139),
@@ -289,24 +336,9 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      // Image.asset(
-                      //   'assets/wicare-logo-inicio.png',
-                      //   width: 180,
-                      // ),
-                      // const SizedBox(height: 25.0),
-                      // const Text(
-                      //   'Porfavor completa todo los campos correctamente para configurar tu cuenta correctamente',
-                      //   style: TextStyle(
-                      //     fontSize: 12.5,
-                      //     color: Color.fromARGB(255, 141, 141, 141),
-                      //     fontFamily: 'PoppinsRegular',
-                      //     fontWeight: FontWeight.w200,
-                      //   ),
-                      //   textAlign: TextAlign.center,
-                      // ),
+
                       const SizedBox(height: 20.0),
-                      // _buildLabel('Nombre de la Asociación'),
-                      // const SizedBox(height: 5.0),
+
                       _buildTextField(
                         controller: _nameCompanyController,
                         label: 'Ingresa el nombre de la asociación',
@@ -317,15 +349,16 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
-                      // if (_latitude != null && _longitude != null)
-                      //   Text('Latitud: $_latitude, Longitud: $_longitude'),
 
                       const SizedBox(height: 20.0),
-                      // _buildLabel('Fecha  de fundación'),
-                      // const SizedBox(height: 5.0),
+
+                      if (_latitude != null && _longitude != null)
+                        Text('Latitud: $_latitude, Longitud: $_longitude'),
+                      const SizedBox(height: 10.0),
+                      _buildLabel('Fecha  de fundación'),
+                      const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _foundationDateController,
                         label: 'Fecha de fundación (AAAA-MM-DD)',
@@ -473,14 +506,12 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 20.0),
                       _buildAddressButtonManager(),
-                      // if (_latitude != null && _longitude != null)
-                      //   Text(
-                      //       'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
-
-                      const SizedBox(height: 30.0),
+                      if (_latitude != null && _longitude != null)
+                        Text(
+                            'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
+                      const SizedBox(height: 10.0),
                       const Text(
                         'Crea tu cuenta',
                         style: const TextStyle(
@@ -627,20 +658,32 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
+        labelStyle: const TextStyle(
+          fontSize: 15.0,
+          color: Color(0xFFBCBCBC),
+        ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
-        labelStyle: const TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+      ),
+      style: const TextStyle(
+        color: Colors.black,
       ),
       validator: validator,
     );
@@ -662,15 +705,23 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -694,15 +745,23 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       }).toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(color: Colors.green),
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(
+            color: Color(0xFF2E8139),
+            width: 2.0,
+          ),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),

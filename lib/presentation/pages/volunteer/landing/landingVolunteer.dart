@@ -109,15 +109,7 @@ class _VolunteerPageState extends State<VolunteerPage> {
               navigateToEvent: _navigateToNewEvent,
             ),
             SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PruebaDeTextosPage()),
-                );
-              },
-              child: Text('Ir a Prueba de Textos'),
-            ),
+
             FooterComponent(),
             SizedBox(height: 10),
           ],

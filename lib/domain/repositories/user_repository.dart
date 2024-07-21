@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:locura1/domain/entities/company.dart';
 import 'package:locura1/domain/entities/bankDetails.dart';
 import '../entities/association.dart';
