@@ -7,6 +7,7 @@ import '../../mappers/mini_events_mappers.dart';
 import '../../models/event_model.dart';
 import '../../models/mini_event_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http_parser/http_parser.dart';
 
 class EventRemoteDataSource {
   final http.Client client;
@@ -47,8 +48,9 @@ class EventRemoteDataSource {
     // Adjuntar la imagen al request si existe
     if (image != null) {
       request.files.add(await http.MultipartFile.fromPath(
-        'picture', // Asegúrate de que este nombre coincida con el que espera tu API
+        'picture',
         image.path,
+        contentType: MediaType('image', 'jpeg'),
       ));
     }
     print('--- Enviando solicitud ---');
