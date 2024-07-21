@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/data/datasources/remote/event_remote_data_source.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
+import 'package:locura1/domain/entities/miniEvent.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './components/navbar.dart';
 import './components/custom_drawer.dart';
 import './components/search_events.dart';
@@ -6,8 +10,16 @@ import './components/upcoming_events_carousel.dart';
 import './components/attended_events_list.dart';
 import './components/donation_part.dart';
 import '../events/event.dart';
+import 'package:http/http.dart' as http;
 
-class CompanyLandingPage extends StatelessWidget {
+class CompanyLandingPage extends StatefulWidget {
+  @override
+  _CompanyLandingPageState createState() => _CompanyLandingPageState();
+}
+
+class _CompanyLandingPageState extends State<CompanyLandingPage> {
+  List<MiniEvent> eventsList = [];
+
   final List<Map<String, String>> imgList = [
     {
       'image': 'assets/carrusel-image1.png',
@@ -46,12 +58,35 @@ class CompanyLandingPage extends StatelessWidget {
       'description': 'Descripción del evento asistido 3'
     },
   ];
+  @override
+  void initState() {
+    super.initState();
+    _getProfile();
+  }
 
-  void _navigateToEvent(BuildContext context, String title) {
+  Future<void> _getProfile() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
+    if (token != null) {
+      final EventRemoteDataSource eventRemoteDataSource =
+          EventRemoteDataSource(http.Client(), token);
+      final List<MiniEvent> events =
+          await eventRemoteDataSource.getAllMiniEvents();
+
+      setState(() {
+        eventsList = events;
+      });
+    } else {
+      throw Exception('Token o userId no encontrados en SharedPreferences');
+    }
+  }
+
+  void _navigateToEvent(BuildContext context, EventUnique event) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EventPage(eventTitle: title),
+        builder: (context) => EventPage(event: event),
       ),
     );
   }
@@ -74,7 +109,7 @@ class CompanyLandingPage extends StatelessWidget {
               onChanged: (value) {},
             ),
             UpcomingEventsCarousel(
-              imgList: imgList,
+              eventsList: eventsList,
               navigateToEvent: _navigateToEvent,
             ),
             SizedBox(height: 20),
