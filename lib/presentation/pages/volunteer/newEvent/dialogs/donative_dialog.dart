@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 
 class DonationDialog extends StatelessWidget {
+  final EventUnique event;
+
+  DonationDialog({required this.event});
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -21,20 +26,17 @@ class DonationDialog extends StatelessWidget {
         fontFamily: 'PoppinsRegular',
       ),
       title: const Text("Datos Bancarios"),
-      content: const Column(
+      content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Folio: 192039123"),
-          SizedBox(height: 10),
-          Text("Nombre de asociación: Nombre asociación"),
-          SizedBox(height: 10),
-          Text("Banco: Banco Ejemplo"),
-          SizedBox(height: 10),
-          Text("Número de cuenta: 1234567890"),
-          SizedBox(height: 10),
-          Text("Fecha: 27/06/2024"),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
+          Text('Nombre del propietario: ${event.association!.bank!.name}'),
+          const SizedBox(height: 10),
+          Text('Número de cuenta: ${event.association!.bank!.number}'),
+          const SizedBox(height: 10),
+          Text('Banco: ${event.association!.bank!.bank}'),
+          const SizedBox(height: 10),
         ],
       ),
       actions: <Widget>[

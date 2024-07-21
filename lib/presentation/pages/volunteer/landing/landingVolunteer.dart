@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/data/models/event_model.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../data/datasources/remote/event_remote_data_source.dart';
 import '../../../../domain/entities/miniEvent.dart';
@@ -9,7 +11,6 @@ import 'components/search_events.dart';
 import 'components/donation_part.dart';
 import 'components/new_carousel.dart';
 import '../newEvent/event.dart';
-import '../events/event.dart';
 import 'package:http/http.dart' as http;
 
 class VolunteerPage extends StatefulWidget {
@@ -18,8 +19,8 @@ class VolunteerPage extends StatefulWidget {
 }
 
 class _VolunteerPageState extends State<VolunteerPage> {
-
   List<MiniEvent> eventsList = [];
+  //List<EventModel> eventCategory = [];
   List<Map<String, String>> attendedEvents = [
     {
       'image': 'assets/basura.jpg',
@@ -37,6 +38,7 @@ class _VolunteerPageState extends State<VolunteerPage> {
   void initState() {
     super.initState();
     _getProfile();
+    _getCategory();
   }
 
   Future<void> _getProfile() async {
@@ -45,9 +47,9 @@ class _VolunteerPageState extends State<VolunteerPage> {
 
     if (token != null) {
       final EventRemoteDataSource eventRemoteDataSource =
-          EventRemoteDataSource(http.Client(), token);
+      EventRemoteDataSource(http.Client(), token);
       final List<MiniEvent> events =
-          await eventRemoteDataSource.getAllMiniEvents();
+      await eventRemoteDataSource.getAllMiniEvents();
 
       setState(() {
         eventsList = events;
@@ -57,20 +59,29 @@ class _VolunteerPageState extends State<VolunteerPage> {
     }
   }
 
-  void _navigateToEvent(BuildContext context, String title) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EventPage(eventTitle: title),
-      ),
-    );
+  Future<void> _getCategory() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
+    if (token != null) {
+      final EventRemoteDataSource eventRemoteDataSource =
+      EventRemoteDataSource(http.Client(), token);
+      final List<EventModel> category =
+      await eventRemoteDataSource.getEventsByCategory(token);
+
+      setState(() {
+        //eventCategory = category;
+      });
+    } else {
+      throw Exception('Token o userId no encontrados en SharedPreferences');
+    }
   }
 
-  void _navigateToNewEvent(BuildContext context, String title) {
+  void _navigateToNewEvent(BuildContext context, EventUnique event) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => NewEventPage(eventTitle: title),
+        builder: (context) => NewEventPage(event: event),
       ),
     );
   }
@@ -88,11 +99,11 @@ class _VolunteerPageState extends State<VolunteerPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-             SizedBox(height: 20),
+            SizedBox(height: 20),
             SearchEvents(
               onChanged: (value) {},
             ),
-             SizedBox(height: 30),
+            SizedBox(height: 30),
             NewEventsCarousel(
               eventsList: eventsList,
               navigateToEvent: _navigateToNewEvent,

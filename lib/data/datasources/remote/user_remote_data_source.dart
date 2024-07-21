@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:locura1/data/models/association_model.dart';
 import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
+import 'package:locura1/data/models/company_list.dart';
 import '../../models/company_model.dart';
 import '../../models/user_model.dart';
 import '../../models/volunteer_model.dart';
@@ -13,6 +14,7 @@ class UserRemoteDataSource {
   final http.Client client;
 
   UserRemoteDataSource(this.client);
+
   Future<UserModel> login(String email, String password) async {
     final response = await client.post(
       Uri.parse('${dotenv.env['APIURL']}/user'),
@@ -27,7 +29,7 @@ class UserRemoteDataSource {
       final String token = data['token'];
 
       final SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
+      await SharedPreferences.getInstance();
       await sharedPreferences.setString('token', token);
       print('Token guardado en SharedPreferences: $token');
 
@@ -101,7 +103,8 @@ class UserRemoteDataSource {
     }
   }
 
-  Future<Map<String, dynamic>> getProfileVolunteer(int userId, String token) async {
+  Future<Map<String, dynamic>> getProfileVolunteer(
+      int userId, String token) async {
     final String url = '${dotenv.env['APIURL']}/user/volunteer/$userId';
 
     try {
@@ -148,7 +151,8 @@ class UserRemoteDataSource {
     }
   }
 
-  Future<Map<String, dynamic>> getProfileAssociation(int userId, String token) async {
+  Future<Map<String, dynamic>> getProfileAssociation(
+      int userId, String token) async {
     print(userId);
     final String url = '${dotenv.env['APIURL']}/user/association/$userId';
     try {
@@ -169,7 +173,8 @@ class UserRemoteDataSource {
     }
   }
 
-  Future<Map<String, dynamic>> getProfileCompany(int userId, String token) async {
+  Future<Map<String, dynamic>> getProfileCompany(
+      int userId, String token) async {
     final String url = '${dotenv.env['APIURL']}/user/company/$userId';
     try {
       final response = await http.get(
@@ -190,7 +195,8 @@ class UserRemoteDataSource {
     }
   }
 
-  Future<void> updateProfilePicture(int userId, File image, String token) async {
+  Future<void> updateProfilePicture(
+      int userId, File image, String token) async {
     final request = http.MultipartRequest(
         'PUT', Uri.parse('${dotenv.env['APIURL']}/user/upload/$userId'));
 
@@ -227,8 +233,7 @@ class UserRemoteDataSource {
     }
   }
 
-  Future<Map<String, dynamic>> getBankDetails(
-      int userId, String token) async {
+  Future<Map<String, dynamic>> getBankDetails(int userId, String token) async {
     final String url = '${dotenv.env['APIURL']}/user/association/$userId/bank';
     try {
       final response = await http.get(
@@ -245,6 +250,42 @@ class UserRemoteDataSource {
         throw Exception('Failed to get association bank details');
       }
     } catch (e) {
+      throw Exception('Error in request: $e');
+    }
+  }
+
+  Future<List<CompanyRankingModel>> getCompanyRankings() async {
+    final String url = '${dotenv.env['APIURL']}/donation/ranking';
+
+    final SharedPreferences sharedPreferences =
+    await SharedPreferences.getInstance();
+    final String? token = sharedPreferences.getString('token');
+
+    if (token == null) {
+      throw Exception('Token not found');
+    }
+
+    try {
+      final response = await client.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body)['data'];
+        return data.map((item) => CompanyRankingModel.fromJson(item)).toList();
+      } else {
+        throw Exception(
+            'Failed to fetch company rankings: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Error during fetching company rankings: $e');
       throw Exception('Error in request: $e');
     }
   }

@@ -18,6 +18,7 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
 class _NavbarState extends State<Navbar> {
   late final GetcompanyprofileUseCase _getCompanyProfileUseCase;
   late Future<CompanyProfile?> _companyProfileFuture;
+  String _profilePictureUrl = '';  
 
   @override
   void initState() {
@@ -39,8 +40,13 @@ class _NavbarState extends State<Navbar> {
       print('Error: No se encontró userId o token en SharedPreferences');
       return;
     }
+
     setState(() {
-      _companyProfileFuture = _getCompanyProfileUseCase(userId, token);
+      _companyProfileFuture = _getCompanyProfileUseCase(userId, token)
+          .then((profile) {
+            _profilePictureUrl = profile?.profilePicture ?? '';
+            return profile;
+          });
     });
   }
 
@@ -122,11 +128,54 @@ class _NavbarState extends State<Navbar> {
                     MaterialPageRoute(builder: (context) => ProfilePage()),
                   );
                 },
-                child: Image.asset(
-                  'assets/bbva.jpg',
-                  width: 35.0,
-                  height: 35.0,
-                  fit: BoxFit.cover,
+                child: FutureBuilder<CompanyProfile?>(
+                  future: _companyProfileFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError || !snapshot.hasData) {
+                      return Container(
+                        width: 35.0,
+                        height: 35.0,
+                        color: Colors.grey,
+                      );
+                    }
+
+                    final profilePictureUrl = snapshot.data!.profilePicture;
+                    return profilePictureUrl.isNotEmpty
+                        ? Image.network(
+                            profilePictureUrl,
+                            width: 35.0,
+                            height: 35.0,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                        : null,
+                                  ),
+                                );
+                              }
+                            },
+                            errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                              print('Error cargando imagen: $error');
+                              return Container(
+                                width: 35.0,
+                                height: 35.0,
+                                color: Colors.grey,
+                              );
+                            },
+                          )
+                        : Container(
+                            width: 35.0,
+                            height: 35.0,
+                            color: Colors.grey,
+                          );
+                  },
                 ),
               ),
             ),

@@ -1,4 +1,3 @@
-// association_landing_page.dart
 import 'package:flutter/material.dart';
 import 'components/navbar_asociation.dart';
 import 'components/active_events.dart';
@@ -10,8 +9,6 @@ import '../volunteers/volunteers_details.dart';
 import '../pastEvent/past_event.dart';
 import '../pastEventsPage/past_events_page.dart';
 import 'components/custom_drawer.dart';
-import '../map/select_location_page.dart';
-import '../map/show_location_page.dart';
 
 class AssociationLandingPage extends StatelessWidget {
   final List<Map<String, String>> imgList = [
@@ -104,24 +101,6 @@ class AssociationLandingPage extends StatelessWidget {
     print('Donación confirmada');
   }
 
-  void _navigateToSelectLocation(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SelectLocationPage(),
-      ),
-    );
-  }
-
-  void _navigateToShowLocation(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ShowLocationPage(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,14 +130,6 @@ class AssociationLandingPage extends StatelessWidget {
                 navigateToAllPastEvents: _navigateToAllPastEvents,
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => _navigateToSelectLocation(context),
-                child: const Text('Seleccionar Ubicación'),
-              ),
-              ElevatedButton(
-                onPressed: () => _navigateToShowLocation(context),
-                child: const Text('Mostrar Ubicación Guardada'),
-              ),
               FooterComponent(),
               const SizedBox(height: 10),
             ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 //esta es una prueba no le hagan caso
 class PruebaDeTextosPage extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class _PruebaDeTextosPageState extends State<PruebaDeTextosPage> {
 
   Future<void> _detectarHabilidades() async {
     final response = await http.post(
+
       Uri.parse('${dotenv.env['APIURL']}/analyzer/habilidades'),  // Cambia localhost a 192.168.100.191
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -28,7 +30,9 @@ class _PruebaDeTextosPageState extends State<PruebaDeTextosPage> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       setState(() {
+
         _habilidadesResultado = 'Habilidades: ${data['habilidades']}';
+
       });
     } else {
       setState(() {

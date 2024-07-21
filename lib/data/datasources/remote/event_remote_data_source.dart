@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../../../domain/entities/event.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 import '../../../domain/entities/miniEvent.dart';
 import '../../mappers/mini_events_mappers.dart';
 import '../../models/event_model.dart';
@@ -16,22 +18,21 @@ class EventRemoteDataSource {
   EventRemoteDataSource(this.client, this.token);
 
   Future<void> createEvent2(EventModel event) async {
-    // Define la URL del endpoint.
     final url = Uri.parse('${dotenv.env['APIURL']}/event');
 
-    // Define los headers, incluyendo el token de autorización.
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token', // Agrega el token en el encabezado de autorización.
+      'Authorization': 'Bearer $token',
     };
 
     final body = jsonEncode(event.toJson());
     final response = await client.post(url, headers: headers, body: body);
 
-    if (response.statusCode != 200) { // Asegúrate de que el estado de respuesta esperado sea 201.
+    if (response.statusCode != 200) {
       throw Exception('Failed to create event in source');
     }
   }
+
 
   Future<void> createEvent(Event event, File image) async {
     final uri = Uri.parse('${dotenv.env['APIURL']}/event'); // Cambia la URL según tu API
@@ -69,7 +70,7 @@ class EventRemoteDataSource {
     }
   }
 
-  Future<void> getAllEvents(token ) async {
+  Future<void> getAllEvents(token) async {
     final String url = '${dotenv.env['APIURL']}/event';
 
     try {
@@ -83,8 +84,6 @@ class EventRemoteDataSource {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        //print('Eventos');
-        //print(data);
       } else {
         print('Error: ${response.statusCode}');
         print('Mensaje de error: ${response.body}');
@@ -93,40 +92,80 @@ class EventRemoteDataSource {
       print('Error en la solicitud: $e');
     }
   }
-  Future<List<MiniEvent>> getAllMiniEvents() async {
-    final url = Uri.parse('${dotenv.env['APIURL']}/event');
 
+  Future<List<MiniEvent>> getAllMiniEvents() async {
+    final String url = '${dotenv.env['APIURL']}/event';
     try {
-      final response = await client.get(url, headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      });
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseBody = json.decode(response.body);
-
-        if (responseBody.containsKey('data')) {
-          final List<dynamic> data = responseBody['data'];
-          // Imprime los eventos recibidos
-          print('Eventos recibidos: $data');
-
-          // Convierte la respuesta JSON a una lista de MiniEventModel.
-          final events = data.map((event) => MiniEventModel.fromJson(event)).toList();
-
-          // Convierte la lista de MiniEventModel a una lista de MiniEvent usando el mapper.
-          return events.map((eventModel) => miniEventModelToMiniEvent(eventModel)).toList();
+        final data = jsonDecode(response.body);
+        if (data.containsKey('data')) {
+          final List eventsData = data['data'];
+          return eventsData.map((eventJson) {
+            final miniEventModel = MiniEventModel.fromJson(eventJson);
+            return miniEventModelToMiniEvent(miniEventModel);
+          }).toList();
         } else {
-          throw Exception('La respuesta no contiene la clave "data"');
+          throw Exception('Invalid response format: No "data" key found.');
         }
       } else {
-        print('Error al obtener los eventos: ${response.statusCode}');
+        print('Error: ${response.statusCode}');
         print('Mensaje de error: ${response.body}');
-        throw Exception('Failed to get events: ${response.statusCode}');
+        throw Exception('Failed to load mini events');
       }
     } catch (e) {
       print('Error en la solicitud: $e');
-      throw Exception('Failed to get events: $e');
+      throw Exception('Error en la solicitud: $e');
     }
   }
 
+  Future<EventUnique> getEventById(int id) async {
+    final url = Uri.parse('${dotenv.env['APIURL']}/event/$id');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    final response = await client.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body)['data'];
+      return EventUnique.fromJson(data);
+    } else {
+      throw Exception('Failed to load event');
+    }
+  }
+
+  Future<List<EventModel>> getEventsByCategory(String category) async {
+    final url = Uri.parse('${dotenv.env['APIURL']}/event/cathegory/$category');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    final response = await client.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data.containsKey('data')) {
+        final List eventsData = data['data'];
+        return eventsData.map((eventJson) {
+          return EventModel.fromJson(eventJson);
+        }).toList();
+      } else {
+        throw Exception('Invalid response format: No "data" key found.');
+      }
+    } else {
+      throw Exception('Failed to load events by category');
+    }
+  }
 }

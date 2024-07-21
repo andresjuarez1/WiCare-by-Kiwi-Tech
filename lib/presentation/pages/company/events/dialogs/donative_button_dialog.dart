@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 
-class ConfirmationDialog extends StatelessWidget {
-  final Function onConfirm;
+class DonationDialog extends StatelessWidget {
+  final EventUnique event;
 
-  ConfirmationDialog({required this.onConfirm});
+  DonationDialog({required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +15,30 @@ class ConfirmationDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       titleTextStyle: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-          fontFamily: 'PoppinsRegular'),
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+        fontFamily: 'PoppinsRegular',
+      ),
       contentTextStyle: const TextStyle(
-          fontSize: 16, color: Colors.black, fontFamily: 'PoppinsRegular'),
-      title: Text("Confirmación"),
-      content: Text("¿Seguro que quieres mandar ayuda?"),
+        fontSize: 16,
+        color: Colors.black,
+        fontFamily: 'PoppinsRegular',
+      ),
+      title: const Text("Datos Bancarios"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 10),
+          Text('Nombre del propietario: ${event.association!.bank!.name}'),
+          const SizedBox(height: 10),
+          Text('Número de cuenta: ${event.association!.bank!.number}'),
+          const SizedBox(height: 10),
+          Text('Banco: ${event.association!.bank!.bank}'),
+          const SizedBox(height: 10),
+        ],
+      ),
       actions: <Widget>[
         TextButton(
           onPressed: () {
@@ -30,22 +47,26 @@ class ConfirmationDialog extends StatelessWidget {
           child: const Text(
             'Cancelar',
             style: TextStyle(
-                color: Colors.red,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'PoppinsRegular'),
+              color: Colors.red,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'PoppinsRegular',
+            ),
           ),
         ),
-        TextButton(
+        ElevatedButton(
           onPressed: () {
-            onConfirm();
             Navigator.of(context).pop();
           },
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
+          ),
           child: const Text(
-            'Sí',
+            'Confirmar',
             style: TextStyle(
-                color: Colors.green,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'PoppinsRegular'),
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'PoppinsRegular',
+            ),
           ),
         ),
       ],

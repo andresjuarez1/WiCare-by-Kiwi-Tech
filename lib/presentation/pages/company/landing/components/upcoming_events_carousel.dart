@@ -1,51 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-// import '../../moreEvents/more_events.dart';
+import 'package:locura1/data/datasources/remote/event_remote_data_source.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
+import 'package:locura1/domain/entities/miniEvent.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class UpcomingEventsCarousel extends StatelessWidget {
-  final List<Map<String, String>> imgList;
-  final Function(BuildContext, String) navigateToEvent;
+  final List<MiniEvent> eventsList;
+  final Function(BuildContext, EventUnique) navigateToEvent;
 
-  UpcomingEventsCarousel(
-      {required this.imgList, required this.navigateToEvent});
+  Future<void> _handleEventTap(BuildContext context, int eventId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
+    if (token != null) {
+      final EventRemoteDataSource eventRemoteDataSource =
+          EventRemoteDataSource(http.Client(), token);
+      final EventUnique event =
+          await eventRemoteDataSource.getEventById(eventId);
+
+      navigateToEvent(context, event);
+    } else {
+      throw Exception('Token not found in SharedPreferences');
+    }
+  }
+
+  UpcomingEventsCarousel({
+    required this.eventsList,
+    required this.navigateToEvent,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
+        const Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Próximos eventos',
+              Text(
+                'Nuevos eventos',
                 style: TextStyle(
-                  fontFamily: 'PoppinsRegular',
                   fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                  fontFamily: 'PoppinsRegular',
+                  fontWeight: FontWeight.bold,
                   color: Color(0xFF5CA666),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => MoreEventsPage(),
-                  //   ),
-                  // );
-                },
-                child: const Text(
-                  'Ver más',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF717171),
-                    fontFamily: 'PoppinsRegular',
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-              ),
+              // TextButton(
+              //   onPressed: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => NewMoreEventsPage(),
+              //       ),
+              //     );
+              //   },
+              //   child: const Text(
+              //     'Ver más',
+              //     style: TextStyle(
+              //       fontSize: 14,
+              //       color: Color(0xFF717171),
+              //       fontFamily: 'PoppinsRegular',
+              //       decoration: TextDecoration.underline,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -55,30 +77,41 @@ class UpcomingEventsCarousel extends StatelessWidget {
             autoPlay: true,
             enlargeCenterPage: true,
           ),
-          items: imgList.map((item) {
+          items: eventsList.map((event) {
             return Builder(
               builder: (BuildContext context) {
                 return InkWell(
                   onTap: () {
-                    navigateToEvent(context, item['title']!);
+                    _handleEventTap(context, event.id);
                   },
                   child: Stack(
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
-                        child: Image.asset(
-                          item['image']!,
-                          fit: BoxFit.cover,
+                        child: Container(
                           width: 1000,
+                          height: 200.0,
+                          color: Colors.grey.shade300,
+                          child: Center(
+                            child: Text(
+                              event.hour_start,
+                              style: const TextStyle(
+                                fontSize: 24,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       Positioned(
+                        width: 250.0,
                         bottom: 30.0,
                         left: 20.0,
                         child: Container(
                           width: MediaQuery.of(context).size.width - 40,
                           child: Text(
-                            item['title']!,
+                            event.name,
                             style: const TextStyle(
                               color: Colors.white,
                               fontFamily: 'PoppinsRegular',
@@ -97,7 +130,7 @@ class UpcomingEventsCarousel extends StatelessWidget {
                         child: Container(
                           width: MediaQuery.of(context).size.width - 40,
                           child: Text(
-                            item['subtitle']!,
+                            event.description,
                             style: const TextStyle(
                               color: Colors.white,
                               fontFamily: 'PoppinsRegular',

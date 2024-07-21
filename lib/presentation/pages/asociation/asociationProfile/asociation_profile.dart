@@ -192,7 +192,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Text(
                                         'Número de cuenta: ${bankDetails.number}'),
                                     const SizedBox(height: 10),
-                                    Text('Nombre del propietario: ${bankDetails.name}'),
+                                    Text(
+                                        'Nombre del propietario: ${bankDetails.name}'),
                                   ],
                                 ),
                                 actions: [
@@ -209,7 +210,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         },
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
-                              Color.fromARGB(255, 83, 175, 95)),
+                              const Color.fromARGB(255, 83, 175, 95)),
                           shape:
                               WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
@@ -217,7 +218,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.symmetric(vertical: 13.0, horizontal: 30.0),
+                            const EdgeInsets.symmetric(
+                                vertical: 13.0, horizontal: 30.0),
                           ),
                         ),
                         child: const Text(

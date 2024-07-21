@@ -1,25 +1,35 @@
 class MiniEventModel {
   final String name;
-  final String associationName;
+  final String description;
+  final String hour_start;
+  final int id;
+  final String picture;
 
   MiniEventModel({
     required this.name,
-    required this.associationName,
+    required this.description,
+    required this.hour_start,
+    required this.id,
+    required this.picture
   });
 
-  // Método factory para crear una instancia a partir de un JSON
   factory MiniEventModel.fromJson(Map<String, dynamic> json) {
     return MiniEventModel(
       name: json['name'],
-      associationName: json['association']['name'],
+      description: json['description'],
+      hour_start: json['hour_start'],
+      id: json['id'],
+      picture: json['picture']
     );
   }
 
-  // Método para convertir el modelo a JSON
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'associationName': associationName,
+      'description': description,
+      'hour_start': hour_start,
+      'id': id,
+      'picture': picture,
     };
   }
 }
