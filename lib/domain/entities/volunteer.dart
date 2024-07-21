@@ -1,5 +1,6 @@
 class Volunteer {
   final String name;
+  final String description;
   final String age;
   final String curp;
   final String cellphone;
@@ -14,6 +15,7 @@ class Volunteer {
 
   Volunteer({
     required this.name,
+    required this.description,
     required this.age,
     required this.curp,
     required this.cellphone,

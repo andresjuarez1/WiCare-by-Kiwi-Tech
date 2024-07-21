@@ -79,6 +79,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
 
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
   final _ageController = TextEditingController();
   final _curpController = TextEditingController();
   final _cellphoneController = TextEditingController();
@@ -113,13 +114,13 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       print('Formulario válido');
       final volunteer = Volunteer(
         name: _nameController.text,
+        description: _descriptionController.text,
         age: _ageController.text,
         curp: _curpController.text,
         cellphone: _cellphoneController.text,
         postal: _postalController.text,
         latitude: _latitudeController.text,
         longitude: _longitudeController.text,
-        // address: _addressController.text,
         occupation: _selectedOccupation ?? '',
         genre: _selectedGenre ?? '',
         email: _emailController.text,
@@ -227,6 +228,23 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                             return 'Por favor, ingresa tu nombre completo';
                           } else if (RegExp(r'[0-9]').hasMatch(value)) {
                             return 'El nombre no debe contener números';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      _buildTextField(
+                        controller: _descriptionController,
+                        label: 'Ingresa una descripción general',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, ingresa una descripción general';
+                          }
+                          int length = value.length;
+                          if (length < 40) {
+                            return 'La descripción debe tener al menos 40 caracteres';
+                          } else if (length > 100) {
+                            return 'La descripción no debe tener más de 100 caracteres';
                           }
                           return null;
                         },
