@@ -65,7 +65,7 @@ class _GoogleMapsWidgetState extends State<GoogleMapsWidget> {
                 height: 300,
                 child: GoogleMap(
                   initialCameraPosition:
-                      CameraPosition(target: location, zoom: 16),
+                  CameraPosition(target: location, zoom: 16),
                   markers: _markers,
                 ),
               ),

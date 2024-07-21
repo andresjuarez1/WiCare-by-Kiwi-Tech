@@ -181,7 +181,7 @@ class EventRemoteDataSource {
     }
 
     final url =
-        Uri.parse('${dotenv.env['APIURL']}/user/association/$userId/events');
+    Uri.parse('${dotenv.env['APIURL']}/user/association/$userId/events');
 
     final headers = {
       'Content-Type': 'application/json',

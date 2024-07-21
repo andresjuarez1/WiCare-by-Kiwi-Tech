@@ -91,16 +91,16 @@ class _ActiveEventsCarouselState extends State<ActiveEventsCarousel> {
                           borderRadius: BorderRadius.circular(15.0),
                           child: event.picture.isNotEmpty
                               ? Image.network(
-                                  event.picture,
-                                  fit: BoxFit.cover,
-                                  width: 1000,
-                                  height: 200.0,
-                                )
+                            event.picture,
+                            fit: BoxFit.cover,
+                            width: 1000,
+                            height: 200.0,
+                          )
                               : Container(
-                                  width: 1000,
-                                  height: 200.0,
-                                  color: Colors.grey,
-                                ),
+                            width: 1000,
+                            height: 200.0,
+                            color: Colors.grey,
+                          ),
                         ),
                         Container(
                           width: 1000,
