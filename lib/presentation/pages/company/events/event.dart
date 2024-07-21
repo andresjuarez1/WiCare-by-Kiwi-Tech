@@ -36,8 +36,8 @@ class EventPage extends StatelessWidget {
                 OrganizerInfo(event: event),
                 SizedBox(height: 40),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: ActionButtons(),
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: ActionButtons(event: event),
                 ),
               ],
             ),

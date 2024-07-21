@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 import '../dialogs/confirm_dialog.dart';
 import '../dialogs/donative_dialog.dart';
 
-
 class ActionButtons extends StatelessWidget {
+  final EventUnique event;
+
+  ActionButtons({required this.event});
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +41,7 @@ class ActionButtons extends StatelessWidget {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return DonationDialog();
+                return DonationDialog(event: event);
               },
             );
           },

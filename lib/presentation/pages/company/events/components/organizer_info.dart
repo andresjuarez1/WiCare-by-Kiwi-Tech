@@ -16,7 +16,7 @@ class OrganizerInfo extends StatelessWidget {
           const Align(
             alignment: Alignment.center,
             child: Text(
-              'Información del encargado',
+              'Información del encargsado',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,

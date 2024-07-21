@@ -8,18 +8,19 @@ class Association {
   final double latitude;
   final double longitude;
   final String profilePicture;
+  final Bank? bank;
 
-  Association({
-    required this.id,
-    required this.email,
-    required this.role,
-    required this.name,
-    required this.description,
-    required this.cellphone,
-    required this.latitude,
-    required this.longitude,
-    required this.profilePicture,
-  });
+  Association(
+      {required this.id,
+      required this.email,
+      required this.role,
+      required this.name,
+      required this.description,
+      required this.cellphone,
+      required this.latitude,
+      required this.longitude,
+      required this.profilePicture,
+      required this.bank});
 
   factory Association.fromJson(Map<String, dynamic> json) {
     return Association(
@@ -32,6 +33,7 @@ class Association {
       latitude: (json['location']['latitude'] as num).toDouble(),
       longitude: (json['location']['longitude'] as num).toDouble(),
       profilePicture: json['profilePicture'],
+      bank: json['bank'] != null ? Bank.fromJson(json['bank']) : null,
     );
   }
 
@@ -46,6 +48,39 @@ class Association {
       'latitude': latitude,
       'longitude': longitude,
       'profilePicture': profilePicture,
+      'bank': bank?.toJson(),
+    };
+  }
+}
+
+class Bank {
+  final String name;
+  final int number;
+  final String bank;
+  final int association_id;
+
+  Bank({
+    required this.name,
+    required this.number,
+    required this.bank,
+    required this.association_id,
+  });
+
+  factory Bank.fromJson(Map<String, dynamic> json) {
+    return Bank(
+      name: json['name'],
+      number: int.tryParse(json['number'].toString()) ?? 0,
+      bank: json['bank'],
+      association_id: int.tryParse(json['association_id'].toString()) ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'number': number,
+      'bank': bank,
+      'association_id': association_id,
     };
   }
 }

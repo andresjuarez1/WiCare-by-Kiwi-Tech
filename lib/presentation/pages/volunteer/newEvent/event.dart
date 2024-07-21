@@ -37,7 +37,7 @@ class NewEventPage extends StatelessWidget {
                 const SizedBox(height: 40),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: ActionButtons(),
+                  child: ActionButtons(event: event),
                 ),
               ],
             ),
