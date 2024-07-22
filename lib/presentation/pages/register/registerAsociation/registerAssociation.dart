@@ -17,7 +17,7 @@ class RegisterAssociationPage extends StatefulWidget {
       _RegisterAssociationPageState();
 
   _RegisterAssociationPageState createStateManager() =>
-      _RegisterAssociationPageState();  
+      _RegisterAssociationPageState();
 }
 
 class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
@@ -185,15 +185,14 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
         if (data['contiene_groserias']) {
-          // Aquí puedes mostrar un mensaje al usuario
           print('La descripción contiene groserías.');
           return true;
         } else {
-          print('Texto corregido: ${data['texto_corregido']}\nNo contiene groserías.');
+          print(
+              'Texto corregido: ${data['texto_corregido']}\nNo contiene groserías.');
           return false;
         }
       } else {
-        // Manejar error de solicitud
         print('Error al detectar groserías');
         return false;
       }
@@ -212,7 +211,8 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
       bool hasProfanity = await _detectarGroserias(description);
 
       if (hasProfanity) {
-        _showErrorDialog('La descripción contiene palabras ofensivas. Por favor, corrige el texto.');
+        _showErrorDialog(
+            'La descripción contiene palabras ofensivas. Por favor, corrige el texto.');
         return;
       }
 
@@ -258,7 +258,6 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
     }
   }
 
-
   void _showSuccessDialog() {
     showDialog(
       context: context,
@@ -300,16 +299,13 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.white,
-      //   title: const Text('Registro de Asociación',
-      //       style: TextStyle(color: Color(0xFF2E8139))),
-      // ),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: Stack(
         children: [
           Padding(
@@ -321,7 +317,6 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 60.0),
                       Image.asset(
                         'assets/wicare-logo-inicio.png',
                         width: 180,
@@ -336,9 +331,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-
                       const SizedBox(height: 20.0),
-
                       _buildTextField(
                         controller: _nameCompanyController,
                         label: 'Ingresa el nombre de la asociación',
@@ -351,9 +344,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
                       ),
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
-
                       const SizedBox(height: 20.0),
-
                       if (_latitude != null && _longitude != null)
                         Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 10.0),

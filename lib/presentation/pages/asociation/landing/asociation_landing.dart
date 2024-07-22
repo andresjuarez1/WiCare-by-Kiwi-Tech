@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:locura1/presentation/pages/asociation/landing/components/events_asociation.dart';
 import 'components/navbar_asociation.dart';
-import 'components/volunteers_carousel.dart';
 import 'components/past_events.dart';
 import 'components/donation_part.dart';
 import '../volunteers/volunteers_details.dart';
@@ -105,12 +104,6 @@ class AssociationLandingPage extends StatelessWidget {
             children: [
               SizedBox(height: 20),
               ActiveEventsCarousel(),
-              SizedBox(height: 10),
-              VolunteersCarousel(
-                imgList: imgList,
-                navigateToVolunteers: _navigateToVolunteers,
-                navigateToVolunteerDetails: _navigateToVolunteers,
-              ),
               SizedBox(height: 10),
               PastEventsList(
                 pastEvents: pastEvents,

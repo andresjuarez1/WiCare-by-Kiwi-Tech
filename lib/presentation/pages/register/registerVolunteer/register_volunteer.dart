@@ -7,8 +7,6 @@ import '../../../../domain/use_cases/register_volunteer_user.dart';
 import '../../login/login_page.dart';
 import 'map/select_location_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'map/select_location_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterVolunteerPage extends StatefulWidget {
   @override
@@ -84,7 +82,6 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
   final _curpController = TextEditingController();
   final _cellphoneController = TextEditingController();
   final _postalController = TextEditingController();
-  // final _addressController = TextEditingController();
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
   final _emailController = TextEditingController();
@@ -194,6 +191,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
       ),
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Padding(
@@ -272,7 +270,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
                       // if (_latitude != null && _longitude != null)
-                        // Text('Latitud: $_latitude, Longitud: $_longitude'),
+                      // Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 20.0),
 
                       _buildLabel('CURP'),

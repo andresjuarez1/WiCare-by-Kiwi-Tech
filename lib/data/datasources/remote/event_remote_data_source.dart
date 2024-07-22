@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:locura1/data/models/volunteer_event.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../domain/entities/event.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -181,7 +182,7 @@ class EventRemoteDataSource {
     }
 
     final url =
-    Uri.parse('${dotenv.env['APIURL']}/user/association/$userId/events');
+        Uri.parse('${dotenv.env['APIURL']}/user/association/$userId/events');
 
     final headers = {
       'Content-Type': 'application/json',
@@ -205,6 +206,40 @@ class EventRemoteDataSource {
         print('Error: ${response.statusCode}');
         print('Mensaje de error: ${response.body}');
         throw Exception('Failed to load events by association');
+      }
+    } catch (e) {
+      print('Error en la solicitud: $e');
+      throw Exception('Error en la solicitud: $e');
+    }
+  }
+
+  Future<List<VolunteerInEvent>> getVolunteersByEventId(int eventId) async {
+    final url = Uri.parse('${dotenv.env['APIURL']}/event/$eventId/volunteers');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    print('URL: $url'); 
+    print('Headers: $headers'); 
+    try {
+      final response = await client.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data.containsKey('data')) {
+          final List volunteersData = data['data'];
+          return volunteersData.map((volunteerJson) {
+            return VolunteerInEvent.fromJson(volunteerJson);
+          }).toList();
+        } else {
+          throw Exception('Invalid response format: No "data" key found.');
+        }
+      } else {
+        print('Error: ${response.statusCode}');
+        print('Mensaje de error: ${response.body}');
+        throw Exception('Failed to load volunteers');
       }
     } catch (e) {
       print('Error en la solicitud: $e');
