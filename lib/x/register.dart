@@ -1,15 +1,15 @@
-import 'dart:convert';
-
+import 'dart:convert'; // Asegúrate de agregar esta importación
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
 import '../../../../domain/entities/volunteer.dart';
 import '../../../../domain/use_cases/register_volunteer_user.dart';
 import '../../login/login_page.dart';
 import 'map/select_location_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class RegisterVolunteerPage extends StatefulWidget {
   @override
@@ -19,6 +19,38 @@ class RegisterVolunteerPage extends StatefulWidget {
 class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
   double? _latitude;
   double? _longitude;
+  List<String> _detectedSkills = []; // Lista para almacenar las habilidades detectadas
+
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _ageController = TextEditingController();
+  final _curpController = TextEditingController();
+  final _cellphoneController = TextEditingController();
+  final _postalController = TextEditingController();
+  final _latitudeController = TextEditingController();
+  final _longitudeController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _occupations = [
+    'Estudiante',
+    'Trabajador',
+    'Desempleado',
+    'Jubilado',
+    'Otro'
+  ];
+  final Map<String, String> _genderMap = {
+    'Masculino': 'm',
+    'Femenino': 'f',
+    'No binario': 'nb',
+    'Prefiero no decir': 'Prefiero no decir',
+  };
+
+  String? _selectedOccupation;
+  String _habilidadesResultado = '';
+  String? _selectedGenre;
+  bool _termsAccepted = false;
 
   @override
   void initState() {
@@ -57,13 +89,13 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       child: ElevatedButton(
         onPressed: _navigateToSelectLocationPage,
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
-          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
           ),
-          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
             EdgeInsets.symmetric(vertical: 13.0),
           ),
         ),
@@ -77,37 +109,6 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       ),
     );
   }
-
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  final _ageController = TextEditingController();
-  final _curpController = TextEditingController();
-  final _cellphoneController = TextEditingController();
-  final _postalController = TextEditingController();
-  final _latitudeController = TextEditingController();
-  final _longitudeController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final _occupations = [
-    'Estudiante',
-    'Trabajador',
-    'Desempleado',
-    'Jubilado',
-    'Otro'
-  ];
-  final Map<String, String> _genderMap = {
-    'Masculino': 'm',
-    'Femenino': 'f',
-    'No binario': 'nb',
-    'Prefiero no decir': 'Prefiero no decir',
-  };
-
-  String? _selectedOccupation;
-  String? _selectedGenre;
-  String _habilidadesResultado = '';
-  bool _termsAccepted = false;
   Future<void> _detectarHabilidades() async {
     final response = await http.post(
 
@@ -135,28 +136,13 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
     }
   }
 
-  void _registerVolunteer() async {
-    List<String> _habilidadesResultado = [];
+  void _registerVolunteer2() async {
     print('Botón "Crear Cuenta" presionado');
-
     if (_formKey.currentState?.validate() ?? false) {
       print('Formulario válido');
-
-      // Primero, realiza el análisis de habilidades
-      await _detectarHabilidades();
-
-      String habilidadesString = _habilidadesResultado.join(', ');
-
-
-      // Actualiza el campo de descripción con las habilidades detectadas
-      _descriptionController.text = habilidadesString;
-
-      // Imprime las habilidades obtenidas en la consola
-      print('Habilidades detectadas: ${habilidadesString}');
-
       final volunteer = Volunteer(
         name: _nameController.text,
-        description: habilidadesString,
+        description: _descriptionController.text,
         age: _ageController.text,
         curp: _curpController.text,
         cellphone: _cellphoneController.text,
@@ -168,21 +154,13 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-
-      // Imprime el contenido actualizado del controlador de descripción
-      print('Descripción actualizada: ${_descriptionController.text}');
-
+      print(_descriptionController);
       try {
         print('Intentando registrar voluntario: ${volunteer.email}');
         final remoteDataSource = UserRemoteDataSource(http.Client());
         final repository = UserRepositoryImpl(remoteDataSource);
         final registerVolunteerUseCase = RegisterVolunteerUseCase(repository);
-
-        // Imprime el contenido de la solicitud
-        print('Datos para enviar: ${volunteer.toJson()}');
-
         await registerVolunteerUseCase.execute(volunteer);
-
         print('Usuario registrado correctamente: ${volunteer.email}');
         _showSuccessDialog();
         Navigator.push(
@@ -197,7 +175,58 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       print('Error al registrar usuario: no entra a validar el form ');
     }
   }
+  void _registerVolunteer() async {
+    print('Botón "Crear Cuenta" presionado');
 
+    if (_formKey.currentState?.validate() ?? false) {
+      print('Formulario válido');
+
+      // Primero, realiza el análisis de habilidades
+      await _detectarHabilidades();
+
+      // Actualiza el campo de descripción con las habilidades detectadas
+      _descriptionController.text = _habilidadesResultado;
+
+      // Imprime las habilidades obtenidas en la consola
+      print('Habilidades detectadas: ${_habilidadesResultado}');
+
+      final volunteer = Volunteer(
+        name: _nameController.text,
+        description: _descriptionController.text,
+        age: _ageController.text,
+        curp: _curpController.text,
+        cellphone: _cellphoneController.text,
+        postal: _postalController.text,
+        latitude: _latitudeController.text,
+        longitude: _longitudeController.text,
+        occupation: _selectedOccupation ?? '',
+        genre: _selectedGenre ?? '',
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      print(_descriptionController.text);  // Imprime el contenido actualizado del controlador de descripción
+
+      try {
+        print('Intentando registrar voluntario: ${volunteer.email}');
+        final remoteDataSource = UserRemoteDataSource(http.Client());
+        final repository = UserRepositoryImpl(remoteDataSource);
+        final registerVolunteerUseCase = RegisterVolunteerUseCase(repository);
+        await registerVolunteerUseCase.execute(volunteer);
+        print('Usuario registrado correctamente: ${volunteer.email}');
+        _showSuccessDialog();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      } catch (error) {
+        print('Error al registrar usuario: $error');
+        _showErrorDialog(error.toString());
+      }
+    } else {
+      print('Error al registrar usuario: no entra a validar el form ');
+    }
+  }
 
 
   void _showSuccessDialog() {
@@ -228,6 +257,32 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
         return AlertDialog(
           title: const Text('Error'),
           content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showSkillsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Habilidades Detectadas'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var skill in _detectedSkills)
+                Text(skill),
+            ],
+          ),
           actions: <Widget>[
             TextButton(
               child: const Text('Aceptar'),
@@ -289,51 +344,54 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                       const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _descriptionController,
-                        label: 'Ingresa una descripción general',
+                        label: 'Descripción',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa una descripción general';
-                          }
-                          int length = value.length;
-                          if (length < 1) {
-                            return 'La descripción debe tener al menos 40 caracteres';
-                          } else if (length > 100) {
-                            return 'La descripción no debe tener más de 100 caracteres';
+                            return 'Por favor, ingresa una descripción';
                           }
                           return null;
                         },
+                        maxLines: 4,
                       ),
+                      const SizedBox(height: 10.0),
+                      ElevatedButton(
+                        onPressed: _detectarHabilidades,
+                        child: const Text('Detectar Habilidades'),
+                      ),
+                      const SizedBox(height: 20.0),
+                      if (_detectedSkills.isNotEmpty)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Habilidades Detectadas:',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            for (var skill in _detectedSkills)
+                              Text(skill),
+                          ],
+                        ),
                       const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _ageController,
-                        label: 'Ingresa tu edad',
+                        label: 'Edad',
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu edad';
-                          }
-                          int? age = int.tryParse(value);
-                          if (age == null) {
+                          } else if (int.tryParse(value) == null) {
                             return 'Por favor, ingresa un número válido';
-                          }
-                          if (age <= 15 || age >= 70) {
-                            return 'La edad debe estar entre 15 y 70 años';
                           }
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 20.0),
-                      _buildAddressButton(),
-                      // if (_latitude != null && _longitude != null)
-                      // Text('Latitud: $_latitude, Longitud: $_longitude'),
-                      const SizedBox(height: 20.0),
-
-                      _buildLabel('CURP'),
-                      const SizedBox(height: 5.0),
                       _buildTextField(
                         controller: _curpController,
-                        label: 'Ingresa tu CURP',
+                        label: 'CURP',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu CURP';
@@ -346,13 +404,13 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                       const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _cellphoneController,
-                        label: 'Ingresa tu teléfono',
+                        label: 'Teléfono',
                         keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa tu teléfono';
-                          } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                            return 'El número telefónico debe tener 10 dígitos';
+                            return 'Por favor, ingresa tu número de teléfono';
+                          } else if (value.length < 10) {
+                            return 'El número de teléfono debe tener al menos 10 dígitos';
                           }
                           return null;
                         },
@@ -360,38 +418,43 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                       const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _postalController,
-                        label: 'Ingresa tu código postal',
+                        label: 'Código Postal',
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu código postal';
+                          } else if (value.length != 5) {
+                            return 'El código postal debe tener 5 dígitos';
                           }
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Ocupación'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
+                      _buildTextField(
+                        controller: _latitudeController,
+                        label: 'Latitud',
+                        readOnly: true,
+                      ),
+                      const SizedBox(height: 20.0),
+                      _buildTextField(
+                        controller: _longitudeController,
+                        label: 'Longitud',
+                        readOnly: true,
+                      ),
+                      const SizedBox(height: 20.0),
                       _buildOccupationDropdown(),
-                      const SizedBox(height: 10.0),
-                      _buildLabel('Género'),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 20.0),
                       _buildGenderDropdown(),
-
                       const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _emailController,
-                        label: 'Ingresa tu correo electrónico',
+                        label: 'Correo Electrónico',
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingresa tu correo electrónico';
-                          }
-                          bool isValidEmail =
-                          RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                              .hasMatch(value);
-                          if (!isValidEmail) {
-                            return 'Ingresa un correo electrónico válido';
+                          } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            return 'Por favor, ingresa un correo electrónico válido';
                           }
                           return null;
                         },
@@ -399,20 +462,13 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                       const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _passwordController,
-                        label: 'Ingresa tu contraseña',
+                        label: 'Contraseña',
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingresa tu contraseña';
-                          }
-                          if (value.length < 8) {
-                            return 'La contraseña debe tener al menos 8 caracteres';
-                          }
-                          bool isValidPassword = RegExp(
-                              r'^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$')
-                              .hasMatch(value);
-                          if (!isValidPassword) {
-                            return 'La contraseña debe contener al menos:\n Una letra en mayúscula\n Un dígito \n Un carácter especial';
+                            return 'Por favor, ingresa una contraseña';
+                          } else if (value.length < 6) {
+                            return 'La contraseña debe tener al menos 6 caracteres';
                           }
                           return null;
                         },
@@ -420,18 +476,18 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                       const SizedBox(height: 20.0),
                       _buildTextField(
                         controller: _confirmPasswordController,
-                        label: 'Confirma tu contraseña',
+                        label: 'Confirmar Contraseña',
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, confirma tu contraseña';
-                          }
-                          if (value != _passwordController.text) {
+                          } else if (value != _passwordController.text) {
                             return 'Las contraseñas no coinciden';
                           }
                           return null;
                         },
                       ),
+                      const SizedBox(height: 20.0),
                       Row(
                         children: [
                           Checkbox(
@@ -442,41 +498,19 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
                               });
                             },
                           ),
-                          const Text(
-                            'Acepto los términos y condiciones',
-                            style: TextStyle(fontSize: 14.0),
+                          const Expanded(
+                            child: Text(
+                              'Acepto los términos y condiciones',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Color(0xFF2E8139),
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 40.0),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _registerVolunteer,
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all<Color>(
-                                const Color(0xFF2E8139)),
-                            shape:
-                            WidgetStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                            ),
-                            padding:
-                            WidgetStateProperty.all<EdgeInsetsGeometry>(
-                              const EdgeInsets.symmetric(vertical: 13.0),
-                            ),
-                          ),
-                          child: const Text(
-                            'Crear Cuenta',
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: 20.0),
+                      _buildStyledButton('Crear Cuenta'),
                     ],
                   ),
                 ),
@@ -488,140 +522,80 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
     );
   }
 
-  Widget _buildLabel(String text) {
-    return Row(
-      children: [
-        Text(
-          text,
-          style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF2E8139)),
-          textAlign: TextAlign.left,
-        ),
-      ],
-    );
-  }
-
   Widget _buildTextField({
     required TextEditingController controller,
     required String label,
-    bool obscureText = false,
+    int maxLines = 1,
+    bool readOnly = false,
     TextInputType keyboardType = TextInputType.text,
     String? Function(String?)? validator,
+    bool obscureText = false,
   }) {
     return TextFormField(
       controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF2E8139),
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF2E8139),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF2E8139),
-            width: 2.0,
-          ),
-        ),
-        labelStyle: const TextStyle(fontSize: 15.0, color: Color(0xFFBCBCBC)),
-        contentPadding:
-        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+        border: OutlineInputBorder(),
       ),
-      enableSuggestions: false,
-      autocorrect: false,
+      maxLines: maxLines,
+      readOnly: readOnly,
+      keyboardType: keyboardType,
       validator: validator,
+      obscureText: obscureText,
     );
   }
 
   Widget _buildOccupationDropdown() {
     return DropdownButtonFormField<String>(
       value: _selectedOccupation,
-      onChanged: (value) {
-        setState(() {
-          _selectedOccupation = value;
-        });
-      },
+      decoration: const InputDecoration(
+        labelText: 'Ocupación',
+        border: OutlineInputBorder(),
+      ),
       items: _occupations.map((occupation) {
         return DropdownMenuItem<String>(
           value: occupation,
           child: Text(occupation),
         );
       }).toList(),
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF2E8139),
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF2E8139),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF2E8139),
-            width: 2.0,
-          ),
-        ),
-        contentPadding:
-        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-      ),
+      onChanged: (value) {
+        setState(() {
+          _selectedOccupation = value;
+        });
+      },
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Por favor, selecciona tu ocupación';
+        }
+        return null;
+      },
     );
   }
 
   Widget _buildGenderDropdown() {
     return DropdownButtonFormField<String>(
       value: _selectedGenre,
+      decoration: const InputDecoration(
+        labelText: 'Género',
+        border: OutlineInputBorder(),
+      ),
+      items: _genderMap.keys.map((gender) {
+        return DropdownMenuItem<String>(
+          value: _genderMap[gender],
+          child: Text(gender),
+        );
+      }).toList(),
       onChanged: (value) {
         setState(() {
           _selectedGenre = value;
         });
       },
-      items: _genderMap.keys.map((gender) {
-        return DropdownMenuItem<String>(
-          value: gender,
-          child: Text(gender),
-        );
-      }).toList(),
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF2E8139),
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF2E8139),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          borderSide: const BorderSide(
-            color: Color(0xFF2E8139),
-            width: 2.0,
-          ),
-        ),
-        contentPadding:
-        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Por favor, selecciona tu género';
+        }
+        return null;
+      },
     );
   }
 }

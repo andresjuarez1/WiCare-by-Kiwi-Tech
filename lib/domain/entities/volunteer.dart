@@ -5,7 +5,6 @@ class Volunteer {
   final String curp;
   final String cellphone;
   final String postal;
-  // final String address;
   final String latitude;
   final String longitude;
   final String occupation;
@@ -20,7 +19,6 @@ class Volunteer {
     required this.curp,
     required this.cellphone,
     required this.postal,
-    // required this.address,
     required this.latitude,
     required this.longitude,
     required this.occupation,
@@ -29,4 +27,21 @@ class Volunteer {
     required this.password,
   });
 
+  // Método toJson para convertir a un mapa JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'description': description,
+      'age': age,
+      'curp': curp,
+      'cellphone': cellphone,
+      'postal': postal,
+      'latitude': latitude,
+      'longitude': longitude,
+      'occupation': occupation,
+      'genre': genre,
+      'email': email,
+      'password': password,
+    };
+  }
 }
