@@ -60,7 +60,6 @@ class DonationDialog extends StatelessWidget {
             try {
               final dataSource = UserRemoteDataSource(http.Client());
               await dataSource.donateToAssociation(event.association!.id);
-              // Si la donación es exitosa, puedes mostrar un mensaje al usuario
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Donación realizada con éxito')),
               );
@@ -73,7 +72,7 @@ class DonationDialog extends StatelessWidget {
             Navigator.of(context).pop();
           },
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+            backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           ),
           child: const Text(
             'Confirmar',

@@ -214,17 +214,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             textAlign: TextAlign.justify,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            userProfile.id.toString(),
-                            style: const TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 14.5,
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
                       ],
                     ),
                   ),
