@@ -10,7 +10,6 @@ import '../../../domain/entities/miniEvent.dart';
 import '../../mappers/mini_events_mappers.dart';
 import '../../models/event_model.dart';
 import '../../models/mini_event_model.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_parser/http_parser.dart';
 
 class EventRemoteDataSource {
@@ -36,20 +35,16 @@ class EventRemoteDataSource {
   }
 
   Future<void> createEvent(Event event, File image) async {
-    final uri = Uri.parse(
-        '${dotenv.env['APIURL']}/event'); // Cambia la URL según tu API
+    final uri = Uri.parse('${dotenv.env['APIURL']}/event');
     print('estoy en el user remote');
-    // Crear una solicitud MultipartRequest
     final request = http.MultipartRequest('POST', uri)
-      ..headers['Authorization'] =
-          'Bearer $token' // Agregar el token al encabezado
+      ..headers['Authorization'] = 'Bearer $token'
       ..fields['name'] = event.name
       ..fields['description'] = event.description
       ..fields['hour_start'] = event.hour_start
       ..fields['hour_end'] = event.hour_end
       ..fields['date'] = event.date
       ..fields['cathegory'] = event.cathegory;
-    // Adjuntar la imagen al request si existe
     if (image != null) {
       request.files.add(await http.MultipartFile.fromPath(
         'picture',
@@ -65,11 +60,8 @@ class EventRemoteDataSource {
       print('Imagen: ${image.path}');
     }
 
-    // Enviar la solicitud y obtener la respuesta
     final response = await request.send();
-    // Verificar el estado de la respuesta
     if (response.statusCode != 200) {
-      // Cambia el código de estado según lo que espera tu API
       throw Exception('Error al crear el evento: ${response.reasonPhrase}');
     }
   }
@@ -221,8 +213,8 @@ class EventRemoteDataSource {
       'Authorization': 'Bearer $token',
     };
 
-    print('URL: $url'); 
-    print('Headers: $headers'); 
+    print('URL: $url');
+    print('Headers: $headers');
     try {
       final response = await client.get(url, headers: headers);
 
@@ -240,6 +232,46 @@ class EventRemoteDataSource {
         print('Error: ${response.statusCode}');
         print('Mensaje de error: ${response.body}');
         throw Exception('Failed to load volunteers');
+      }
+    } catch (e) {
+      print('Error en la solicitud: $e');
+      throw Exception('Error en la solicitud: $e');
+    }
+  }
+
+  Future<List<EventUnique>> getFinishedEventsForUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final int? userId = prefs.getInt('userId');
+
+    if (userId == null) {
+      throw Exception('User ID not found in SharedPreferences');
+    }
+
+    final url = Uri.parse(
+        'https://wicare-gateway.ddns.net/user/volunteer/$userId/events/finished');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      final response = await client.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data.containsKey('data')) {
+          final List eventsData = data['data'];
+          return eventsData.map((eventJson) {
+            return EventUnique.fromJson(eventJson);
+          }).toList();
+        } else {
+          throw Exception('Invalid response format: No "data" key found.');
+        }
+      } else {
+        print('Error: ${response.statusCode}');
+        print('Mensaje de error: ${response.body}');
+        throw Exception('Failed to load finished events for user');
       }
     } catch (e) {
       print('Error en la solicitud: $e');

@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 
 class AttendedEventsPage extends StatelessWidget {
-  final List<Map<String, String>> attendedEvents;
+  final List<EventUnique> attendedEvents;
 
   AttendedEventsPage({required this.attendedEvents});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        centerTitle: true,
+        backgroundColor: Colors.white,
         title: const Text(
-          'Eventos Asistidos',
+          'Eventos asistidos',
           style: TextStyle(
             fontSize: 22,
             fontFamily: 'PoppinsRegular',
@@ -26,101 +22,72 @@ class AttendedEventsPage extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 8.0,
-                  crossAxisSpacing: 8.0,
-                  childAspectRatio: 2 / 2,
-                ),
-                itemCount: attendedEvents.length,
-                itemBuilder: (context, index) {
-                  return EventItem(
-                    title: attendedEvents[index]['title']!,
-                    location: attendedEvents[index]['location']!,
-                    image: attendedEvents[index]['image']!,
-                  );
-                },
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView.builder(
+          itemCount: attendedEvents.length,
+          itemBuilder: (BuildContext context, int index) {
+            final event = attendedEvents[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Stack(
+                      children: [
+                        event.picture != null
+                            ? Image.network(
+                                event.picture,
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              )
+                            : SizedBox(width: 100, height: 100),
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 10.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (event.name != null)
+                          Text(
+                            event.name,
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              fontFamily: 'PoppinsRegular',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        const SizedBox(height: 5.0),
+                        if (event.description != null)
+                          Text(
+                            event.description,
+                            style: TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 13.0,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 20),
-          ],
+            );
+          },
         ),
-      ),
-    );
-  }
-}
-
-class EventItem extends StatelessWidget {
-  final String title;
-  final String location;
-  final String image;
-
-  EventItem({
-    required this.title,
-    required this.location,
-    required this.image,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              image,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.black.withOpacity(0.7), Colors.transparent],
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  location,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
-                ),
-
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

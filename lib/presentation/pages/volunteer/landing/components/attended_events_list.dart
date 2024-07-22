@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../assistedEvents/attended_events_page.dart';
+import 'package:locura1/domain/entities/eventUnique.dart';
 
 class AttendedEventsList extends StatelessWidget {
-  final List<Map<String, String>> attendedEvents;
+  final List<EventUnique> attendedEvents;
 
   AttendedEventsList({required this.attendedEvents});
 
@@ -67,11 +68,25 @@ class AttendedEventsList extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10.0),
-                    child: Image.asset(
-                      event['image']!,
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
+                    child: Stack(
+                      children: [
+                        event.picture != null
+                            ? Image.network(
+                                event.picture,
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit.cover,
+                              )
+                            : SizedBox(width: 100, height: 100),
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 10.0),
@@ -79,31 +94,26 @@ class AttendedEventsList extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          event['title']!,
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            fontFamily: 'PoppinsRegular',
-                            fontWeight: FontWeight.bold,
+                        const SizedBox(height: 10.0),
+                        if (event.name != null)
+                          Text(
+                            event.name,
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              fontFamily: 'PoppinsRegular',
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
                         const SizedBox(height: 5.0),
-                        Text(
-                          event['location']!,
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.grey[700],
+                        if (event.description != null)
+                          Text(
+                            event.date,
+                            style: TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 13.0,
+                              color: const Color.fromARGB(255, 0, 0, 0),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 5.0),
-                        Text(
-                          event['description']!,
-                          style: TextStyle(
-                            fontFamily: 'PoppinsRegular',
-                            fontSize: 13.0,
-                            color: Colors.grey[600],
-                          ),
-                        ),
                       ],
                     ),
                   ),

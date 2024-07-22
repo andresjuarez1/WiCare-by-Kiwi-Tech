@@ -12,6 +12,7 @@ import 'components/donation_part.dart';
 import 'components/new_carousel.dart';
 import '../newEvent/event.dart';
 import 'package:http/http.dart' as http;
+import './components/attended_events_list.dart';
 
 class VolunteerPage extends StatefulWidget {
   @override
@@ -21,6 +22,8 @@ class VolunteerPage extends StatefulWidget {
 class _VolunteerPageState extends State<VolunteerPage> {
   List<MiniEvent> eventsList = [];
   List<EventModel> eventCategory = [];
+  List<EventUnique> finishedEvents = [];
+
   List<Map<String, String>> attendedEvents = [
     {
       'image': 'assets/basura.jpg',
@@ -39,6 +42,7 @@ class _VolunteerPageState extends State<VolunteerPage> {
     super.initState();
     _getProfile();
     _getCategory();
+    _getFinishedEvents();
   }
 
   Future<void> _getProfile() async {
@@ -77,6 +81,24 @@ class _VolunteerPageState extends State<VolunteerPage> {
     }
   }
 
+  Future<void> _getFinishedEvents() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
+    if (token != null) {
+      final EventRemoteDataSource eventRemoteDataSource =
+          EventRemoteDataSource(http.Client(), token);
+      final List<EventUnique> events =
+          await eventRemoteDataSource.getFinishedEventsForUser();
+
+      setState(() {
+        finishedEvents = events;
+      });
+    } else {
+      throw Exception('Token o userId no encontrados en SharedPreferences');
+    }
+  }
+
   void _navigateToNewEvent(BuildContext context, EventUnique event) {
     Navigator.push(
       context,
@@ -94,7 +116,8 @@ class _VolunteerPageState extends State<VolunteerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Navbar(),
-      drawer: CustomDrawer(attendedEvents: attendedEvents, category: eventCategory),
+      drawer:
+          CustomDrawer(attendedEvents: attendedEvents, category: eventCategory),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
@@ -109,7 +132,10 @@ class _VolunteerPageState extends State<VolunteerPage> {
               navigateToEvent: _navigateToNewEvent,
             ),
             SizedBox(height: 30),
-//hello
+            AttendedEventsList(
+              attendedEvents: finishedEvents,
+            ),
+            SizedBox(height: 30),
             FooterComponent(),
             SizedBox(height: 10),
           ],

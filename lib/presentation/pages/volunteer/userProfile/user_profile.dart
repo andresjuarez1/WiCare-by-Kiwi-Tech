@@ -225,7 +225,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navegar a la página de subir imagen
           Navigator.push(
             context,
             MaterialPageRoute(
