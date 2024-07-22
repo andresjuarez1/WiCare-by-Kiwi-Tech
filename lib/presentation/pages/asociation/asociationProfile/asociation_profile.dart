@@ -5,6 +5,7 @@ import 'package:locura1/domain/use_cases/getAssociationProfile.dart';
 import 'package:locura1/domain/use_cases/getBankDetailsUseCase.dart';
 import 'package:locura1/presentation/pages/asociation/asociationProfile/components/create_bank_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../volunteer/userProfile/profilePicture.dart';
 import '../map/google_maps.dart';
 import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
@@ -376,6 +377,17 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UploadProfilePicturePage(),
+            ),
+          );
+        },
+        child: Icon(Icons.camera_alt),
+      ),
     );
   }
 }

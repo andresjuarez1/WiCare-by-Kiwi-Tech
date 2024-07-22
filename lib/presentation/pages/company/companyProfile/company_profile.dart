@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../data/datasources/remote/user_remote_data_source.dart';
 import '../../../../data/repositories/user_repository_impl.dart';
 import 'package:http/http.dart' as http;
+import '../../volunteer/userProfile/profilePicture.dart';
 import '../map/google_maps.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -298,6 +299,17 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UploadProfilePicturePage(),
+            ),
+          );
+        },
+        child: Icon(Icons.camera_alt),
+      ),
     );
   }
 }
