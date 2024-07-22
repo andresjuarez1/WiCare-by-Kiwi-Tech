@@ -12,11 +12,17 @@ class Donation {
   });
 
   factory Donation.fromJson(Map<String, dynamic> json) {
+    // Verificar si 'company' es un Map
+    String companyName = 'Nombre no disponible';
+    if (json['company'] is Map<String, dynamic>) {
+      companyName = json['company']['name'] ?? companyName;
+    }
+
     return Donation(
       id: json['id'],
       idCompany: json['id_company'],
       status: json['status'],
-      companyName: json['company']['name'],
+      companyName: companyName,
     );
   }
 }

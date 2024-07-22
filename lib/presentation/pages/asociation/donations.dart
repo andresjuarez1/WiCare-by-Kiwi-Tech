@@ -10,7 +10,7 @@ class PendingDonationsPage extends StatefulWidget {
 }
 
 class _PendingDonationsPageState extends State<PendingDonationsPage> {
-  late Future<List<Donation>> _pendingDonations;
+  Future<List<Donation>> _pendingDonations = Future.value([]);
   int _totalPendingDonations = 0;
 
   @override
