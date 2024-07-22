@@ -42,3 +42,25 @@ Future<List<Donation>> getDonationsPending(int userId, String token) async {
     return [];
   }
 }
+Future<void> updateDonationStatus(int donationId, String status, String token) async {
+  print(donationId);
+  final String url = '${dotenv.env['APIURL']}/donation/$donationId'; // Ajusta la URL según tu API
+print('entre al update');
+  try {
+    final response = await http.put(
+      Uri.parse(url),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print('Donación actualizada exitosamente.');
+    } else {
+      print('Error: ${response.statusCode}');
+      print('Mensaje de error: ${response.body}');
+    }
+  } catch (e) {
+    print('Error en la solicitud: $e');
+  }
+}
