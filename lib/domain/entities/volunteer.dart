@@ -1,6 +1,6 @@
 class Volunteer {
   final String name;
-  final String description;
+  final String text;
   final String age;
   final String curp;
   final String cellphone;
@@ -14,7 +14,7 @@ class Volunteer {
 
   Volunteer({
     required this.name,
-    required this.description,
+    required this.text,
     required this.age,
     required this.curp,
     required this.cellphone,
@@ -31,7 +31,7 @@ class Volunteer {
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'description': description,
+      'description': text,
       'age': age,
       'curp': curp,
       'cellphone': cellphone,

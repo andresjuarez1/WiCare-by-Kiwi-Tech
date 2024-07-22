@@ -106,7 +106,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
 
   String? _selectedOccupation;
   String? _selectedGenre;
-  String _habilidadesResultado = '';
+  String _habilidades = '';
   bool _termsAccepted = false;
   Future<void> _detectarHabilidades() async {
     final response = await http.post(
@@ -124,13 +124,13 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       final Map<String, dynamic> data = json.decode(response.body);
       setState(() {
 
-        _habilidadesResultado = '${data['habilidades']}';
-        print(_habilidadesResultado);
+        _habilidades = '${data['habilidades']}';
+        print(_habilidades);
 
       });
     } else {
       setState(() {
-        _habilidadesResultado = 'Error al detectar habilidades';
+        _habilidades = 'Error al detectar habilidades';
       });
     }
   }
@@ -145,18 +145,16 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
       // Primero, realiza el análisis de habilidades
       await _detectarHabilidades();
 
-      String habilidadesString = _habilidadesResultado.join(', ');
-
 
       // Actualiza el campo de descripción con las habilidades detectadas
-      _descriptionController.text = habilidadesString;
+      _descriptionController.text = _habilidades;
 
       // Imprime las habilidades obtenidas en la consola
-      print('Habilidades detectadas: ${habilidadesString}');
+      print('Habilidades detectadas: ${_habilidades}');
 
       final volunteer = Volunteer(
         name: _nameController.text,
-        description: habilidadesString,
+        text: _habilidades,
         age: _ageController.text,
         curp: _curpController.text,
         cellphone: _cellphoneController.text,
