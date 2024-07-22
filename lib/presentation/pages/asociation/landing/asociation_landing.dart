@@ -111,22 +111,7 @@ class AssociationLandingPage extends StatelessWidget {
                 navigateToPastEvent: _navigateToPastEvent,
                 navigateToAllPastEvents: _navigateToAllPastEvents,
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PendingDonationsPage()),
-                  );
-                },
-                child: const Text(
-                  'Ver Donaciones Pendientes',
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+
               SizedBox(height: 20),
               FooterComponent(),
               const SizedBox(height: 10),

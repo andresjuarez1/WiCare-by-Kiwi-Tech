@@ -9,7 +9,8 @@ class PendingDonationsPage extends StatefulWidget {
 }
 
 class _PendingDonationsPageState extends State<PendingDonationsPage> {
-  late Future<List<Donation>> _pendingDonations;
+  Future<List<Donation>>? _pendingDonations;
+  int _pendingDonationsCount = 0;
 
   @override
   void initState() {
@@ -27,13 +28,15 @@ class _PendingDonationsPageState extends State<PendingDonationsPage> {
       return;
     }
 
+    final donations = await getDonationsPending(userId, token);
     setState(() {
-      _pendingDonations = getDonationsPending(userId, token);
+      _pendingDonations = Future.value(donations);
+      _pendingDonationsCount = donations.length;
     });
   }
 
   void _confirmDonation(int donationId) async {
-    print('di click en confrimar');
+    print('di click en confirmar');
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
 
@@ -41,18 +44,27 @@ class _PendingDonationsPageState extends State<PendingDonationsPage> {
       print('Error: No se encontró token en SharedPreferences');
       return;
     }
-print(donationId);
+
     await updateDonationStatus(donationId, 'Confirmed', token);
     _fetchPendingDonations(); // Refresca la lista después de la actualización
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Donaciones Pendientes'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Center(
+              child: Text(
+                '$_pendingDonationsCount',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder<List<Donation>>(
         future: _pendingDonations,
@@ -79,7 +91,6 @@ print(donationId);
                         icon: Icon(Icons.check, color: Colors.green),
                         onPressed: () => _confirmDonation(donation.id),
                       ),
-
                     ],
                   ),
                 );

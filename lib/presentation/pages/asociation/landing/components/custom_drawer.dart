@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../login/login_page.dart';
 import '../../asociationProfile/asociation_profile.dart';
+import '../../donations.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -34,6 +35,16 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => ProfilePage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.attach_money_outlined),
+                    title: Text('Donaciones'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PendingDonationsPage()),
                       );
                     },
                   ),
