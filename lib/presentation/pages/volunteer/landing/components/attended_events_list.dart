@@ -53,11 +53,10 @@ class AttendedEventsList extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 10.0),
         if (attendedEvents.isEmpty)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: const Text(
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
               'No hay eventos asistidos.',
               style: TextStyle(
                 fontFamily: 'PoppinsRegular',
@@ -90,7 +89,7 @@ class AttendedEventsList extends StatelessWidget {
                                   height: 80,
                                   fit: BoxFit.cover,
                                 )
-                              : SizedBox(width: 100, height: 100),
+                              : const SizedBox(width: 100, height: 100),
                           Container(
                             width: 80,
                             height: 80,
@@ -121,10 +120,10 @@ class AttendedEventsList extends StatelessWidget {
                           if (event.description != null)
                             Text(
                               event.date,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'PoppinsRegular',
                                 fontSize: 13.0,
-                                color: const Color.fromARGB(255, 0, 0, 0),
+                                color: Color.fromARGB(255, 0, 0, 0),
                               ),
                             ),
                         ],

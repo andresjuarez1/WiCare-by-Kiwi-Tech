@@ -49,28 +49,10 @@ class UpcomingEventsCarousel extends StatelessWidget {
                   color: Color(0xFF5CA666),
                 ),
               ),
-              // TextButton(
-              //   onPressed: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => NewMoreEventsPage(),
-              //       ),
-              //     );
-              //   },
-              //   child: const Text(
-              //     'Ver más',
-              //     style: TextStyle(
-              //       fontSize: 14,
-              //       color: Color(0xFF717171),
-              //       fontFamily: 'PoppinsRegular',
-              //       decoration: TextDecoration.underline,
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
+        SizedBox(height: 10.0),
         CarouselSlider(
           options: CarouselOptions(
             height: 200.0,

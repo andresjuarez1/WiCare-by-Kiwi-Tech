@@ -316,4 +316,37 @@ class EventRemoteDataSource {
       throw Exception('Error in request: $e');
     }
   }
+
+  Future<List<EventUnique>> getFinishedEventsForAssociation(int userId) async {
+    final url = Uri.parse(
+        '${dotenv.env['APIURL']}/user/association/$userId/events/finished');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      final response = await client.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data.containsKey('data')) {
+          final List eventsData = data['data'];
+          return eventsData.map((eventJson) {
+            return EventUnique.fromJson(eventJson);
+          }).toList();
+        } else {
+          throw Exception('Invalid response format: No "data" key found.');
+        }
+      } else {
+        print('Error: ${response.statusCode}');
+        print('Mensaje de error: ${response.body}');
+        throw Exception('Failed to load finished events for association');
+      }
+    } catch (e) {
+      print('Error en la solicitud: $e');
+      throw Exception('Error en la solicitud: $e');
+    }
+  }
 }

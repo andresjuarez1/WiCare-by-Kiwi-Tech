@@ -19,7 +19,37 @@ class _VolunteerDialogState extends State<VolunteerDialog> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          print(
+            Text('Error: ${snapshot.error}'),
+          );
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            content: const SizedBox(
+              height: 100,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 20.0),
+                    Text('No se encontraron voluntarios para este evento',
+                        style: TextStyle(
+                          fontFamily: 'PoppinsRegular',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        )),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cerrar', style:TextStyle(fontFamily: 'PoppinsRegular', fontSize: 14, color: Colors.black),),
+              ),
+            ],
+          );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(child: Text('No volunteers available'));
         } else {

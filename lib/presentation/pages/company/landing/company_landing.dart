@@ -7,7 +7,6 @@ import './components/navbar.dart';
 import './components/custom_drawer.dart';
 import './components/search_events.dart';
 import './components/upcoming_events_carousel.dart';
-import './components/attended_events_list.dart';
 import './components/donation_part.dart';
 import '../events/event.dart';
 import 'package:http/http.dart' as http;
@@ -104,19 +103,15 @@ class _CompanyLandingPageState extends State<CompanyLandingPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20),
-            SearchEvents(
-              onChanged: (value) {},
-            ),
+            SizedBox(height: 50),
+            // SearchEvents(
+            //   onChanged: (value) {},
+            // ),
             UpcomingEventsCarousel(
               eventsList: eventsList,
               navigateToEvent: _navigateToEvent,
             ),
-            SizedBox(height: 20),
-            AttendedEventsList(
-              attendedEvents: attendedEvents,
-            ),
-            SizedBox(height: 20),
+            SizedBox(height: 50),
             FooterComponent(),
           ],
         ),
