@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:locura1/data/datasources/remote/user_remote_data_source.dart';
 import 'package:locura1/domain/entities/eventUnique.dart';
+import 'package:http/http.dart' as http;
 
 class DonationDialog extends StatelessWidget {
   final EventUnique event;
@@ -54,7 +56,19 @@ class DonationDialog extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
+            try {
+              final dataSource = UserRemoteDataSource(http.Client());
+              await dataSource.donateToAssociation(event.association!.id);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Donación realizada con éxito')),
+              );
+            } catch (e) {
+              // Muestra un mensaje de error si la solicitud falla
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error al realizar la donación: $e')),
+              );
+            }
             Navigator.of(context).pop();
           },
           style: ButtonStyle(

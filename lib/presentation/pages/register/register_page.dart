@@ -37,6 +37,9 @@ class RegistrationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -48,7 +51,7 @@ class RegistrationPage extends StatelessWidget {
                 'assets/wicare-logo-inicio.png',
                 width: 180,
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
               const Text(
                 'Selecciona una opción:',
                 style: TextStyle(

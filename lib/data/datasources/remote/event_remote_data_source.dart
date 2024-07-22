@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:locura1/data/models/volunteer_event.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../domain/entities/event.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -34,20 +35,16 @@ class EventRemoteDataSource {
   }
 
   Future<void> createEvent(Event event, File image) async {
-    final uri = Uri.parse(
-        '${dotenv.env['APIURL']}/event'); // Cambia la URL según tu API
+    final uri = Uri.parse('${dotenv.env['APIURL']}/event');
     print('estoy en el user remote');
-    // Crear una solicitud MultipartRequest
     final request = http.MultipartRequest('POST', uri)
-      ..headers['Authorization'] =
-          'Bearer $token' // Agregar el token al encabezado
+      ..headers['Authorization'] = 'Bearer $token'
       ..fields['name'] = event.name
       ..fields['description'] = event.description
       ..fields['hour_start'] = event.hour_start
       ..fields['hour_end'] = event.hour_end
       ..fields['date'] = event.date
       ..fields['cathegory'] = event.cathegory;
-    // Adjuntar la imagen al request si existe
     if (image != null) {
       request.files.add(await http.MultipartFile.fromPath(
         'picture',
@@ -63,11 +60,8 @@ class EventRemoteDataSource {
       print('Imagen: ${image.path}');
     }
 
-    // Enviar la solicitud y obtener la respuesta
     final response = await request.send();
-    // Verificar el estado de la respuesta
     if (response.statusCode != 200) {
-      // Cambia el código de estado según lo que espera tu API
       throw Exception('Error al crear el evento: ${response.reasonPhrase}');
     }
   }
@@ -180,7 +174,7 @@ class EventRemoteDataSource {
     }
 
     final url =
-    Uri.parse('${dotenv.env['APIURL']}/user/association/$userId/events');
+        Uri.parse('${dotenv.env['APIURL']}/user/association/$userId/events');
 
     final headers = {
       'Content-Type': 'application/json',
@@ -208,6 +202,118 @@ class EventRemoteDataSource {
     } catch (e) {
       print('Error en la solicitud: $e');
       throw Exception('Error en la solicitud: $e');
+    }
+  }
+
+  Future<List<VolunteerInEvent>> getVolunteersByEventId(int eventId) async {
+    final url = Uri.parse('${dotenv.env['APIURL']}/event/$eventId/volunteers');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    print('URL: $url');
+    print('Headers: $headers');
+    try {
+      final response = await client.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data.containsKey('data')) {
+          final List volunteersData = data['data'];
+          return volunteersData.map((volunteerJson) {
+            return VolunteerInEvent.fromJson(volunteerJson);
+          }).toList();
+        } else {
+          throw Exception('Invalid response format: No "data" key found.');
+        }
+      } else {
+        print('Error: ${response.statusCode}');
+        print('Mensaje de error: ${response.body}');
+        throw Exception('Failed to load volunteers');
+      }
+    } catch (e) {
+      print('Error en la solicitud: $e');
+      throw Exception('Error en la solicitud: $e');
+    }
+  }
+
+  Future<List<EventUnique>> getFinishedEventsForUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final int? userId = prefs.getInt('userId');
+
+    if (userId == null) {
+      throw Exception('User ID not found in SharedPreferences');
+    }
+
+    final url = Uri.parse(
+        '${dotenv.env['APIURL']}/user/volunteer/$userId/events/finished');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      final response = await client.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data.containsKey('data')) {
+          final List eventsData = data['data'];
+          return eventsData.map((eventJson) {
+            return EventUnique.fromJson(eventJson);
+          }).toList();
+        } else {
+          throw Exception('Invalid response format: No "data" key found.');
+        }
+      } else {
+        print('Error: ${response.statusCode}');
+        print('Mensaje de error: ${response.body}');
+        throw Exception('Failed to load finished events for user');
+      }
+    } catch (e) {
+      print('Error en la solicitud: $e');
+      throw Exception('Error en la solicitud: $e');
+    }
+  }
+
+  Future<List<dynamic>> getActiveEvents() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    final String? token = sharedPreferences.getString('token');
+    final int? userId = sharedPreferences.getInt('userId');
+
+    if (token == null) {
+      throw Exception('Token no encontrado');
+    }
+
+    if (userId == null) {
+      throw Exception('ID del usuario no encontrado');
+    }
+
+    final String url =
+        '${dotenv.env['APIURL']}/user/volunteer/$userId/events/coming';
+
+    try {
+      final response = await client.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body)['data'];
+        return data;
+      } else {
+        throw Exception(
+            'Failed to fetch active events: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      throw Exception('Error in request: $e');
     }
   }
 }

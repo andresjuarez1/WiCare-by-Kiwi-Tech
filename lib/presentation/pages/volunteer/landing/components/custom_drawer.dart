@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:locura1/data/models/event_model.dart';
-import 'package:locura1/domain/entities/event.dart';
-import '../../../volunteer/assistedEvents/attended_events_page.dart';
 import '../../../login/login_page.dart';
 import '../../companiesList/companies_page.dart';
 

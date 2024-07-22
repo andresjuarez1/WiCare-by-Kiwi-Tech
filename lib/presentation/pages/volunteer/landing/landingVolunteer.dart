@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:locura1/data/models/event_model.dart';
 import 'package:locura1/domain/entities/eventUnique.dart';
+import 'package:locura1/presentation/pages/volunteer/landing/components/active_events.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../data/datasources/remote/event_remote_data_source.dart';
 import '../../../../domain/entities/miniEvent.dart';
-import '../../../../x/prueba_textos.dart';
 import 'components/navbar.dart';
 import 'components/custom_drawer.dart';
 import 'components/search_events.dart';
@@ -12,6 +12,7 @@ import 'components/donation_part.dart';
 import 'components/new_carousel.dart';
 import '../newEvent/event.dart';
 import 'package:http/http.dart' as http;
+import './components/attended_events_list.dart';
 
 class VolunteerPage extends StatefulWidget {
   @override
@@ -21,6 +22,8 @@ class VolunteerPage extends StatefulWidget {
 class _VolunteerPageState extends State<VolunteerPage> {
   List<MiniEvent> eventsList = [];
   List<EventModel> eventCategory = [];
+  List<EventUnique> finishedEvents = [];
+
   List<Map<String, String>> attendedEvents = [
     {
       'image': 'assets/basura.jpg',
@@ -39,6 +42,7 @@ class _VolunteerPageState extends State<VolunteerPage> {
     super.initState();
     _getProfile();
     _getCategory();
+    _getFinishedEvents();
   }
 
   Future<void> _getProfile() async {
@@ -77,6 +81,24 @@ class _VolunteerPageState extends State<VolunteerPage> {
     }
   }
 
+  Future<void> _getFinishedEvents() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
+    if (token != null) {
+      final EventRemoteDataSource eventRemoteDataSource =
+          EventRemoteDataSource(http.Client(), token);
+      final List<EventUnique> events =
+          await eventRemoteDataSource.getFinishedEventsForUser();
+
+      setState(() {
+        finishedEvents = events;
+      });
+    } else {
+      throw Exception('Token o userId no encontrados en SharedPreferences');
+    }
+  }
+
   void _navigateToNewEvent(BuildContext context, EventUnique event) {
     Navigator.push(
       context,
@@ -94,7 +116,8 @@ class _VolunteerPageState extends State<VolunteerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Navbar(),
-      drawer: CustomDrawer(attendedEvents: attendedEvents, category: eventCategory),
+      drawer:
+          CustomDrawer(attendedEvents: attendedEvents, category: eventCategory),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
@@ -109,7 +132,12 @@ class _VolunteerPageState extends State<VolunteerPage> {
               navigateToEvent: _navigateToNewEvent,
             ),
             SizedBox(height: 30),
-//hello
+            ActiveEventsList(),
+            SizedBox(height: 30),
+            AttendedEventsList(
+              attendedEvents: finishedEvents,
+            ),
+            SizedBox(height: 30),
             FooterComponent(),
             SizedBox(height: 10),
           ],

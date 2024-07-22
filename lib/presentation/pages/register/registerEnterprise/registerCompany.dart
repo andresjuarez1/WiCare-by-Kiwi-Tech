@@ -10,6 +10,7 @@ import './map/select_location_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
+
 class RegisterCompanyPage extends StatefulWidget {
   @override
   _RegisterCompanyPageState createState() => _RegisterCompanyPageState();
@@ -184,15 +185,14 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
         if (data['contiene_groserias']) {
-          // Aquí puedes mostrar un mensaje al usuario
           print('La descripción contiene groserías.');
           return true;
         } else {
-          print('Texto corregido: ${data['texto_corregido']}\nNo contiene groserías.');
+          print(
+              'Texto corregido: ${data['texto_corregido']}\nNo contiene groserías.');
           return false;
         }
       } else {
-        // Manejar error de solicitud
         print('Error al detectar groserías');
         return false;
       }
@@ -211,12 +211,12 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
       bool hasProfanity = await _detectarGroserias(description);
 
       if (hasProfanity) {
-        _showErrorDialog('La descripción contiene palabras ofensivas. Por favor, corrige el texto.');
+        _showErrorDialog(
+            'La descripción contiene palabras ofensivas. Por favor, corrige el texto.');
         return;
       }
       final company = Company(
         name: _nameCompanyController.text,
-        // address: _addressCompanyController.text,
         latitude: _latitudeController.text,
         longitude: _longitudeController.text,
         latitude_manager: _latitudeManagerController.text,
@@ -302,6 +302,9 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -314,7 +317,6 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 60.0),
                       Image.asset(
                         'assets/wicare-logo-inicio.png',
                         width: 180,
@@ -346,7 +348,7 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                       const SizedBox(height: 20.0),
                       _buildAddressButton(),
                       if (_latitude != null && _longitude != null)
-                      Text('Latitud: $_latitude, Longitud: $_longitude'),
+                        Text('Latitud: $_latitude, Longitud: $_longitude'),
                       const SizedBox(height: 20.0),
 
                       _buildLabel('Fecha  de fundación'),
@@ -507,7 +509,8 @@ class _RegisterCompanyPageState extends State<RegisterCompanyPage> {
                       const SizedBox(height: 20.0),
                       _buildAddressButtonManager(),
                       if (_latitude != null && _longitude != null)
-                        Text('Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
+                        Text(
+                            'Latitud: $_latitudeManager, Longitud: $_longitudeManager'),
                       const SizedBox(height: 20.0),
 
                       const Text(
