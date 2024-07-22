@@ -46,14 +46,24 @@ class _PendingDonationsPageState extends State<PendingDonationsPage> {
     }
 
     await updateDonationStatus(donationId, 'Confirmed', token);
-    _fetchPendingDonations(); // Refresca la lista después de la actualización
+    _fetchPendingDonations();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Donaciones Pendientes'),
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Donaciones pendientes',
+          style: TextStyle(
+            fontSize: 20,
+            fontFamily: 'PoppinsRegular',
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF5CA666),
+          ),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
