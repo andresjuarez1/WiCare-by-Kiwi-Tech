@@ -9,7 +9,6 @@ import '../../../domain/entities/miniEvent.dart';
 import '../../mappers/mini_events_mappers.dart';
 import '../../models/event_model.dart';
 import '../../models/mini_event_model.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_parser/http_parser.dart';
 
 class EventRemoteDataSource {

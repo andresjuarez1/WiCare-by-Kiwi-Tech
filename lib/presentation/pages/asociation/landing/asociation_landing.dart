@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:locura1/presentation/pages/asociation/landing/components/events_asociation.dart';
+import '../donations.dart';
 import 'components/navbar_asociation.dart';
 import 'components/volunteers_carousel.dart';
 import 'components/past_events.dart';
@@ -116,6 +117,22 @@ class AssociationLandingPage extends StatelessWidget {
                 pastEvents: pastEvents,
                 navigateToPastEvent: _navigateToPastEvent,
                 navigateToAllPastEvents: _navigateToAllPastEvents,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PendingDonationsPage()),
+                  );
+                },
+                child: const Text(
+                  'Ver Donaciones Pendientes',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                  ),
+                ),
               ),
               SizedBox(height: 20),
               FooterComponent(),
