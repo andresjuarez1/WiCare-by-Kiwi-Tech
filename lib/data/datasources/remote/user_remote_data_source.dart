@@ -347,7 +347,7 @@ class UserRemoteDataSource {
       Uri.parse('${dotenv.env['APIURL']}/donation'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token', 
+        'Authorization': 'Bearer $token',
       },
       body: jsonEncode(
           {'company_id': companyId, 'association_id': associationId}),
@@ -359,4 +359,6 @@ class UserRemoteDataSource {
 
     print('Donación enviada con éxito');
   }
+
+  
 }

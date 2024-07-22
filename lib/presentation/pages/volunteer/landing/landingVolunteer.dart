@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:locura1/data/models/event_model.dart';
 import 'package:locura1/domain/entities/eventUnique.dart';
+import 'package:locura1/presentation/pages/volunteer/landing/components/active_events.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../data/datasources/remote/event_remote_data_source.dart';
 import '../../../../domain/entities/miniEvent.dart';
-import '../../../../x/prueba_textos.dart';
 import 'components/navbar.dart';
 import 'components/custom_drawer.dart';
 import 'components/search_events.dart';
@@ -131,6 +131,8 @@ class _VolunteerPageState extends State<VolunteerPage> {
               eventsList: eventsList,
               navigateToEvent: _navigateToNewEvent,
             ),
+            SizedBox(height: 30),
+            ActiveEventsList(),
             SizedBox(height: 30),
             AttendedEventsList(
               attendedEvents: finishedEvents,

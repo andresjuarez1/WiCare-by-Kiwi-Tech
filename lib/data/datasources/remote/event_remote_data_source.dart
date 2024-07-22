@@ -248,7 +248,7 @@ class EventRemoteDataSource {
     }
 
     final url = Uri.parse(
-        'https://wicare-gateway.ddns.net/user/volunteer/$userId/events/finished');
+        '${dotenv.env['APIURL']}/user/volunteer/$userId/events/finished');
 
     final headers = {
       'Content-Type': 'application/json',
@@ -276,6 +276,44 @@ class EventRemoteDataSource {
     } catch (e) {
       print('Error en la solicitud: $e');
       throw Exception('Error en la solicitud: $e');
+    }
+  }
+
+  Future<List<dynamic>> getActiveEvents() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    final String? token = sharedPreferences.getString('token');
+    final int? userId = sharedPreferences.getInt('userId');
+
+    if (token == null) {
+      throw Exception('Token no encontrado');
+    }
+
+    if (userId == null) {
+      throw Exception('ID del usuario no encontrado');
+    }
+
+    final String url =
+        '${dotenv.env['APIURL']}/user/volunteer/$userId/events/coming';
+
+    try {
+      final response = await client.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body)['data'];
+        return data;
+      } else {
+        throw Exception(
+            'Failed to fetch active events: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      throw Exception('Error in request: $e');
     }
   }
 }
