@@ -67,7 +67,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(30.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -118,7 +118,7 @@ class _RegisterAssociationPageState extends State<RegisterAssociationPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(30.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(

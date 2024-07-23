@@ -60,7 +60,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
           backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(30.0),
             ),
           ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
@@ -111,7 +111,7 @@ class _RegisterVolunteerPageState extends State<RegisterVolunteerPage> {
   Future<void> _detectarHabilidades() async {
     final response = await http.post(
 
-      Uri.parse('${dotenv.env['APIURL']}/analyzer/habilidades'),  // Cambia localhost a 192.168.100.191
+      Uri.parse('${dotenv.env['APIURL']}/analyzer/habilidades'), 
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
