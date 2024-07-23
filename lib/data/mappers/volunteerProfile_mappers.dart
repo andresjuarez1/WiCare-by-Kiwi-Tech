@@ -10,7 +10,7 @@ ProfileVolunteerModel profileToProfileModel(VolunteerProfile profile) {
     email: profile.email,
     profilePicture: profile.profilePicture,
     id: profile.id,
-    text: profile.description,
+    description: profile.description,
   );
 }
 
@@ -23,6 +23,6 @@ VolunteerProfile profileModelToProfile(ProfileVolunteerModel profileModel) {
     email: profileModel.email,
     profilePicture: profileModel.profilePicture,
     id: profileModel.id,
-    text: profileModel.description
+      description: profileModel.description
   );
 }
