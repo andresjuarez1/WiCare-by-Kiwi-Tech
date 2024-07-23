@@ -42,21 +42,25 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
+        elevation: 10,
         title: const Text(
           'Perfil',
           style: TextStyle(
             fontSize: 22,
-            fontFamily: 'PoppinsRegular',
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF5CA666),
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
           ),
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.camera_alt),
+            icon: const Icon(Icons.camera_alt),
             onPressed: () {
               Navigator.push(
                 context,
@@ -68,186 +72,230 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      body: Center(
-        child: FutureBuilder<VolunteerProfile>(
-          future: _userProfileFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else if (!snapshot.hasData) {
-              return const Text('No hay datos');
-            }
-
-            final userProfile = snapshot.data!;
-
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 50.0,
-                    backgroundImage: userProfile.profilePicture != null
-                        ? NetworkImage(userProfile.profilePicture!)
-                        : AssetImage('assets/kiwilogo-inicio.png')
-                            as ImageProvider,
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                width: double.infinity,
+                height: 170.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/fondo2.jpg'),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.5), BlendMode.srcOver),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    userProfile.name,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF5CA666),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 5),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            'Correo electrónico',
-                            style: TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF5CA666),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            userProfile.email,
-                            style: const TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 14.5,
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Divider(
-                            color: Color.fromARGB(255, 228, 228, 228)),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            'Teléfono',
-                            style: TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF5CA666),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            userProfile.cellphone,
-                            style: const TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 14.5,
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Divider(
-                            color: Color.fromARGB(255, 228, 228, 228)),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            'Género',
-                            style: TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF5CA666),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            _getGenderText(userProfile.genre),
-                            style: const TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 14.5,
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Divider(
-                            color: Color.fromARGB(255, 228, 228, 228)),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            'Ocupación',
-                            style: TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF5CA666),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            userProfile.occupation,
-                            style: const TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 14.5,
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                        const Divider(
-                            color: Color.fromARGB(255, 228, 228, 228)),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            'Habilidades',
-                            style: TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF5CA666),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            userProfile.description,
-                            style: const TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 14.5,
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
-            );
-          },
-        ),
+              Expanded(
+                child: Container(
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          Center(
+            child: FutureBuilder<VolunteerProfile>(
+              future: _userProfileFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData) {
+                  return const Text('No hay datos');
+                }
+
+                final userProfile = snapshot.data!;
+
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            transform:
+                                Matrix4.translationValues(15.0, 10.0, 0.0),
+                            padding: const EdgeInsets.all(1.5),
+                            decoration: const BoxDecoration(
+                              color: Colors.green,
+                              shape: BoxShape.circle,
+                            ),
+                            child: CircleAvatar(
+                              radius: 50.0,
+                              backgroundImage: userProfile.profilePicture !=
+                                      null
+                                  ? NetworkImage(userProfile.profilePicture!)
+                                  : const AssetImage(
+                                          'assets/kiwilogo-inicio.png')
+                                      as ImageProvider,
+                            ),
+                          ),
+                          SizedBox(width: 25),
+                          Transform.translate(
+                            offset: Offset(0, 12),
+                            child: Text(
+                              userProfile.name,
+                              style: const TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Poppins',
+                                color: Color(0xFF5CA666),
+                                letterSpacing: 2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 5),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 25.0),
+                              child: Text(
+                                'Correo electrónico',
+                                style: TextStyle(
+                                  fontFamily: 'PoppinsRegular',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF5CA666),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25.0),
+                              child: Text(
+                                userProfile.email,
+                                style: const TextStyle(
+                                  fontFamily: 'PoppinsRegular',
+                                  fontSize: 14.5,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 25.0),
+                              child: Text(
+                                'Teléfono',
+                                style: TextStyle(
+                                  fontFamily: 'PoppinsRegular',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF5CA666),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25.0),
+                              child: Text(
+                                userProfile.cellphone,
+                                style: const TextStyle(
+                                  fontFamily: 'PoppinsRegular',
+                                  fontSize: 14.5,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 25.0),
+                              child: Text(
+                                'Género',
+                                style: TextStyle(
+                                  fontFamily: 'PoppinsRegular',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF5CA666),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25.0),
+                              child: Text(
+                                _getGenderText(userProfile.genre),
+                                style: const TextStyle(
+                                  fontFamily: 'PoppinsRegular',
+                                  fontSize: 14.5,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 25.0),
+                              child: Text(
+                                'Ocupación',
+                                style: TextStyle(
+                                  fontFamily: 'PoppinsRegular',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF5CA666),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25.0),
+                              child: Text(
+                                userProfile.occupation,
+                                style: const TextStyle(
+                                  fontFamily: 'PoppinsRegular',
+                                  fontSize: 14.5,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                            SizedBox(height: 30),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 25.0),
+                              child: Text(
+                                'Habilidades',
+                                style: TextStyle(
+                                  fontFamily: 'PoppinsRegular',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF5CA666),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25.0),
+                              child: Text(
+                                userProfile.description,
+                                style: const TextStyle(
+                                  fontFamily: 'PoppinsRegular',
+                                  fontSize: 14.5,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -258,7 +306,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           );
         },
-        child: Icon(Icons.camera_alt),
+        child: const Icon(Icons.camera_alt),
       ),
     );
   }

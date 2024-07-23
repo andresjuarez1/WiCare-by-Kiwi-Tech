@@ -71,312 +71,336 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  void _showMapDialog(BuildContext context, double latitude, double longitude) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: const Text('Ubicación'),
+          content: SizedBox(
+            height: 300,
+            width: double.maxFinite,
+            child: GoogleMapsWidget(
+              latitude: latitude,
+              longitude: longitude,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cerrar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
+        elevation: 10,
         title: const Text(
           'Perfil',
           style: TextStyle(
             fontSize: 22,
-            fontFamily: 'PoppinsRegular',
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF5CA666),
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
           ),
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.camera_alt),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => BankDetailsPage()),
+                MaterialPageRoute(
+                  builder: (context) => UploadProfilePicturePage(),
+                ),
               );
             },
           ),
         ],
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : FutureBuilder<List<dynamic>>(
-              future: Future.wait([_userProfileFuture, _bankDetailsFuture]),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData) {
-                  return const Center(child: Text('No hay datos'));
-                }
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                width: double.infinity,
+                height: 170.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/fondo2.jpg'),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.5), BlendMode.srcOver),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          Center(
+            child: _isLoading
+                ? const CircularProgressIndicator()
+                : FutureBuilder<List<dynamic>>(
+                    future:
+                        Future.wait([_userProfileFuture, _bankDetailsFuture]),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (!snapshot.hasData) {
+                        return const Text('No hay datos');
+                      }
 
-                final userProfile = snapshot.data![0] as AssociationProfile;
-                final bankDetails = snapshot.data![1] as BankDetails;
-                print('URL de perfil: ${userProfile.profilePicture}');
-                _profilePictureUrl = userProfile.profilePicture;
+                      final userProfile =
+                          snapshot.data![0] as AssociationProfile;
+                      final bankDetails = snapshot.data![1] as BankDetails;
 
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _profilePictureUrl.isNotEmpty
-                          ? ClipOval(
-                              child: Image.network(
-                                _profilePictureUrl,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child;
-                                  } else {
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes!
-                                            : null,
-                                      ),
-                                    );
-                                  }
-                                },
-                                errorBuilder: (BuildContext context,
-                                    Object error, StackTrace? stackTrace) {
-                                  print('Error cargando imagen: $error');
-                                  return Container(
-                                    width: 100,
-                                    height: 100,
-                                    color: Colors.grey,
-                                  );
-                                },
-                              ),
-                            )
-                          : Container(
-                              width: 100,
-                              height: 100,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.grey,
-                              ),
-                            ),
-                      const SizedBox(height: 20),
-                      Text(
-                        userProfile.name,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF5CA666),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Datos Bancarios'),
-                                content: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                        'Nombre del banco: ${bankDetails.bank}'),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                        'Número de cuenta: ${bankDetails.number}'),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                        'Nombre del propietario: ${bankDetails.name}'),
-                                  ],
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Cerrar'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all<Color>(
-                              const Color.fromARGB(255, 83, 175, 95)),
-                          shape:
-                              WidgetStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.symmetric(
-                                vertical: 13.0, horizontal: 30.0),
-                          ),
-                        ),
-                        child: const Text(
-                          'Ver Datos Bancarios',
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Align(
-                        alignment: Alignment.centerLeft,
+                      return SingleChildScrollView(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                'Descripción',
-                                style: TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF5CA666),
+                            SizedBox(height: 90),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  transform: Matrix4.translationValues(
+                                      15.0, 20.0, 0.0),
+                                  padding: const EdgeInsets.all(1.5),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.green,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: CircleAvatar(
+                                    radius: 50.0,
+                                    backgroundImage: userProfile
+                                                .profilePicture !=
+                                            null
+                                        ? NetworkImage(
+                                            userProfile.profilePicture!)
+                                        : const AssetImage(
+                                                'assets/kiwilogo-inicio.png')
+                                            as ImageProvider,
+                                  ),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                userProfile.description ?? '',
-                                style: const TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 14.5,
+                                SizedBox(width: 25),
+                                Transform.translate(
+                                  offset: Offset(0, 20),
+                                  child: Text(
+                                    userProfile.name,
+                                    style: const TextStyle(
+                                      fontSize: 21,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: 'Poppins',
+                                      color: Color(0xFF5CA666),
+                                      letterSpacing: 2,
+                                    ),
+                                  ),
                                 ),
-                                textAlign: TextAlign.justify,
+                              ],
+                            ),
+                            SizedBox(height: 50),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 20.0),
+                                    child: Text(
+                                      'Datos bancarios',
+                                      style: TextStyle(
+                                        fontFamily: 'PoppinsRegular',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF5CA666),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: Text(
+                                      'Banco: ${bankDetails.bank}',
+                                      style: const TextStyle(
+                                        fontFamily: 'PoppinsRegular',
+                                        fontSize: 14.5,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: Text(
+                                      'Propietario: ${bankDetails.name}',
+                                      style: const TextStyle(
+                                        fontFamily: 'PoppinsRegular',
+                                        fontSize: 14.5,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: Text(
+                                      'Numero de cuenta: ${bankDetails.number}',
+                                      style: const TextStyle(
+                                        fontFamily: 'PoppinsRegular',
+                                        fontSize: 14.5,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 30),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 20.0),
+                                    child: Text(
+                                      'Descripción',
+                                      style: TextStyle(
+                                        fontFamily: 'PoppinsRegular',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF5CA666),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: Text(
+                                      userProfile.description ?? '',
+                                      style: const TextStyle(
+                                        fontFamily: 'PoppinsRegular',
+                                        fontSize: 14.5,
+                                      ),
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 30),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 20.0),
+                                    child: Text(
+                                      'Correo electrónico',
+                                      style: TextStyle(
+                                        fontFamily: 'PoppinsRegular',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF5CA666),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: Text(
+                                      userProfile.email ?? '',
+                                      style: const TextStyle(
+                                        fontFamily: 'PoppinsRegular',
+                                        fontSize: 14.5,
+                                      ),
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 30),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 20.0),
+                                    child: Text(
+                                      'Teléfono',
+                                      style: TextStyle(
+                                        fontFamily: 'PoppinsRegular',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF5CA666),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: Text(
+                                      userProfile.cellphone ?? '',
+                                      style: const TextStyle(
+                                        fontFamily: 'PoppinsRegular',
+                                        fontSize: 14.5,
+                                      ),
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 30),
+                                  Center(
+                                    child: SizedBox(
+                                      width: 200,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          _showMapDialog(
+                                            context,
+                                            userProfile.location.latitude,
+                                            userProfile.location.longitude,
+                                          );
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              WidgetStateProperty.all<Color>(
+                                                  Colors.green),
+                                          shape: WidgetStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30.0),
+                                            ),
+                                          ),
+                                          padding: WidgetStateProperty.all<
+                                              EdgeInsetsGeometry>(
+                                            const EdgeInsets.symmetric(
+                                                vertical: 13.0),
+                                          ),
+                                        ),
+                                        child: const Text(
+                                          'Ver Mapa',
+                                          style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 5),
-                            const Divider(
-                                color: Color.fromARGB(255, 228, 228, 228)),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                'Correo electrónico',
-                                style: TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF5CA666),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                userProfile.email ?? '',
-                                style: const TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 14.5,
-                                ),
-                                textAlign: TextAlign.justify,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Divider(
-                                color: Color.fromARGB(255, 228, 228, 228)),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                'Teléfono',
-                                style: TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF5CA666),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                userProfile.cellphone ?? '',
-                                style: const TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 14.5,
-                                ),
-                                textAlign: TextAlign.justify,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Divider(
-                                color: Color.fromARGB(255, 228, 228, 228)),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                'Ubicación',
-                                style: TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF5CA666),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                '${userProfile.location.latitude},${userProfile.location.longitude}',
-                                style: const TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 14.5,
-                                ),
-                                textAlign: TextAlign.justify,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                'Mapa',
-                                style: TextStyle(
-                                  fontFamily: 'PoppinsRegular',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF5CA666),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: GoogleMapsWidget(
-                                latitude: userProfile.location.latitude,
-                                longitude: userProfile.location.longitude,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
                           ],
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                );
-              },
-            ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
