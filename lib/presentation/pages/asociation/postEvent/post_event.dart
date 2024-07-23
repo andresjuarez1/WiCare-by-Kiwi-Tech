@@ -237,11 +237,11 @@ class _PostEventState extends State<PostEvent> {
                         fontSize: 15.0,
                         color: Colors.black),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(30.0),
                       borderSide: BorderSide(color: greenColor),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(30.0),
                       borderSide: BorderSide(color: greenColor),
                     ),
                   ),
@@ -263,11 +263,11 @@ class _PostEventState extends State<PostEvent> {
                         fontSize: 15.0,
                         color: Colors.black),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(30.0),
                       borderSide: BorderSide(color: greenColor),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(30.0),
                       borderSide: BorderSide(color: greenColor),
                     ),
                   ),
@@ -291,11 +291,11 @@ class _PostEventState extends State<PostEvent> {
                             fontSize: 15.0,
                             color: Colors.black),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide(color: greenColor),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide(color: greenColor),
                         ),
                       ),
@@ -321,11 +321,11 @@ class _PostEventState extends State<PostEvent> {
                             fontSize: 15.0,
                             color: Colors.black),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide(color: greenColor),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide(color: greenColor),
                         ),
                       ),
@@ -351,11 +351,11 @@ class _PostEventState extends State<PostEvent> {
                             fontSize: 15.0,
                             color: Colors.black),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide(color: greenColor),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide(color: greenColor),
                         ),
                       ),
@@ -385,11 +385,11 @@ class _PostEventState extends State<PostEvent> {
                   }).toList(),
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(30.0),
                       borderSide: BorderSide(color: greenColor),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(30.0),
                       borderSide: BorderSide(color: greenColor),
                     ),
                   ),
@@ -402,7 +402,7 @@ class _PostEventState extends State<PostEvent> {
                     height: 150,
                     decoration: BoxDecoration(
                       border: Border.all(color: greenColor),
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(30.0),
                       color: Colors.grey[200],
                     ),
                     child: _image == null

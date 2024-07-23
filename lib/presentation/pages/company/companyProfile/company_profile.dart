@@ -174,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       15.0, -20.0, 0.0),
                                   padding: const EdgeInsets.all(1.5),
                                   decoration: const BoxDecoration(
-                                    color: Colors.green,
+                                    color: Colors.white,
                                     shape: BoxShape.circle,
                                   ),
                                   child: CircleAvatar(

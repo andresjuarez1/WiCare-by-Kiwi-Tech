@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:locura1/data/models/volunteer_event.dart';
+import 'package:locura1/presentation/pages/asociation/events/dialogs/volunteer_profile_asociation.dart';
 
 class VolunteerDialog extends StatefulWidget {
   final Future<List<VolunteerInEvent>> volunteersFuture;
@@ -61,13 +62,23 @@ class _VolunteerDialogState extends State<VolunteerDialog> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: volunteers.map((volunteer) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(volunteer.profile.profilePicture),
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => VolunteerDetailPage(volunteer: volunteer),
+                        ),
+                      );
+                    },
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(volunteer.profile.profilePicture),
+                      ),
+                      title: Text(volunteer.profile.name),
+                      subtitle: Text(volunteer.profile.occupation),
                     ),
-                    title: Text(volunteer.profile.name),
-                    subtitle: Text(volunteer.profile.occupation),
                   );
                 }).toList(),
               ),
@@ -86,3 +97,4 @@ class _VolunteerDialogState extends State<VolunteerDialog> {
     );
   }
 }
+
