@@ -5,7 +5,7 @@ import '../models/volunteer_model.dart';
 VolunteerModel volunteerToVolunteerModel(Volunteer volunteer) {
   return VolunteerModel(
     name: volunteer.name,
-    description: volunteer.description,
+    text: volunteer.text,
     age: volunteer.age,
     curp: volunteer.curp,
     cellphone: volunteer.cellphone,
@@ -22,7 +22,7 @@ VolunteerModel volunteerToVolunteerModel(Volunteer volunteer) {
 Volunteer volunteerModelToVolunteer(VolunteerModel model) {
   return Volunteer(
     name: model.name,
-    description: model.description,
+    text: model.text,
     age: model.age,
     curp: model.curp,
     cellphone: model.cellphone,

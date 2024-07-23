@@ -214,6 +214,32 @@ class _ProfilePageState extends State<ProfilePage> {
                             textAlign: TextAlign.justify,
                           ),
                         ),
+                        const Divider(
+                            color: Color.fromARGB(255, 228, 228, 228)),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 20.0),
+                          child: Text(
+                            'Habilidades',
+                            style: TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF5CA666),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Text(
+                            userProfile.description,
+                            style: const TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 14.5,
+                            ),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ),
                       ],
                     ),
                   ),

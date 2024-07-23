@@ -1,7 +1,7 @@
 class VolunteerModel {
   final String name;
   final String age;
-  final String description;
+  final String text;
   final String curp;
   final String cellphone;
   final String postal;
@@ -14,7 +14,7 @@ class VolunteerModel {
 
   VolunteerModel({
     required this.name,
-    required this.description,
+    required this.text,
     required this.age,
     required this.curp,
     required this.cellphone,
@@ -30,7 +30,7 @@ class VolunteerModel {
   factory VolunteerModel.fromJson(Map<String, dynamic> json) {
     return VolunteerModel(
       name: json['name'],
-      description: json['description'],
+      text: json['text'],
       age: json['age'],
       curp: json['curp'],
       cellphone: json['cellphone'],
@@ -57,6 +57,7 @@ class VolunteerModel {
       'genre': genre,
       'email': email,
       'password': password,
+      'text': text,
     };
   }
 }
